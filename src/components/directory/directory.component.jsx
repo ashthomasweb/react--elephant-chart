@@ -42,6 +42,13 @@ class Directory extends Component {
           id: 5,
           linkUrl: "",
         },
+        {
+          title: "neutral",
+          imageUrl: "https://www.ipsos.com/sites/default/files/ct/news_and_polls/2020-01/gender.jpg",
+          size: "large",
+          id: 6,
+          linkUrl: "",
+        },
       ],
     };
   }
