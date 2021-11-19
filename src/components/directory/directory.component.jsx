@@ -53,11 +53,19 @@ class Directory extends Component {
     };
   }
 
+  dropHandler = (ev) => {
+    ev.preventDefault()
+    const data = ev.dataTransfer.getData('id')
+
+    console.log(data, 'from drop')
+    ev.dataTransfer.clearData()
+  }
+
   render() {
     return (
       <div 
       className="directory-menu"
-      onDrop={(e) => console.log('hi')}
+      onDrop={(e) => this.dropHandler(e)}
       onDragOver={(e) => e.preventDefault()}
       >
           { this.state.sections.map(({ id, ...sectionProps }) => (
