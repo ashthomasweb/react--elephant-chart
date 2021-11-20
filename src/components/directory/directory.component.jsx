@@ -16,6 +16,44 @@ class Directory extends Component {
           id: 1,
           linkUrl: "hats",
         },
+      ],
+    };
+  }
+
+  // dropHandler = (e) => {
+  //   e.preventDefault()
+  //   const data = e.dataTransfer.getData('data')
+  //   console.log(data)
+  //   console.log('from drop')
+  //   e.dataTransfer.clearData()
+  // }
+
+  render() {
+    return (
+      <div 
+      className="directory-menu"
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={(e) => e.preventDefault()}
+      >
+          { this.state.sections.map(({ id, ...sectionProps }) => (
+              <MenuItem key={id} value={id} { ...sectionProps}/>
+          )) }    
+      </div>
+      )
+  }
+}
+
+export default Directory
+
+
+
+
+
+
+
+
+
+
         // {
         //   title: "jackets",
         //   imageUrl: "https://i.ibb.co/px2tCc3/jackets.png",
@@ -49,31 +87,3 @@ class Directory extends Component {
         //   id: 6,
         //   linkUrl: "",
         // },
-      ],
-    };
-  }
-
-  dropHandler = (ev) => {
-    ev.preventDefault()
-    const data = ev.dataTransfer.getData('id')
-
-    console.log(data, 'from drop')
-    ev.dataTransfer.clearData()
-  }
-
-  render() {
-    return (
-      <div 
-      className="directory-menu"
-      onDrop={(e) => this.dropHandler(e)}
-      onDragOver={(e) => e.preventDefault()}
-      >
-          { this.state.sections.map(({ id, ...sectionProps }) => (
-              <MenuItem key={id} {...sectionProps}/>
-          )) }    
-      </div>
-      )
-  }
-}
-
-export default Directory
