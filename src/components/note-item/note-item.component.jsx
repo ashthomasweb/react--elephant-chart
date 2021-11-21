@@ -1,48 +1,55 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 
-// import "./menu-item.styles.scss";
+// import "./note-item.styles.scss";
 
-import './menu-item.styles.scss'
+import './note-item.styles.scss'
 
-class MenuItem extends Component {
+class NoteItem extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
       left: '',
       top: '',
+      id: ''
     }
+
+
   }
   
+
+
+
+
+
   dragHandler = (e) => {
 
-    console.log(getComputedStyle(e.target))
+    this.setState( { left: e.clientX, top: e.clientY, id: this.props.value }, () => this.props.dave(this.state) )
+    // this.setState.top = e.clientY
 
 
+    
 
+    // console.log('this')
 
-    // console.log(getComputedStyle(e.target).getPropertyValue('left'))
-    // console.log(data)
-    // e.dataTransfer.setData('data', data)
+    // this.setState({ [name]: value })
+   
   }
 
   
   render() {
-    const { value, title, imageUrl, size,/* history, linkUrl, match*/ } = this.props
+    const { value, imageUrl, size/*title,  history, linkUrl, match*/ } = this.props
 
     return (
       
         <div
+        // onClick={() => history.push(`${match.url}${linkUrl}`)}
           className={`${size} menu-item`}
-          // onClick={() => history.push(`${match.url}${linkUrl}`)}
-          onDrag={(e) => this.dragHandler(e)}
-          onDragOver={(e) => e.preventDefault()}
-          // leftPos={ this.left }
-          // TopPos={ this.top }
-
+          onDrag={this.dragHandler}
           id={value}
-          draggable>
+          draggable
+          >
           <div
             className='background-image'
             style={{
@@ -60,7 +67,7 @@ class MenuItem extends Component {
   }
 }
 
-export default withRouter(MenuItem)
+export default withRouter(NoteItem)
 
 // const MenuItem = ({ title, imageUrl, size, history, linkUrl, match }) => (
 // );

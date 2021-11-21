@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 
-import MenuItem from "../menu-item/menu-item.component";
+import logo from '../../assets/flow-post-logo.png'
+
+import NoteItem from "../note-item/note-item.component";
 
 import "./directory.styles.scss";
 
@@ -11,32 +13,49 @@ class Directory extends Component {
     this.state = {
       sections: [
         {
+          top: '',
+          left: '',
           title: "hats",
-          imageUrl: "https://i.ibb.co/cvpntL1/hats.png",
+          imageUrl: logo,
           id: 1,
           linkUrl: "hats",
         },
       ],
+      currentDrag: {}
     };
+
+    this.dave = this.tester.bind(this)
   }
 
-  // dropHandler = (e) => {
-  //   e.preventDefault()
-  //   const data = e.dataTransfer.getData('data')
-  //   console.log(data)
-  //   console.log('from drop')
-  //   e.dataTransfer.clearData()
-  // }
+  tester = (input) => {
+    console.log(`Hi Dave, I'm ${input.left} ${input.top}`)
+    this.setState( { currentDrag: input })
+
+  }
+  
+  dropHandler = (e) => {
+    
+    console.log(this.state)
+    // identify the correct note and update info
+
+
+    // console.log('test')
+    // get coords from state
+
+    // database storage for board persistence
+
+
+  }
 
   render() {
     return (
       <div 
       className="directory-menu"
       onDragOver={(e) => e.preventDefault()}
-      onDrop={(e) => e.preventDefault()}
+      onDrop={this.dropHandler}
       >
           { this.state.sections.map(({ id, ...sectionProps }) => (
-              <MenuItem key={id} value={id} { ...sectionProps}/>
+              <NoteItem key={id} dave={this.tester} value={id} { ...sectionProps}/>
           )) }    
       </div>
       )
