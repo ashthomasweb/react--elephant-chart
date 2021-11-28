@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 
-// import "./note-item.styles.scss";
-
 import './note-item.styles.scss'
 
 class NoteItem extends Component {
@@ -15,34 +13,16 @@ class NoteItem extends Component {
       id: ''
     }
 
-
   }
   
-
-
-
-
-
   dragHandler = (e) => {
-
     this.setState( { left: e.clientX, top: e.clientY, id: this.props.value }, () => this.props.dave(this.state) )
-    // this.setState.top = e.clientY
-
-
-    
-
-    // console.log('this')
-
-    // this.setState({ [name]: value })
-   
   }
-
   
   render() {
     const { value, imageUrl, size/*title,  history, linkUrl, match*/ } = this.props
 
     return (
-      
         <div
         // onClick={() => history.push(`${match.url}${linkUrl}`)}
           className={`${size} menu-item`}
@@ -61,13 +41,8 @@ class NoteItem extends Component {
             <span className='subtitle'>SHOP</span>
           </div> */}
         </div>
-       
-      
     )
   }
 }
 
 export default withRouter(NoteItem)
-
-// const MenuItem = ({ title, imageUrl, size, history, linkUrl, match }) => (
-// );
