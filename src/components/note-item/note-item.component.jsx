@@ -15,15 +15,16 @@ class NoteItem extends Component {
 
   }
   
+  // sets current position of dragged note to Note Component's state, makes it immediately accesible with anon callback.
   dragHandler = (e) => {
     this.setState( { left: e.clientX, top: e.clientY, id: this.props.value }, () => this.props.dave(this.state) )
   }
   
   render() {
-    const { value, imageUrl, size/*title,  history, linkUrl, match*/ } = this.props
+    const { value, imageUrl, size, left/*title,  history, linkUrl, match*/ } = this.props
 
     return (
-        <div
+        <div style={{ left: `${left}` }}
         // onClick={() => history.push(`${match.url}${linkUrl}`)}
           className={`${size} menu-item`}
           onDrag={this.dragHandler}
@@ -33,7 +34,7 @@ class NoteItem extends Component {
           <div
             className='background-image'
             style={{
-              backgroundImage: `url(${imageUrl})`,
+              backgroundImage: `url(${imageUrl})`
             }}
           />
           {/* <div className='content'>
