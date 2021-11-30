@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
+import logo from '../../assets/flow-post-logo.png'
 
 import './note-item.styles.scss'
 
@@ -8,23 +9,24 @@ class NoteItem extends Component {
     super(props)
 
     this.state = {
-      left: '',
+      id: '',
       top: '',
-      id: ''
+      left: '',
+      imageUrl: logo,
     }
 
   }
   
   // sets current position of dragged note to Note Component's state, makes it immediately accesible with anon callback.
   dragHandler = (e) => {
-    this.setState( { left: e.clientX, top: e.clientY, id: this.props.value }, () => this.props.dave(this.state) )
+    this.setState( { left: e.clientX + 'px', top: e.clientY + 'px', id: this.props.value }, () => this.props.dave(this.state) )
   }
   
   render() {
-    const { value, imageUrl, size, left/*title,  history, linkUrl, match*/ } = this.props
+    const { value, imageUrl, size, left, top/*title,  history, linkUrl, match*/ } = this.props
 
     return (
-        <div style={{ left: `${left}` }}
+        <div style={{ left: `${left}`, top: `${top}` }}
         // onClick={() => history.push(`${match.url}${linkUrl}`)}
           className={`${size} menu-item`}
           onDrag={this.dragHandler}

@@ -15,7 +15,7 @@ const Header = ({ currentUser }) => (
       <img src={logo} className='logo' alt='flow-post logo' />
     </Link>
     <CustomButton onClick={() => console.log(currentUser)}>
-      Log State
+      Log Current User
     </CustomButton>
 
     <div className='options'>
