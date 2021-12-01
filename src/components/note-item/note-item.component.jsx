@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import logo from '../../assets/flow-post-logo.png'
+// import logo from '../../assets/flow-post-logo.png'
+import blank from '../../assets/trimmed-noborder.png'
 
 import './note-item.styles.scss'
 
@@ -12,9 +13,10 @@ class NoteItem extends Component {
       id: '',
       top: '',
       left: '',
-      imageUrl: logo,
+      imageUrl: blank,
       mouseOffsetX: 0,
-      mouseOffsetY: 0
+      mouseOffsetY: 0,
+      noteText: this.props.noteText
     }
 
   }
@@ -31,7 +33,7 @@ class NoteItem extends Component {
   }
   
   render() {
-    const { value, imageUrl, size, left, top/*title,  history, linkUrl, match*/ } = this.props
+    const { value, imageUrl, size, left, top, noteText/*title,  history, linkUrl, match*/ } = this.props
 
     return (
         <div style={{ left: `${left}`, top: `${top}`, backgroundImage: `url(${imageUrl})` }}
@@ -41,10 +43,9 @@ class NoteItem extends Component {
           id={value}
           draggable
           >
-          {/* <div className='content'>
-            <h1 className='title'>{title.toUpperCase()}</h1>
-            <span className='subtitle'>SHOP</span>
-          </div> */}
+          <div className='content'>
+            <p className='note-text'>{noteText}</p>
+          </div>
         </div>
     )
   }
