@@ -17,8 +17,11 @@ class Directory extends Component {
       notes: [
         {
           id: 1,
+          width: '',
+          height: '',
           top: '',
           left: '',
+          zIndex: 0,
           imageUrl: blank,
           mouseOffsetX: 0,
           mouseOffsetY: 0,
@@ -28,14 +31,43 @@ class Directory extends Component {
     }
 
     this.dave = this.tester.bind(this)
+    this.hal = this.resize.bind(this)
+
   }
 
   tester = (input) => {
     this.setState({ currentDrag: input })
-    var newNote = { ...this.state.currentDrag }
-    var newIndex = newNote.id - 1
-    var notes = [...this.state.notes]
+    let newNote = { ...this.state.currentDrag }
+    let newIndex = 0
+    if (newNote.id !== 1) {
+      newIndex = newNote.id - 1
+    }
+    let notes = [...this.state.notes]
     notes[newIndex] = newNote
+    this.setState({ notes })
+  }
+
+  resize = (input) => {
+    this.setState({ currentDrag: input })
+    let newNote = { ...this.state.currentDrag }
+    let notes = [...this.state.notes]
+    let newIndex = 0
+    if (newNote.id !== 1) {
+      newIndex = newNote.id - 1
+    }
+    notes[newIndex] = newNote
+    this.setState({ notes })
+  }
+
+  zIndexHandler = (e) => {
+    let notes = [...this.state.notes]
+    notes.forEach(note => {
+      if (note.id !== Number(e.target.id)) {
+        note.zIndex = note.zIndex - 1
+      } else {
+        note.zIndex = 1
+      }
+    });
     this.setState({ notes })
   }
 
@@ -45,8 +77,8 @@ class Directory extends Component {
   }
 
   newNoteGenerator = () => {
-    var newNote = {...this.state.notes[0]}
-    var notes = [...this.state.notes]
+    let newNote = {...this.state.notes[0]}
+    let notes = [...this.state.notes]
     newNote.noteText = document.querySelector('#input-text').value
     newNote.id = this.state.notes.length + 1
     let left = parseFloat(getComputedStyle(document.querySelector('.compose-frame')).getPropertyValue('left')) - 240 + 'px'
@@ -64,7 +96,7 @@ class Directory extends Component {
         onDragOver={(e) => e.preventDefault()}
         onDrop={this.dropHandler}>
         {this.state.notes.map(({ id, ...sectionProps }) => (
-          <NoteItem key={id} dave={this.tester} value={id} {...sectionProps} />
+          <NoteItem key={id} dave={this.tester} hal={this.resize} stack={this.zIndexHandler} value={id} {...sectionProps} />
         ))}
         <CustomButton
           style={{ top: '0px', left: '770px', position: 'absolute' }}

@@ -6,6 +6,8 @@
   justify-content: space-between;
   background-color: rgb(255, 223, 228);
   padding: 10px;
+  position: absolute;
+  z-index: -99999;
 
   .compose-frame {
     width: 350px;

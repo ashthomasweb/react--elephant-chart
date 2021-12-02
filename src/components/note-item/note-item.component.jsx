@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-// import logo from '../../assets/flow-post-logo.png'
 import blank from '../../assets/trimmed-noborder.png'
 
 import './note-item.styles.scss'
@@ -11,42 +10,89 @@ class NoteItem extends Component {
 
     this.state = {
       id: '',
+      width: '',
+      height: '',
       top: '',
       left: '',
+      zIndex: 0,
       imageUrl: blank,
       mouseOffsetX: 0,
       mouseOffsetY: 0,
-      noteText: this.props.noteText
+      noteText: this.props.noteText,
     }
-
   }
-  
+
   mouseOffset = (e) => {
     const mouseOffsetY = e.pageY - parseFloat(getComputedStyle(e.target).top)
     const mouseOffsetX = e.pageX - parseFloat(getComputedStyle(e.target).left)
-    this.setState({mouseOffsetY, mouseOffsetX}, () => this.props.dave(this.state))
+    this.setState({ mouseOffsetY, mouseOffsetX }, () =>
+      this.props.dave(this.state)
+    )
   }
-  
+
+  clickHandler = (e) => {
+    this.mouseOffset(e)
+    this.props.stack(e)
+  }
+
   // sets current position of dragged note to Note Component's state, makes it immediately accesible with anon callback.
   dragHandler = (e) => {
-    this.setState( { left: e.clientX - this.state.mouseOffsetX + 'px', top: e.clientY - this.state.mouseOffsetY + 'px', id: this.props.value }, () => this.props.dave(this.state) )
+    this.setState(
+      {
+        left: e.clientX - this.state.mouseOffsetX + 'px',
+        top: e.clientY - this.state.mouseOffsetY + 'px',
+        id: this.props.value,
+      },
+      () => this.props.dave(this.state)
+    )
   }
-  
+
+  resizeHandler = (e) => {
+
+    console.log(getComputedStyle(e.target).getPropertyValue('width'))
+    this.setState(
+      {
+        width: getComputedStyle(e.target).getPropertyValue('width'),
+        height: getComputedStyle(e.target).getPropertyValue('height')
+      },
+      () => this.props.hal(this.state)
+    )
+  }
+
+
   render() {
-    const { value, imageUrl, size, left, top, noteText/*title,  history, linkUrl, match*/ } = this.props
+    const {
+      value,
+      imageUrl,
+      size,
+      width,
+      height,
+      left,
+      top,
+      noteText, 
+      zIndex /*title,  history, linkUrl, match*/,
+    } = this.props
 
     return (
-        <div style={{ left: `${left}`, top: `${top}`, backgroundImage: `url(${imageUrl})` }}
-          className={`${size} menu-item`}
-          onMouseDown={this.mouseOffset}
-          onDrag={this.dragHandler}
-          id={value}
-          draggable
-          >
-          <div className='content'>
-            <p className='note-text'>{noteText}</p>
-          </div>
+      <div
+        style={{
+          width: `${width}`,
+          height: `${height}`,
+          left: `${left}`,
+          top: `${top}`,
+          backgroundImage: `url(${imageUrl})`,
+          zIndex: `${zIndex}`,
+        }}
+        className={`${size} menu-item`}
+        onMouseDown={this.clickHandler}
+        onDrag={this.dragHandler}
+        id={value}
+        onMouseUp={this.resizeHandler}
+        draggable>
+        <div className='content'>
+          <p className='note-text'>{noteText}</p>
         </div>
+      </div>
     )
   }
 }
