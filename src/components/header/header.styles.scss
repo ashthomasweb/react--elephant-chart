@@ -3,16 +3,21 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 25px;
+  // margin-bottom: 25px;
+  position: absolute;
+  top: 0;
+  pointer-events: none;
 
   .logo-container {
     height: 100%;
-    width: 70px;
-    padding: 25px;
+    width: 100px;
+    // padding: 25px;
   }
-
+  
   .logo {
-    height: 100px;
+    height: 139px;
+    padding: 6px 0 0 6px;
+    pointer-events: all;
   }
 
   .options {
@@ -21,12 +26,21 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    pointer-events: all;
+
+    .log-user {
+      line-height: 15px;
+      font-size: 12px;
+      height: 25px;
+      position: absolute;
+      right: 10px;
+      top: 0px;
+    }
 
     .option {
       padding: 10px 15px;
       cursor: pointer;
     }
   }
-
 
 }

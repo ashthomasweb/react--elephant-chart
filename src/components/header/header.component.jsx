@@ -14,12 +14,12 @@ const Header = ({ currentUser }) => (
     <Link className='logo-container' to='/'>
       <img src={logo} className='logo' alt='flow-post logo' />
     </Link>
-    <CustomButton onClick={() => console.log(currentUser)}>
-      Log Current User
-    </CustomButton>
 
     <div className='options'>
    
+    <CustomButton class='log-user' onClick={() => console.log(currentUser)}>
+      LOG: Current User
+    </CustomButton>
      
       {currentUser ? (
         // <div className='option' onClick={() => auth.signOut()}>
@@ -29,7 +29,7 @@ const Header = ({ currentUser }) => (
         </div>
       ) : (
         <Link className='option' to='/signin'>
-          SIGN IN
+          SIGN IN / UP
         </Link>
       )}
     </div>

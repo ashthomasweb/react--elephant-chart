@@ -4,7 +4,6 @@ import { Switch, Route } from 'react-router-dom'
 import './App.css';
 
 import HomePage from './pages/homepage/home.component'
-import Header from './components/header/header.component'
 
 
 class App extends Component {
@@ -22,12 +21,9 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Header className='header' />
           <Switch>
             <Route exact path='/' component={HomePage} />
           </Switch>
-        
-          
       </div>
     );
 

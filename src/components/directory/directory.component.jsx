@@ -19,8 +19,8 @@ class Directory extends Component {
           id: 1,
           width: '',
           height: '',
-          top: '',
-          left: '',
+          top: '145px',
+          left: '3px',
           zIndex: 0,
           imageUrl: blank,
           mouseOffsetX: 0,
@@ -77,12 +77,13 @@ class Directory extends Component {
   }
 
   newNoteGenerator = () => {
+    console.log('hi')
     let newNote = {...this.state.notes[0]}
     let notes = [...this.state.notes]
     newNote.noteText = document.querySelector('#input-text').value
     newNote.id = this.state.notes.length + 1
-    let left = parseFloat(getComputedStyle(document.querySelector('.compose-frame')).getPropertyValue('left')) - 240 + 'px'
-    let top = parseFloat(getComputedStyle(document.querySelector('.compose-frame')).getPropertyValue('top')) - 120 + 'px'
+    let left = parseFloat(getComputedStyle(document.querySelector('.pad-frame')).getPropertyValue('left')) + 340 + 'px'
+    let top = parseFloat(getComputedStyle(document.querySelector('.pad-frame')).getPropertyValue('top')) + 320 + 'px'
     newNote.left = left
     newNote.top = top
     notes.push(newNote)
@@ -99,18 +100,24 @@ class Directory extends Component {
           <NoteItem key={id} dave={this.tester} hal={this.resize} stack={this.zIndexHandler} value={id} {...sectionProps} />
         ))}
         <CustomButton
-          style={{ top: '0px', left: '770px', position: 'absolute' }}
+          style={{ bottom: '0px', left: '270px', position: 'absolute' }}
           onClick={() => console.log(this.state)}>
           Log Notes State
         </CustomButton>
         <CustomButton
-          style={{ top: '0px', left: '500px', position: 'absolute' }}
+          style={{ bottom: '0px', left: '0px', position: 'absolute' }}
           onClick={() => console.log(this.state.currentDrag)}>
           Log CurrentDrag State
         </CustomButton>
-        <div className='compose-frame'>
+        <div className='options-frame'>
+          <button class='options-btn' type='button' onClick={this.newNoteGenerator}>Place on Board</button>
+          <button class='options-btn' type='button' onClick={this.newNoteGenerator} disabled>Placeholder</button>
+          <button class='options-btn' type='button' onClick={this.newNoteGenerator} disabled>Placeholder</button>
+          <button class='options-btn' type='button' onClick={this.newNoteGenerator} disabled>Placeholder</button>
+
+        </div>
+        <div className='pad-frame'>
           <textarea id='input-text' type='text' placeholder='New Note Text'></textarea>
-          <button type='button' onClick={this.newNoteGenerator}>Place on Board</button>
         </div>
       </div>
     )
