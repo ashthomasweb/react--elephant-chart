@@ -2,14 +2,13 @@ import React from "react";
 
 import "./homepage.styles.scss";
 
-import Directory from "../../components/directory/directory.component"
+import Board from "../../components/board/board.component"
 import Header from '../../components/header/header.component'
 
 const HomePage = () => (
   <div className="homepage">
     <Header className='header' />
-
-    <Directory />
+    <Board />
   </div>
 );
 

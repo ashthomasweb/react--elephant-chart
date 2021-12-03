@@ -1,14 +1,12 @@
 import React, { Component } from 'react'
 
-// import logo from '../../assets/flow-post-logo.png'
 import blank from '../../assets/trimmed-noborder.png'
-
 import CustomButton from '../custom-button/custom-button.component'
 import NoteItem from '../note-item/note-item.component'
 
-import './directory.styles.scss'
+import './board.styles.scss'
 
-class Directory extends Component {
+class Board extends Component {
   constructor() {
     super()
 
@@ -32,7 +30,6 @@ class Directory extends Component {
 
     this.dave = this.tester.bind(this)
     this.hal = this.resize.bind(this)
-
   }
 
   tester = (input) => {
@@ -100,21 +97,20 @@ class Directory extends Component {
           <NoteItem key={id} dave={this.tester} hal={this.resize} stack={this.zIndexHandler} value={id} {...sectionProps} />
         ))}
         <CustomButton
-          style={{ bottom: '0px', left: '270px', position: 'absolute' }}
+          style={{ bottom: '0px', left: '0px', position: 'absolute' }}
           onClick={() => console.log(this.state)}>
           Log Notes State
         </CustomButton>
-        <CustomButton
+        {/* <CustomButton
           style={{ bottom: '0px', left: '0px', position: 'absolute' }}
           onClick={() => console.log(this.state.currentDrag)}>
           Log CurrentDrag State
-        </CustomButton>
+        </CustomButton> */}
         <div className='options-frame'>
-          <button class='options-btn' type='button' onClick={this.newNoteGenerator}>Place on Board</button>
-          <button class='options-btn' type='button' onClick={this.newNoteGenerator} disabled>Placeholder</button>
-          <button class='options-btn' type='button' onClick={this.newNoteGenerator} disabled>Placeholder</button>
-          <button class='options-btn' type='button' onClick={this.newNoteGenerator} disabled>Placeholder</button>
-
+          <button className='options-btn' type='button' onClick={this.newNoteGenerator}>Place on Board</button>
+          <button className='options-btn' type='button' onClick={this.newNoteGenerator} disabled>Placeholder</button>
+          <button className='options-btn' type='button' onClick={this.newNoteGenerator} disabled>Placeholder</button>
+          <button className='options-btn' type='button' onClick={this.newNoteGenerator} disabled>Placeholder</button>
         </div>
         <div className='pad-frame'>
           <textarea id='input-text' type='text' placeholder='New Note Text'></textarea>
@@ -124,4 +120,4 @@ class Directory extends Component {
   }
 }
 
-export default Directory
+export default Board

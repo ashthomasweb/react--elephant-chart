@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import FormInput from '../form-input/form-input.component'
 import CustomButton from '../custom-button/custom-button.component'
 
-import { auth, createUserProfileDocument } from '../../firebase/firebase.utils'
+// import { auth, createUserProfileDocument } from '../../firebase/firebase.utils'
 
 import './sign-up.styles.scss'
 
@@ -19,35 +19,35 @@ class SignUp extends Component {
     }
   }
 
-  handleSubmit = async (event) => {
-    event.preventDefault()
+  // handleSubmit = async (event) => {
+  //   event.preventDefault()
 
-    const { displayName, email, password, confirmPassword } = this.state
+  //   const { displayName, email, password, confirmPassword } = this.state
 
-    if (password !== confirmPassword) {
-      alert("passwords don't match")
-      return
-    }
+  //   if (password !== confirmPassword) {
+  //     alert("passwords don't match")
+  //     return
+  //   }
 
-    try {
+  //   try {
 
-      const { user } = await auth.createUserWithEmailAndPassword(email, password) 
+  //     const { user } = await auth.createUserWithEmailAndPassword(email, password) 
 
-      await createUserProfileDocument(user, { displayName })
+  //     await createUserProfileDocument(user, { displayName })
 
-      this.setState({
-        displayName: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
-      })
+  //     this.setState({
+  //       displayName: '',
+  //       email: '',
+  //       password: '',
+  //       confirmPassword: ''
+  //     })
 
-    } catch (error) {
-      console.error(error)
+  //   } catch (error) {
+  //     console.error(error)
 
-    }
+  //   }
 
-  }
+  // }
 
   handleChange = (event) => {
     const { value, name } = event.target
@@ -61,7 +61,7 @@ class SignUp extends Component {
         <h2 className='title'>Create an Account</h2>
         <span>Sign up with Google or by email</span>
 
-        <form className='sign-up-form' onSubmit={this.handleSubmit}>
+        <form className='sign-up-form' /*</div>onSubmit={this.handleSubmit}*/>
           <FormInput
             type='text'
             name='displayName'
