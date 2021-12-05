@@ -13,6 +13,11 @@
   font-weight: bolder;
   border: none;
   cursor: pointer;
+  bottom: 0;
+  left: 200px;
+  margin: 1px;
+  position: absolute;
+  display: inline-block;
 
   &:hover {
     background-color: white;

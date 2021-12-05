@@ -5,7 +5,6 @@ import { auth } from '../../firebase/firebase.utils'
 
 import logo from '../../assets/flow-post-logo.png'
 import SignInUpModal from '../signinupmodal/signinupmodal.component'
-import CustomButton from '../custom-button/custom-button.component'
 
 import './header.styles.scss'
 
@@ -20,13 +19,9 @@ const Header = ({ currentUser }) => (
     </Link>
 
     <div className='options'>
-      <CustomButton
-        className='log-user'
-        onClick={() => console.log(currentUser)}>
-        LOG: Current User
-      </CustomButton>
-      {currentUser ? (
-        <div className='option' onLoad={close()} onClick={() => auth.signOut()}>SIGN OUT</div>
+      {currentUser ? ( <div>
+        <div className='welcome' >Welcome,<br/>{currentUser.displayName}</div>
+        <div className='option' onLoad={close()} onClick={() => auth.signOut()}>SIGN OUT</div></div>
       ) : (
         <button
           type='button'

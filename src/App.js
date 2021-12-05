@@ -5,6 +5,7 @@ import { auth } from './firebase/firebase.utils'
 import './App.css'
 
 import HomePage from './pages/homepage/homepage.component'
+import CustomButton from './components/custom-button/custom-button.component'
 
 class App extends Component {
   constructor() {
@@ -32,6 +33,11 @@ class App extends Component {
         <Switch>
           <Route exact path='/'>
             <HomePage currentUser={this.state.currentUser} />
+            <CustomButton
+              className='custom-button'
+              onClick={() => console.log(this.state.currentUser)}>
+              LOG Current User
+            </CustomButton>
           </Route>
         </Switch>
       </div>
