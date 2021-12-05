@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-// import { auth } from '../../firebase/firebase.utils'
+import { auth } from '../../firebase/firebase.utils'
 // import { connect } from 'react-redux'
 
 import logo from '../../assets/flow-post-logo.png'
@@ -8,6 +8,10 @@ import SignInUpModal from '../signinupmodal/signinupmodal.component'
 import CustomButton from '../custom-button/custom-button.component'
 
 import './header.styles.scss'
+
+function close() {
+  document.querySelector('#sign-modal').style.display = 'none'
+}
 
 const Header = ({ currentUser }) => (
   <div className='header'>
@@ -21,10 +25,8 @@ const Header = ({ currentUser }) => (
         onClick={() => console.log(currentUser)}>
         LOG: Current User
       </CustomButton>
-
       {currentUser ? (
-        // <div className='option' onClick={() => auth.signOut()}>
-        <div className='option'>SIGN OUT</div>
+        <div className='option' onLoad={close()} onClick={() => auth.signOut()}>SIGN OUT</div>
       ) : (
         <button
           type='button'

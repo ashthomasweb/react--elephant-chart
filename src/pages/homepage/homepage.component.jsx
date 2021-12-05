@@ -5,9 +5,9 @@ import "./homepage.styles.scss";
 import Board from "../../components/board/board.component"
 import Header from '../../components/header/header.component'
 
-const HomePage = () => (
+const HomePage = (props) => (
   <div className="homepage">
-    <Header className='header' />
+    <Header className='header' currentUser={props.currentUser}/>
     <Board />
   </div>
 );
