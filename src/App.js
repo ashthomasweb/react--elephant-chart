@@ -21,6 +21,10 @@ class App extends Component {
     this.unsubsribeFromAuth = auth.onAuthStateChanged((user) => {
       this.setState({ currentUser: user })
     })
+    // handles bad clientX value 
+    window.addEventListener('dragover', function(event) {
+      event.preventDefault()
+    }, false)
   }
 
   componentWillUnmount() {

@@ -23,32 +23,43 @@ class NoteItem extends Component {
   }
 
   mouseOffset = (e) => {
-    
     const mouseOffsetY = e.pageY - parseFloat(getComputedStyle(e.target).top)
     const mouseOffsetX = e.pageX - parseFloat(getComputedStyle(e.target).left)
     this.setState({ mouseOffsetY, mouseOffsetX })
   }
 
   clickHandler = (e) => {
-    // this.props.stack(e)
     this.mouseOffset(e)
   }
 
   // sets current position of dragged note to Note Component's state, makes it immediately accesible with anon callback.
-  dragHandler = (e) => {
-    this.setState(
-      {
-        left: e.clientX - this.state.mouseOffsetX + 'px',
-        top: e.clientY - this.state.mouseOffsetY + 'px',
-        id: this.props.value,
-      },
-      () => this.props.dave(this.state)
-    )
+  dragHandler = (ev) => {
+    let xValue = ev.clientX - this.state.mouseOffsetX + 'px'
+    let yValue = ev.clientY - this.state.mouseOffsetY + 'px'
+
+    console.log('1: ', ev.clientX)
+    if (ev.clientX !== 0) {
+      this.setState(
+        {
+          left: xValue,
+          top: yValue,
+          id: this.props.value,
+        },
+        () => {
+          this.props.dave(this.state)
+          console.log(this.state.left)
+          console.log('2: ', ev.clientX)
+        }
+      )
+    } else {
+      // handles bad clientX value
+      console.log(
+        'clientX value error. Displaying previously known good position.'
+      )
+    }
   }
 
   resizeHandler = (e) => {
-
-    // console.log(getComputedStyle(e.target).getPropertyValue('width'))
     this.setState(
       {
         width: getComputedStyle(e.target).getPropertyValue('width'),
@@ -57,7 +68,6 @@ class NoteItem extends Component {
       () => this.props.hal(this.state)
     )
   }
-
 
   render() {
     const {
@@ -68,7 +78,7 @@ class NoteItem extends Component {
       height,
       left,
       top,
-      noteText, 
+      noteText,
       zIndex /*title,  history, linkUrl, match*/,
     } = this.props
 
@@ -85,8 +95,11 @@ class NoteItem extends Component {
         className={`${size} menu-item`}
         onMouseDown={this.clickHandler}
         onDrag={this.dragHandler}
+        // onDragEnd={(e) => e.preventDefault()}
+        // onDragOver={(e) => e.preventDefault()}
+        onDrop={(e) => e.preventDefault()}
         id={value}
-        onMouseUp={this.resizeHandler}
+        // onMouseUp={this.resizeHandler}
         draggable>
         <div className='content'>
           <p className='note-text'>{noteText}</p>

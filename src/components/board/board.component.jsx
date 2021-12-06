@@ -40,7 +40,7 @@ class Board extends Component {
       ],
     }
 
-    // this.dave = this.tester.bind(this)
+    this.dave = this.tester.bind(this)
     this.hal = this.resize.bind(this)
   }
 
@@ -114,12 +114,12 @@ class Board extends Component {
         className='directory-menu'
         onDragOver={(e) => e.preventDefault()}
         onDrop={this.dropHandler}>
+
         {this.state.notes.map(({ id, ...sectionProps }) => (
           <NoteItem
             key={id}
             dave={this.tester}
             hal={this.resize}
-            stack={this.zIndexHandler}
             zHigh={this.zIndexFinder}
             value={id}
             {...sectionProps}
