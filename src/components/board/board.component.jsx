@@ -12,6 +12,18 @@ class Board extends Component {
 
     this.state = {
       currentDrag: {},
+      newNote: {
+        id: 0,
+        width: '200px',
+        height: '130px',
+        top: '145px',
+        left: '3px',
+        zIndex: 0,
+        imageUrl: blank,
+        mouseOffsetX: 0,
+        mouseOffsetY: 0,
+        noteText: 'We can write notes! Write here! Right?',
+      },
       notes: [
         {
           id: 1,
@@ -49,10 +61,8 @@ class Board extends Component {
     this.setState({ currentDrag: input })
     let newNote = { ...this.state.currentDrag }
     let notes = [...this.state.notes]
-    let newIndex = 0
-    if (newNote.id !== 1) {
-      newIndex = newNote.id - 1
-    }
+    let newIndex = newNote.id - 1
+    
     notes[newIndex] = newNote
     this.setState({ notes })
   }
@@ -72,7 +82,7 @@ class Board extends Component {
   }
 
   newNoteGenerator = () => {
-    let newNote = { ...this.state.notes[0] }
+    let newNote = { ...this.state.newNote }
     let notes = [...this.state.notes]
     newNote.noteText = document.querySelector('#input-text').value
     newNote.id = this.state.notes.length + 1

@@ -10,8 +10,8 @@ class NoteItem extends Component {
 
     this.state = {
       id: '',
-      width: '',
-      height: '',
+      width: this.props.width,
+      height: this.props.height,
       top: '',
       left: '',
       zIndex: this.props.zHigh(),
