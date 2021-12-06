@@ -23,12 +23,12 @@ class Board extends Component {
           imageUrl: blank,
           mouseOffsetX: 0,
           mouseOffsetY: 0,
-          noteText: 'We can write notes! Write here! Right?'
+          noteText: 'We can write notes! Write here! Right?',
         },
       ],
     }
 
-    this.dave = this.tester.bind(this)
+    // this.dave = this.tester.bind(this)
     this.hal = this.resize.bind(this)
   }
 
@@ -36,11 +36,12 @@ class Board extends Component {
     this.setState({ currentDrag: input })
     let newNote = { ...this.state.currentDrag }
     let newIndex = 0
+    let notes = [...this.state.notes]
     if (newNote.id !== 1) {
       newIndex = newNote.id - 1
     }
-    let notes = [...this.state.notes]
     notes[newIndex] = newNote
+    notes[newIndex].zIndex = this.zIndexFinder()
     this.setState({ notes })
   }
 
@@ -56,16 +57,13 @@ class Board extends Component {
     this.setState({ notes })
   }
 
-  zIndexHandler = (e) => {
-    let notes = [...this.state.notes]
-    notes.forEach(note => {
-      if (note.id !== Number(e.target.id)) {
-        note.zIndex = note.zIndex - 1
-      } else {
-        note.zIndex = 1
-      }
-    });
-    this.setState({ notes })
+  zIndexFinder = (e) => {
+    let zList = []
+    this.state.notes.forEach( (note) => {
+      zList.push(note.zIndex)
+    })
+    console.log(Math.max.apply(null, zList) + 1)
+    return Math.max.apply(null, zList) + 1
   }
 
   dropHandler = (e) => {
@@ -74,13 +72,26 @@ class Board extends Component {
   }
 
   newNoteGenerator = () => {
-    console.log('hi')
-    let newNote = {...this.state.notes[0]}
+    let newNote = { ...this.state.notes[0] }
     let notes = [...this.state.notes]
     newNote.noteText = document.querySelector('#input-text').value
     newNote.id = this.state.notes.length + 1
-    let left = parseFloat(getComputedStyle(document.querySelector('.pad-frame')).getPropertyValue('left')) + 340 + 'px'
-    let top = parseFloat(getComputedStyle(document.querySelector('.pad-frame')).getPropertyValue('top')) + 320 + 'px'
+    let left =
+      parseFloat(
+        getComputedStyle(document.querySelector('.pad-frame')).getPropertyValue(
+          'left'
+        )
+      ) -
+      340 +
+      'px'
+    let top =
+      parseFloat(
+        getComputedStyle(document.querySelector('.pad-frame')).getPropertyValue(
+          'top'
+        )
+      ) +
+      120 +
+      'px'
     newNote.left = left
     newNote.top = top
     notes.push(newNote)
@@ -94,11 +105,19 @@ class Board extends Component {
         onDragOver={(e) => e.preventDefault()}
         onDrop={this.dropHandler}>
         {this.state.notes.map(({ id, ...sectionProps }) => (
-          <NoteItem key={id} dave={this.tester} hal={this.resize} stack={this.zIndexHandler} value={id} {...sectionProps} />
+          <NoteItem
+            key={id}
+            dave={this.tester}
+            hal={this.resize}
+            stack={this.zIndexHandler}
+            zHigh={this.zIndexFinder}
+            value={id}
+            {...sectionProps}
+          />
         ))}
         <CustomButton
           style={{ bottom: '0px', left: '0px', position: 'absolute' }}
-          onClick={() => console.log(this.state)}>
+          onClick={() => console.log(this.state.notes)}>
           Log Notes State
         </CustomButton>
         {/* <CustomButton
@@ -107,13 +126,39 @@ class Board extends Component {
           Log CurrentDrag State
         </CustomButton> */}
         <div className='options-frame'>
-          <button className='options-btn' type='button' onClick={this.newNoteGenerator}>Place on Board</button>
-          <button className='options-btn' type='button' onClick={this.newNoteGenerator} disabled>Placeholder</button>
-          <button className='options-btn' type='button' onClick={this.newNoteGenerator} disabled>Placeholder</button>
-          <button className='options-btn' type='button' onClick={this.newNoteGenerator} disabled>Placeholder</button>
+          <button
+            className='options-btn'
+            type='button'
+            onClick={this.newNoteGenerator}>
+            Place on Board
+          </button>
+          <button
+            className='options-btn'
+            type='button'
+            onClick={this.newNoteGenerator}
+            disabled>
+            Placeholder
+          </button>
+          <button
+            className='options-btn'
+            type='button'
+            onClick={this.newNoteGenerator}
+            disabled>
+            Placeholder
+          </button>
+          <button
+            className='options-btn'
+            type='button'
+            onClick={this.newNoteGenerator}
+            disabled>
+            Placeholder
+          </button>
         </div>
         <div className='pad-frame'>
-          <textarea id='input-text' type='text' placeholder='New Note Text'></textarea>
+          <textarea
+            id='input-text'
+            type='text'
+            placeholder='New Note Text'></textarea>
         </div>
       </div>
     )

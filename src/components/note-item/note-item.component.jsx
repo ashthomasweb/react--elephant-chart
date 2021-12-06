@@ -14,7 +14,7 @@ class NoteItem extends Component {
       height: '',
       top: '',
       left: '',
-      zIndex: 0,
+      zIndex: this.props.zHigh(),
       imageUrl: blank,
       mouseOffsetX: 0,
       mouseOffsetY: 0,
@@ -23,16 +23,15 @@ class NoteItem extends Component {
   }
 
   mouseOffset = (e) => {
+    
     const mouseOffsetY = e.pageY - parseFloat(getComputedStyle(e.target).top)
     const mouseOffsetX = e.pageX - parseFloat(getComputedStyle(e.target).left)
-    this.setState({ mouseOffsetY, mouseOffsetX }, () =>
-      this.props.dave(this.state)
-    )
+    this.setState({ mouseOffsetY, mouseOffsetX })
   }
 
   clickHandler = (e) => {
+    // this.props.stack(e)
     this.mouseOffset(e)
-    this.props.stack(e)
   }
 
   // sets current position of dragged note to Note Component's state, makes it immediately accesible with anon callback.
@@ -49,7 +48,7 @@ class NoteItem extends Component {
 
   resizeHandler = (e) => {
 
-    console.log(getComputedStyle(e.target).getPropertyValue('width'))
+    // console.log(getComputedStyle(e.target).getPropertyValue('width'))
     this.setState(
       {
         width: getComputedStyle(e.target).getPropertyValue('width'),

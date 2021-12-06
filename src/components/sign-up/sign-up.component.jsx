@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import FormInput from '../form-input/form-input.component'
+// import FormInput from '../form-input/form-input.component'
 import CustomButton from '../custom-button/custom-button.component'
 
 // import { auth, createUserProfileDocument } from '../../firebase/firebase.utils'
@@ -55,14 +55,14 @@ class SignUp extends Component {
   }
 
   render() {
-    const { displayName, email, password, confirmPassword } = this.state
+    // const { displayName, email, password, confirmPassword } = this.state
     return (
       <div className='sign-up'>
         <h2 className='title'>Create an Account</h2>
         <span>Sign up with Google or by email</span>
 
         <form className='sign-up-form' /*</div>onSubmit={this.handleSubmit}*/>
-          <FormInput
+          {/* <FormInput
             type='text'
             name='displayName'
             value={displayName}
@@ -93,7 +93,7 @@ class SignUp extends Component {
             label='Confirm Password'
             onChange={this.handleChange}
             required
-          />
+          /> */}
 
           <div className='buttons'>
             <CustomButton type='submit'> Sign Up </CustomButton>
