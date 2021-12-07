@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Switch, Route } from 'react-router-dom'
-import { auth } from './firebase/firebase.utils'
+import { auth, createNewUserProfile } from './firebase/firebase.utils'
 
 import './App.css'
 
@@ -15,16 +15,18 @@ class App extends Component {
     }
   }
 
+
   unsubsribeFromAuth = null
 
   componentDidMount() {
-    this.unsubsribeFromAuth = auth.onAuthStateChanged((user) => {
+    this.unsubsribeFromAuth = auth.onAuthStateChanged( async (user) => {
       this.setState({ currentUser: user })
+      createNewUserProfile(user)
     })
-    // handles bad clientX value 
-    window.addEventListener('dragover', function(event) {
-      event.preventDefault()
-    }, false)
+
+    // partially handles bad clientX value on fast note clicking
+    window.addEventListener('dragover', (e) => e.preventDefault(), false)
+    window.addEventListener('dragend', (e) => e.preventDefault(), false)
   }
 
   componentWillUnmount() {
@@ -38,7 +40,7 @@ class App extends Component {
           <Route exact path='/'>
             <HomePage currentUser={this.state.currentUser} />
             <CustomButton
-              className='custom-button'
+              className='custom-button log'
               onClick={() => console.log(this.state.currentUser)}>
               LOG Current User
             </CustomButton>

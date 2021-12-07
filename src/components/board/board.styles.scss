@@ -1,18 +1,11 @@
-.directory-menu {
+.board-backing {
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-wrap: wrap;
-  // justify-content: space-between;
   background-color: rgb(255, 223, 228);
   position: absolute;
   z-index: -99999;
-
-  // &.scaled {
-  //   transform: scale(0.5);
-  //   width: 200vw;
-  //   height: 200vh;
-  // }
 
   .options-frame {
     width: 350px;
@@ -28,6 +21,7 @@
       display: block;
       margin: 8px 12px;
     }
+
   }
   
   .pad-frame {
@@ -35,16 +29,13 @@
     height: 124px;
     left: 510px;
     top: 10px;
-
     display: inline-block;
     position: absolute;
-
-
-
 
     textarea {
       height: 100%;
       display: inline-block;
     }
+
   }
 }

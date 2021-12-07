@@ -21,9 +21,6 @@
   .options {
     width: 120px;
     height: 124px;
-    // display: flex;
-    // align-items: center;
-    // justify-content: flex-end;
     pointer-events: all;
     margin-right: 10px;
     margin-top: 10px;
@@ -32,10 +29,8 @@
     background-color: rgb(70, 104, 126);
     border-radius: 2px;
     color: white;
-
  
     .option {
-      // padding: 10px 15px;
       cursor: pointer;
     }
 
@@ -53,11 +48,12 @@
   .sign-modal {
     display: none;
     position: absolute;
+    height: 500px;
     width: 70vw;
-    top: 50%;
+    top: 150px;
     left: 50%;
     transform: translateX(-50%);
-    padding: 20px;
+    padding: 30px;
     background-color: white;
     pointer-events: all;
   }

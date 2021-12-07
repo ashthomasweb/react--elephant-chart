@@ -37,7 +37,6 @@ class NoteItem extends Component {
     let xValue = ev.clientX - this.state.mouseOffsetX + 'px'
     let yValue = ev.clientY - this.state.mouseOffsetY + 'px'
 
-    console.log('1: ', ev.clientX)
     if (ev.clientX !== 0) {
       this.setState(
         {
@@ -47,14 +46,12 @@ class NoteItem extends Component {
         },
         () => {
           this.props.dave(this.state)
-          console.log(this.state.left)
-          console.log('2: ', ev.clientX)
         }
       )
     } else {
-      // handles bad clientX value
+      // handles remaining bad clientX value
       console.log(
-        'clientX value error. Displaying previously known good position.'
+        'ERROR: dragend/dragover clientX value error. Displaying previously known good position. Error occurs during fast clicking of notes due to client not having time to update.'
       )
     }
   }
@@ -79,7 +76,7 @@ class NoteItem extends Component {
       left,
       top,
       noteText,
-      zIndex /*title,  history, linkUrl, match*/,
+      zIndex,
     } = this.props
 
     return (
@@ -95,11 +92,7 @@ class NoteItem extends Component {
         className={`${size} menu-item`}
         onMouseDown={this.clickHandler}
         onDrag={this.dragHandler}
-        // onDragEnd={(e) => e.preventDefault()}
-        // onDragOver={(e) => e.preventDefault()}
-        onDrop={(e) => e.preventDefault()}
         id={value}
-        // onMouseUp={this.resizeHandler}
         draggable>
         <div className='content'>
           <p className='note-text'>{noteText}</p>

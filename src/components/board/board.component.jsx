@@ -40,8 +40,9 @@ class Board extends Component {
       ],
     }
 
-    this.dave = this.tester.bind(this)
-    this.hal = this.resize.bind(this)
+    // not needed, anymore or ever? 
+    // this.dave = this.tester.bind(this)
+    // this.hal = this.resize.bind(this)
   }
 
   tester = (input) => {
@@ -62,7 +63,6 @@ class Board extends Component {
     let newNote = { ...this.state.currentDrag }
     let notes = [...this.state.notes]
     let newIndex = newNote.id - 1
-    
     notes[newIndex] = newNote
     this.setState({ notes })
   }
@@ -72,7 +72,7 @@ class Board extends Component {
     this.state.notes.forEach( (note) => {
       zList.push(note.zIndex)
     })
-    console.log(Math.max.apply(null, zList) + 1)
+    // NEED conditional to reset index if too large...outlying case but would stop the stacking ability if maxed.
     return Math.max.apply(null, zList) + 1
   }
 
@@ -85,23 +85,9 @@ class Board extends Component {
     let newNote = { ...this.state.newNote }
     let notes = [...this.state.notes]
     newNote.noteText = document.querySelector('#input-text').value
-    newNote.id = this.state.notes.length + 1
-    let left =
-      parseFloat(
-        getComputedStyle(document.querySelector('.pad-frame')).getPropertyValue(
-          'left'
-        )
-      ) -
-      340 +
-      'px'
-    let top =
-      parseFloat(
-        getComputedStyle(document.querySelector('.pad-frame')).getPropertyValue(
-          'top'
-        )
-      ) +
-      120 +
-      'px'
+    newNote.id = this.state.notes.length + 1 // may need refactor in future when note deletion is implemented!!
+    let left = parseFloat(getComputedStyle(document.querySelector('.pad-frame')).getPropertyValue('left')) - 340 + 'px'
+    let top = parseFloat(getComputedStyle(document.querySelector('.pad-frame')).getPropertyValue('top')) + 120 + 'px'
     newNote.left = left
     newNote.top = top
     notes.push(newNote)
@@ -111,10 +97,9 @@ class Board extends Component {
   render() {
     return (
       <div
-        className='directory-menu'
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={this.dropHandler}>
-
+        className='board-backing'
+        onDrop={this.dropHandler}
+        >
         {this.state.notes.map(({ id, ...sectionProps }) => (
           <NoteItem
             key={id}
@@ -125,11 +110,6 @@ class Board extends Component {
             {...sectionProps}
           />
         ))}
-        <CustomButton
-          style={{ bottom: '0px', left: '0px', position: 'absolute' }}
-          onClick={() => console.log(this.state.notes)}>
-          Log Notes State
-        </CustomButton>
         {/* <CustomButton
           style={{ bottom: '0px', left: '0px', position: 'absolute' }}
           onClick={() => console.log(this.state.currentDrag)}>
@@ -170,6 +150,12 @@ class Board extends Component {
             type='text'
             placeholder='New Note Text'></textarea>
         </div>
+        <CustomButton
+          // className=''
+          style={{ bottom: '0px', left: '0px', position: 'absolute' }}
+          onClick={() => console.log(this.state.notes)}>
+          Log Notes State
+        </CustomButton>
       </div>
     )
   }

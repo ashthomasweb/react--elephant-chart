@@ -8,8 +8,8 @@ import SignInUpModal from '../signinupmodal/signinupmodal.component'
 
 import './header.styles.scss'
 
-function close() {
-  document.querySelector('#sign-modal').style.display = 'none'
+function closeSignIn() {
+  document.querySelector('.sign-modal').style.display = 'none'
 }
 
 const Header = ({ currentUser }) => (
@@ -21,22 +21,21 @@ const Header = ({ currentUser }) => (
     <div className='options'>
       {currentUser ? ( <div>
         <div className='welcome' >Welcome,<br/>{currentUser.displayName}</div>
-        <div className='option' onLoad={close()} onClick={() => auth.signOut()}>SIGN OUT</div></div>
+        <div className='option' onLoad={closeSignIn()} onClick={() => auth.signOut()}>SIGN OUT</div></div>
       ) : (
         <button
           type='button'
           className='sign-in-modal-btn'
           onClick={() => {
-            document.querySelector('#sign-modal').style.display === 'block'
-              ? (document.querySelector('#sign-modal').style.display = 'none')
-              : (document.querySelector('#sign-modal').style.display = 'block')
+            document.querySelector('.sign-modal').style.display === 'block'
+              ? (document.querySelector('.sign-modal').style.display = 'none')
+              : (document.querySelector('.sign-modal').style.display = 'block')
           }}>
           SIGN IN / UP
         </button>
       )}
     </div>
     <div
-      id='sign-modal'
       className='sign-modal'>
       <SignInUpModal />
     </div>

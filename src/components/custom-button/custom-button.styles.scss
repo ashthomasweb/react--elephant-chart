@@ -4,7 +4,7 @@
   height: 50px;
   letter-spacing: 0.5px;
   line-height: 50px;
-  padding: 0 35px 0 35px;
+  padding: 0 15px;
   font-size: 15px;
   background-color: black;
   color: white;
@@ -12,12 +12,15 @@
   font-family: 'Open Sans Condensed';
   font-weight: bolder;
   border: none;
-  cursor: pointer;
-  bottom: 0;
-  left: 200px;
   margin: 1px;
-  position: absolute;
-  display: inline-block;
+  cursor: pointer;
+  
+  &.log {
+    left: 200px;
+    bottom: 0;
+    position: absolute;
+    display: inline-block;
+  }
 
   &:hover {
     background-color: white;
