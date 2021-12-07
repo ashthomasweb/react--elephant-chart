@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import { Switch, Route } from 'react-router-dom'
-import { auth, createNewUserProfile } from './firebase/firebase.utils'
+import {
+  auth,
+  createNewUserProfile,
+  getUserRef,
+} from './firebase/firebase.utils'
 
 import './App.css'
 
@@ -18,9 +22,27 @@ class App extends Component {
   unsubsribeFromAuth = null
 
   componentDidMount() {
-    this.unsubsribeFromAuth = auth.onAuthStateChanged( async (user) => {
-      this.setState({ currentUser: user })
-      createNewUserProfile(user)
+    this.unsubsribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      this.setState({ currentUser: userAuth })
+      if (userAuth) {
+        createNewUserProfile(userAuth)
+
+        const userRef = await getUserRef(userAuth)
+
+        userRef.onSnapshot((snapShot) => {
+          this.setState(
+            {
+              currentUser: {
+                id: snapShot.id,
+                ...snapShot.data(),
+              },
+            }
+          )
+        })
+      } else if (userAuth == null) {
+        this.setState( { currentUser: userAuth })
+      }
+
     })
 
     // partially handles bad clientX value on fast note clicking

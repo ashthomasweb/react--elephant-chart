@@ -34,8 +34,14 @@ export const createNewUserProfile = async (userAuth, additionalData) => {
     }
   }
 
+}
+
+export const getUserRef = async (userAuth) => {
+  if (!userAuth) return
+  const userRef = firestore.doc(`users/${userAuth.uid}`)
   return userRef
 }
+
 
 
 firebase.initializeApp(config)

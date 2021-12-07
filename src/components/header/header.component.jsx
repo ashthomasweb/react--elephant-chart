@@ -11,6 +11,7 @@ function closeSignIn() {
   document.querySelector('.sign-modal').style.display = 'none'
 }
 
+
 const Header = ({ currentUser }) => (
   <div className='header'>
     <Link className='logo-container' to='/'>
