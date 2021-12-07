@@ -42,6 +42,24 @@ export const getUserRef = async (userAuth) => {
   return userRef
 }
 
+export const saveUserBoard = async (userAuth, boardObj) => {
+  const boardRef = firestore.doc(`users/${userAuth.uid}/boards/${boardObj.name}`)
+
+  const snapShot = await boardRef.get()
+
+  if (!snapShot.exists) {
+    const { name, notes } = boardObj
+
+    try {
+      await boardRef.set({
+        name,
+        notes
+      })
+    } catch (error) {
+      console.log('error creating board', error.message)
+    }
+  }
+}
 
 
 firebase.initializeApp(config)

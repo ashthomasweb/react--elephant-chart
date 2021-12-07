@@ -8,7 +8,7 @@
   z-index: -99999;
 
   .options-frame {
-    width: 350px;
+    width: 400px;
     height: 124px;
     position: absolute;
     top: 10px;
@@ -22,12 +22,31 @@
       margin: 8px 12px;
     }
 
+    .database-options {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      width: 150px;
+      height: 114px;
+      background-color: grey;
+      text-align: center;
+
+      .save-board-input {
+        width: 90%;
+        border: none;
+      }
+
+      h3 {
+        margin: 0 auto 5px;
+      }
+    }
+
   }
   
   .pad-frame {
     width: 200px;
     height: 124px;
-    left: 510px;
+    left: 570px;
     top: 10px;
     display: inline-block;
     position: absolute;

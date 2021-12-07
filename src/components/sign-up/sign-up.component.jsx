@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 
-// import FormInput from '../form-input/form-input.component'
+import FormInput from '../form-input/form-input.component'
 import CustomButton from '../custom-button/custom-button.component'
 
-// import { auth, createUserProfileDocument } from '../../firebase/firebase.utils'
+import { auth, createNewUserProfile } from '../../firebase/firebase.utils'
 
 import './sign-up.styles.scss'
 
@@ -19,35 +19,34 @@ class SignUp extends Component {
     }
   }
 
-  // handleSubmit = async (event) => {
-  //   event.preventDefault()
+  handleSubmit = async (event) => {
+    event.preventDefault()
 
-  //   const { displayName, email, password, confirmPassword } = this.state
+    const { displayName, email, password, confirmPassword } = this.state
 
-  //   if (password !== confirmPassword) {
-  //     alert("passwords don't match")
-  //     return
-  //   }
+    if (password !== confirmPassword) {
+      alert("passwords don't match")
+      return
+    }
 
-  //   try {
+    try {
 
-  //     const { user } = await auth.createUserWithEmailAndPassword(email, password) 
+      const { user } = await auth.createUserWithEmailAndPassword(email, password) 
 
-  //     await createUserProfileDocument(user, { displayName })
+      await createNewUserProfile(user, { displayName })
 
-  //     this.setState({
-  //       displayName: '',
-  //       email: '',
-  //       password: '',
-  //       confirmPassword: ''
-  //     })
+      this.setState({
+        displayName: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+      })
 
-  //   } catch (error) {
-  //     console.error(error)
+    } catch (error) {
+      console.error(error)
+    }
 
-  //   }
-
-  // }
+  }
 
   handleChange = (event) => {
     const { value, name } = event.target
@@ -55,14 +54,14 @@ class SignUp extends Component {
   }
 
   render() {
-    // const { displayName, email, password, confirmPassword } = this.state
+    const { displayName, email, password, confirmPassword } = this.state
     return (
       <div className='sign-up'>
         <h2 className='title'>Create an Account</h2>
         <span>Sign up with Google or by email</span>
 
-        <form className='sign-up-form' /*</div>onSubmit={this.handleSubmit}*/>
-          {/* <FormInput
+        <form className='sign-up-form' onSubmit={this.handleSubmit}>
+          <FormInput
             type='text'
             name='displayName'
             value={displayName}
@@ -75,6 +74,7 @@ class SignUp extends Component {
             name='email'
             value={email}
             label='Email'
+            autoComplete='email'
             onChange={this.handleChange}
             required
           />
@@ -83,6 +83,7 @@ class SignUp extends Component {
             name='password'
             value={password}
             label='Password'
+            autoComplete='new-password'
             onChange={this.handleChange}
             required
           />
@@ -91,9 +92,10 @@ class SignUp extends Component {
             name='confirmPassword'
             value={confirmPassword}
             label='Confirm Password'
+            autoComplete='repeat-password'
             onChange={this.handleChange}
             required
-          /> */}
+          />
 
           <div className='buttons'>
             <CustomButton type='submit'> Sign Up </CustomButton>

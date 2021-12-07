@@ -23,7 +23,7 @@ class App extends Component {
 
   componentDidMount() {
     this.unsubsribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-      this.setState({ currentUser: userAuth })
+      // this.setState({ currentUser: userAuth })
       if (userAuth) {
         createNewUserProfile(userAuth)
 
@@ -33,10 +33,11 @@ class App extends Component {
           this.setState(
             {
               currentUser: {
+                auth: userAuth,
                 id: snapShot.id,
                 ...snapShot.data(),
               },
-            }
+            }, () => console.log(snapShot.data())
           )
         })
       } else if (userAuth == null) {

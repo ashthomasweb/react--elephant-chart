@@ -8,7 +8,7 @@ import Header from '../../components/header/header.component'
 const HomePage = (props) => (
   <div className="homepage">
     <Header className='header' currentUser={props.currentUser}/>
-    <Board />
+    <Board currentUser={props.currentUser}/>
   </div>
 );
 

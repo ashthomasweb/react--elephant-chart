@@ -17,7 +17,7 @@ const Header = ({ currentUser }) => (
     <Link className='logo-container' to='/'>
       <img src={logo} className='logo' alt='flow-post logo' />
     </Link>
-
+    
     <div className='options'>
       {currentUser ? ( <div>
         <div className='welcome' >Welcome,<br/>{currentUser.displayName}</div>

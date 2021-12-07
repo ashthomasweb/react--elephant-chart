@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
 
-import blank from '../../assets/trimmed-noborder.png'
+import blankYellow from '../../assets/trimmed-noborder.png'
 import CustomButton from '../custom-button/custom-button.component'
 import NoteItem from '../note-item/note-item.component'
+
+import { saveUserBoard } from '../../firebase/firebase.utils'
 
 import './board.styles.scss'
 
 class Board extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
     this.state = {
       currentDrag: {},
@@ -19,10 +21,14 @@ class Board extends Component {
         top: '145px',
         left: '3px',
         zIndex: 0,
-        imageUrl: blank,
+        imageUrl: blankYellow,
         mouseOffsetX: 0,
         mouseOffsetY: 0,
-        noteText: 'We can write notes! Write here! Right?',
+        noteText: '',
+      },
+      boardObj: {
+        name: '',
+        notes: []
       },
       notes: [
         {
@@ -32,15 +38,15 @@ class Board extends Component {
           top: '145px',
           left: '3px',
           zIndex: 0,
-          imageUrl: blank,
+          imageUrl: blankYellow,
           mouseOffsetX: 0,
           mouseOffsetY: 0,
-          noteText: 'We can write notes! Write here! Right?',
+          noteText: 'We can write notes! Right here!',
         },
       ],
     }
 
-    // not needed, anymore or ever? 
+    // not needed, anymore or ever?
     // this.dave = this.tester.bind(this)
     // this.hal = this.resize.bind(this)
   }
@@ -69,7 +75,7 @@ class Board extends Component {
 
   zIndexFinder = (e) => {
     let zList = []
-    this.state.notes.forEach( (note) => {
+    this.state.notes.forEach((note) => {
       zList.push(note.zIndex)
     })
     // NEED conditional to reset index if too large...outlying case but would stop the stacking ability if maxed.
@@ -86,20 +92,60 @@ class Board extends Component {
     let notes = [...this.state.notes]
     newNote.noteText = document.querySelector('#input-text').value
     newNote.id = this.state.notes.length + 1 // may need refactor in future when note deletion is implemented!!
-    let left = parseFloat(getComputedStyle(document.querySelector('.pad-frame')).getPropertyValue('left')) - 340 + 'px'
-    let top = parseFloat(getComputedStyle(document.querySelector('.pad-frame')).getPropertyValue('top')) + 120 + 'px'
+    let left =
+      parseFloat(
+        getComputedStyle(document.querySelector('.pad-frame')).getPropertyValue(
+          'left'
+        )
+      ) -
+      340 +
+      'px'
+    let top =
+      parseFloat(
+        getComputedStyle(document.querySelector('.pad-frame')).getPropertyValue(
+          'top'
+        )
+      ) +
+      120 +
+      'px'
     newNote.left = left
     newNote.top = top
     notes.push(newNote)
     this.setState({ notes })
   }
 
+  saveCurrentBoard = () => {
+    console.log('hi dave')
+    console.log(document.querySelector('.save-board-input').value);
+    let boardObj = {
+      name: document.querySelector('.save-board-input').value,
+      notes: [...this.state.notes]
+    }
+
+    this.setState({ boardObj }, () => {
+      console.log('in state: ' + this.state.boardObj)
+      this.saveBoardDatabase(this.state.boardObj)
+    })
+  }
+
+  saveBoardDatabase = (boardObj) => {
+    if (this.props.currentUser === null) {
+      // localhost
+      console.log('no user')
+    } else {
+      // firestore
+      saveUserBoard(this.props.currentUser.auth, boardObj)
+      console.log('lets go db')
+    }
+  }
+
+  displayUserBoards = () => {
+    console.log('hi hal')
+  }
+
   render() {
     return (
-      <div
-        className='board-backing'
-        onDrop={this.dropHandler}
-        >
+      <div className='board-backing' onDrop={this.dropHandler}>
         {this.state.notes.map(({ id, ...sectionProps }) => (
           <NoteItem
             key={id}
@@ -143,6 +189,24 @@ class Board extends Component {
             disabled>
             Placeholder
           </button>
+          <div className='database-options'>
+            <h3>Save Boards</h3>
+            <input type='text' className='save-board-input' placeholder='Enter Board Name'/>
+            <button type='button' onClick={() => this.saveCurrentBoard()}>Save</button>
+            <div className='board-drop'>
+            <button type='button' onClick={() => this.displayUserBoards()}>Your Boards</button>
+              <div className='board-links'>
+
+
+              {/* {this.state.boards.map(({ boardName, boardData }) => (
+                <button type='button' onClick={IMPLEMENT BOARD DATA} >`Load ${boardName}</button>
+              ))} */}
+
+
+              </div>
+            </div>
+
+          </div>
         </div>
         <div className='pad-frame'>
           <textarea
@@ -153,8 +217,8 @@ class Board extends Component {
         <CustomButton
           // className=''
           style={{ bottom: '0px', left: '0px', position: 'absolute' }}
-          onClick={() => console.log(this.state.notes)}>
-          Log Notes State
+          onClick={() => console.log(this.state)}>
+          Log Board State
         </CustomButton>
       </div>
     )
