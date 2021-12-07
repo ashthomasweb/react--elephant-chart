@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
 import blank from '../../assets/trimmed-noborder.png'
 
 import './note-item.styles.scss'
@@ -102,4 +101,4 @@ class NoteItem extends Component {
   }
 }
 
-export default withRouter(NoteItem)
+export default NoteItem

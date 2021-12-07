@@ -15,7 +15,6 @@ class App extends Component {
     }
   }
 
-
   unsubsribeFromAuth = null
 
   componentDidMount() {

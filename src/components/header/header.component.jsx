@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { auth } from '../../firebase/firebase.utils'
-// import { connect } from 'react-redux'
 
 import logo from '../../assets/flow-post-logo.png'
 import SignInUpModal from '../signinupmodal/signinupmodal.component'
@@ -42,9 +41,4 @@ const Header = ({ currentUser }) => (
   </div>
 )
 
-// const mapStateToProps = state => ({
-//   currentUser: state.user.currentUser
-// })
-
 export default Header
-// export default connect(mapStateToProps)(Header)
