@@ -8,7 +8,7 @@ class NoteItem extends Component {
     super(props)
 
     this.state = {
-      id: '',
+      id: 1,
       width: this.props.width,
       height: this.props.height,
       top: '',
@@ -25,10 +25,6 @@ class NoteItem extends Component {
     const mouseOffsetY = e.pageY - parseFloat(getComputedStyle(e.target).top)
     const mouseOffsetX = e.pageX - parseFloat(getComputedStyle(e.target).left)
     this.setState({ mouseOffsetY, mouseOffsetX })
-  }
-
-  clickHandler = (e) => {
-    this.mouseOffset(e)
   }
 
   // sets current position of dragged note to Note Component's state, makes it immediately accesible with anon callback.
@@ -61,7 +57,7 @@ class NoteItem extends Component {
         width: getComputedStyle(e.target).getPropertyValue('width'),
         height: getComputedStyle(e.target).getPropertyValue('height')
       },
-      () => this.props.hal(this.state)
+      () => {console.log(this.state); this.props.hal(this.state)}
     )
   }
 
@@ -89,7 +85,8 @@ class NoteItem extends Component {
           zIndex: `${zIndex}`,
         }}
         className={`${size} menu-item`}
-        onMouseDown={this.clickHandler}
+        onMouseDown={this.mouseOffset}
+        onMouseUp={this.resizeHandler}
         onDrag={this.dragHandler}
         id={value}
         draggable>

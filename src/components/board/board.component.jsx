@@ -19,7 +19,7 @@ class Board extends Component {
     this.state = {
       currentDrag: {},
       newNote: {
-        id: 0,
+        id: 1,
         width: '200px',
         height: '130px',
         top: '145px',
@@ -69,12 +69,15 @@ class Board extends Component {
   }
 
   resize = (input) => {
-    this.setState({ currentDrag: input })
-    let newNote = { ...this.state.currentDrag }
-    let notes = [...this.state.notes]
-    let newIndex = newNote.id - 1
-    notes[newIndex] = newNote
-    this.setState({ notes })
+    this.setState({ currentDrag: input }, () => {
+      console.log(this.state.currentDrag)
+      let newNote = this.state.currentDrag
+      console.log(newNote)
+      let notes = [...this.state.notes]
+      let newIndex = newNote.id - 1
+      notes[newIndex] = newNote
+      this.setState({ notes })
+    })
   }
 
   zIndexFinder = (e) => {
@@ -118,7 +121,6 @@ class Board extends Component {
   }
 
   saveCurrentBoard = () => {
-    console.log('hi dave')
     let boardObj = {
       name: document.querySelector('.save-board-input').value,
       notes: [...this.state.notes],
@@ -137,16 +139,21 @@ class Board extends Component {
     }
   }
 
-  displayUserBoards = () => {
+  userBoardDropDown = () => {
     this.putBoardsToList()
-    console.log('3', userBoards)
-    console.log('hi hal')
-    let elDisplay = document.querySelector('.board-drop').style
-    elDisplay.display === 'block' ? elDisplay.display = 'none' : elDisplay.display = 'block'
+    let elStyle = document.querySelector('.board-drop').style
+    elStyle.display === 'block' ? elStyle.display = 'none' : elStyle.display = 'block'
   }
 
   putBoardsToList = () => {
-    let newDiv = document.createElement('div')
+    let oldMenu = document.getElementById('board-drop').firstChild
+    let parentCont = document.getElementById('board-drop')
+    let newMenu = document.createElement('div')
+    
+    if (parentCont.firstChild) {
+      parentCont.removeChild(oldMenu)
+    }
+
     userBoards.forEach((board) => {
       let button = document.createElement('button')
       button.type = 'button'
@@ -155,9 +162,9 @@ class Board extends Component {
         let notes = [...board.notes]
         this.setState({ notes })
       })
-      newDiv.appendChild(button)
+      newMenu.appendChild(button)
     })
-    document.querySelector('.board-drop').appendChild(newDiv)
+    document.querySelector('.board-drop').appendChild(newMenu)
   }
  
   render() {
@@ -211,10 +218,10 @@ class Board extends Component {
             <button type='button' onClick={() => this.saveCurrentBoard()}>
               Save
             </button>
-            <button type='button' onClick={() => this.displayUserBoards()}>
+            <button type='button' onClick={() => this.userBoardDropDown()}>
               Your Boards
             </button>
-            <div className='board-drop'>
+            <div id='board-drop' className='board-drop'>
             </div>
           </div>
         </div>
