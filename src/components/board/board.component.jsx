@@ -87,7 +87,7 @@ class Board extends Component {
 
   dropHandler = (e) => {
     this.tester()
-    // database storage for board persistence
+    // database storage for board persistence 
   }
 
   newNoteGenerator = () => {
