@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import { Switch, Route } from 'react-router-dom'
 import {
   auth,
   createNewUserProfile,
   getUserRef,
-  getUserBoards
+  getUserBoards,
 } from './firebase/firebase.utils'
 
 import './App.css'
@@ -24,7 +23,6 @@ class App extends Component {
 
   componentDidMount() {
     this.unsubsribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-      // this.setState({ currentUser: userAuth })
       if (userAuth) {
         createNewUserProfile(userAuth)
 
@@ -38,15 +36,13 @@ class App extends Component {
                 id: snapShot.id,
                 ...snapShot.data(),
               },
-            }, () => console.log(snapShot.data())
+            }
           )
         })
       } else if (userAuth == null) {
-        this.setState( { currentUser: userAuth })
+        this.setState({ currentUser: userAuth })
       }
       getUserBoards(userAuth)
-
-
     })
 
     // partially handles bad clientX value on fast note clicking
@@ -61,16 +57,16 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Switch>
-          <Route exact path='/'>
-            <HomePage currentUser={this.state.currentUser} />
-            <CustomButton
-              className='custom-button log'
-              onClick={() => console.log(this.state.currentUser)}>
-              LOG Current User
-            </CustomButton>
-          </Route>
-        </Switch>
+        <HomePage currentUser={this.state.currentUser} />
+
+        {/* development asset */}
+        <CustomButton
+          className='custom-button log'
+          onClick={() => console.log(this.state.currentUser)}>
+          LOG Current User
+        </CustomButton>
+        {/* development asset */}
+
       </div>
     )
   }

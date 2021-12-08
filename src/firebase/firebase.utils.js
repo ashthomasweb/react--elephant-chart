@@ -84,13 +84,8 @@ export const getUserBoards = (userAuth) => {
       userBoards.push(doc.data())
     })
     console.log('0', userBoards)
-
-  })
-  .then(() => {
-    console.log('1', userBoards)
   })
   console.log('2', userBoards)
-  
 }
 
 export var userBoards = []

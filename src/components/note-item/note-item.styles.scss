@@ -1,7 +1,6 @@
 .menu-item {
   height: 240px;
   width: 240px;
-  // flex: 1 1 auto;
   display: block;
   align-items: center;
   justify-content: center;
@@ -13,20 +12,6 @@
   background-size: cover;
   box-shadow: 3px 3px 3px #4a4a4a, -3px -3px 55px -35px #4a4a4a;
   resize: both;
-
-  // &:hover {
-  //   cursor: pointer;
-
-  //   & .background-image {
-  //     transform: scale(1.1);
-  //     transition: transform 6s cubic-bezier(0.25, 0.45, 0.45, 0.95);
-  //   }
-
-  //   & .content {
-  //     opacity: 0.9;
-  //   }
-
-  // }
 
   &.large {
     height: 380px;
@@ -45,7 +30,6 @@
     width: 100%;
     padding: 10px;
     display: flex;
-    // flex-direction: column;
     align-items: center;
     justify-content: center;
     pointer-events: none;
@@ -57,16 +41,5 @@
       font-weight: 900;
     }
 
-    // .title {
-    //   font-weight: bold;
-    //   margin-bottom: 6px;
-    //   font-size: 22px;
-    //   color: #4a4a4a;
-    // }
-
-    // .subtitle {
-    //   font-weight: lighter;
-    //   font-size: 16px;
-    // }
   }
 }

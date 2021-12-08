@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 
-import blankYellow from '../../assets/trimmed-noborder.png'
 import CustomButton from '../custom-button/custom-button.component'
 import NoteItem from '../note-item/note-item.component'
+
+import blankYellow from '../../assets/trimmed-noborder.png'
 
 import {
   saveUserBoard,
@@ -81,13 +82,12 @@ class Board extends Component {
     this.state.notes.forEach((note) => {
       zList.push(note.zIndex)
     })
-    // NEED conditional to reset index if too large...outlying case but would stop the stacking ability if maxed.
+    // NEED conditional to reset index if too large...outlying case, but would stop the stacking ability if maxed.
     return Math.max.apply(null, zList) + 1
   }
 
   dropHandler = (e) => {
     this.tester()
-    // database storage for board persistence 
   }
 
   newNoteGenerator = () => {
@@ -141,9 +141,8 @@ class Board extends Component {
     this.putBoardsToList()
     console.log('3', userBoards)
     console.log('hi hal')
-    document.querySelector('.board-drop').style.display === 'block' ?
-    document.querySelector('.board-drop').style.display = 'none' :
-    document.querySelector('.board-drop').style.display = 'block'
+    let elDisplay = document.querySelector('.board-drop').style
+    elDisplay.display === 'block' ? elDisplay.display = 'none' : elDisplay.display = 'block'
   }
 
   putBoardsToList = () => {
@@ -154,35 +153,26 @@ class Board extends Component {
       button.innerHTML = board.name
       button.addEventListener('click', () => {
         let notes = [...board.notes]
-
         this.setState({ notes })
       })
       newDiv.appendChild(button)
     })
     document.querySelector('.board-drop').appendChild(newDiv)
-    // return userBoards.map(({ name }) => (
-    //   <button type='button'>{name}</button>
-    // ))
   }
  
   render() {
     return (
       <div className='board-backing' onDrop={this.dropHandler}>
-        {this.state.notes.map(({ id, ...sectionProps }) => (
+        {this.state.notes.map(({ id, ...noteProps }) => (
           <NoteItem
             key={id}
             dave={this.tester}
             hal={this.resize}
             zHigh={this.zIndexFinder}
             value={id}
-            {...sectionProps}
+            {...noteProps}
           />
         ))}
-        {/* <CustomButton
-          style={{ bottom: '0px', left: '0px', position: 'absolute' }}
-          onClick={() => console.log(this.state.currentDrag)}>
-          Log CurrentDrag State
-        </CustomButton> */}
         <div className='options-frame'>
           <button
             className='options-btn'
@@ -225,7 +215,6 @@ class Board extends Component {
               Your Boards
             </button>
             <div className='board-drop'>
-
             </div>
           </div>
         </div>
@@ -235,12 +224,15 @@ class Board extends Component {
             type='text'
             placeholder='New Note Text'></textarea>
         </div>
+
+        {/* development asset */}
         <CustomButton
-          // className=''
           style={{ bottom: '0px', left: '0px', position: 'absolute' }}
           onClick={() => console.log(this.state)}>
           Log Board State
         </CustomButton>
+        {/* development asset */}
+
       </div>
     )
   }

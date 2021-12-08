@@ -30,7 +30,6 @@ class SignUp extends Component {
     }
 
     try {
-
       const { user } = await auth.createUserWithEmailAndPassword(email, password) 
 
       await createNewUserProfile(user, { displayName })
@@ -96,7 +95,6 @@ class SignUp extends Component {
             onChange={this.handleChange}
             required
           />
-
           <div className='buttons'>
             <CustomButton type='submit'> Sign Up </CustomButton>
           </div>

@@ -1,22 +1,27 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { auth } from '../../firebase/firebase.utils'
+
+import SignInUpModal from '../signinupmodal/signinupmodal.component'
 
 import logo from '../../assets/flow-post-logo.png'
-import SignInUpModal from '../signinupmodal/signinupmodal.component'
+
+import { auth } from '../../firebase/firebase.utils'
 
 import './header.styles.scss'
 
-function closeSignIn() {
+const closeSignIn = () => {
   document.querySelector('.sign-modal').style.display = 'none'
 }
 
+const modalToggle = () => {
+  let el = document.querySelector('.sign-modal').style
+  el.display === 'block'
+  ? (el.display = 'none')
+  : (el.display = 'block')
+}
 
 const Header = ({ currentUser }) => (
   <div className='header'>
-    <Link className='logo-container' to='/'>
       <img src={logo} className='logo' alt='flow-post logo' />
-    </Link>
     
     <div className='options'>
       {currentUser ? ( <div>
@@ -26,11 +31,7 @@ const Header = ({ currentUser }) => (
         <button
           type='button'
           className='sign-in-modal-btn'
-          onClick={() => {
-            document.querySelector('.sign-modal').style.display === 'block'
-              ? (document.querySelector('.sign-modal').style.display = 'none')
-              : (document.querySelector('.sign-modal').style.display = 'block')
-          }}>
+          onClick={() => modalToggle()}>
           SIGN IN / UP
         </button>
       )}
