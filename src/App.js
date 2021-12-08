@@ -4,6 +4,7 @@ import {
   auth,
   createNewUserProfile,
   getUserRef,
+  getUserBoards
 } from './firebase/firebase.utils'
 
 import './App.css'
@@ -43,6 +44,8 @@ class App extends Component {
       } else if (userAuth == null) {
         this.setState( { currentUser: userAuth })
       }
+      getUserBoards(userAuth)
+
 
     })
 

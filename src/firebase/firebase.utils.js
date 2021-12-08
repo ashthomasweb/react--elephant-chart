@@ -58,9 +58,42 @@ export const saveUserBoard = async (userAuth, boardObj) => {
     } catch (error) {
       console.log('error creating board', error.message)
     }
+  } else if (snapShot.exists) {
+    const { notes } = boardObj
+    
+    try {
+      await boardRef.update({
+        notes
+      })
+    } catch (error) {
+      console.log('error creating board', error.message)
+    }
   }
+
+  getUserBoards(userAuth)
+  
 }
 
+export const getUserBoards = (userAuth) => {
+  if (!userAuth) return
+
+  userBoards = []
+  firestore.collection('users').doc(`${userAuth.uid}`).collection('boards').get()
+  .then(querySnapshot => {
+    querySnapshot.forEach(doc => {
+      userBoards.push(doc.data())
+    })
+    console.log('0', userBoards)
+
+  })
+  .then(() => {
+    console.log('1', userBoards)
+  })
+  console.log('2', userBoards)
+  
+}
+
+export var userBoards = []
 
 firebase.initializeApp(config)
 export const auth = firebase.auth()

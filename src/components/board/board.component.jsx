@@ -4,7 +4,10 @@ import blankYellow from '../../assets/trimmed-noborder.png'
 import CustomButton from '../custom-button/custom-button.component'
 import NoteItem from '../note-item/note-item.component'
 
-import { saveUserBoard } from '../../firebase/firebase.utils'
+import {
+  saveUserBoard,
+  userBoards,
+} from '../../firebase/firebase.utils'
 
 import './board.styles.scss'
 
@@ -28,7 +31,7 @@ class Board extends Component {
       },
       boardObj: {
         name: '',
-        notes: []
+        notes: [],
       },
       notes: [
         {
@@ -116,14 +119,11 @@ class Board extends Component {
 
   saveCurrentBoard = () => {
     console.log('hi dave')
-    console.log(document.querySelector('.save-board-input').value);
     let boardObj = {
       name: document.querySelector('.save-board-input').value,
-      notes: [...this.state.notes]
+      notes: [...this.state.notes],
     }
-
     this.setState({ boardObj }, () => {
-      console.log('in state: ' + this.state.boardObj)
       this.saveBoardDatabase(this.state.boardObj)
     })
   }
@@ -133,16 +133,38 @@ class Board extends Component {
       // localhost
       console.log('no user')
     } else {
-      // firestore
       saveUserBoard(this.props.currentUser.auth, boardObj)
-      console.log('lets go db')
     }
   }
 
   displayUserBoards = () => {
+    this.putBoardsToList()
+    console.log('3', userBoards)
     console.log('hi hal')
+    document.querySelector('.board-drop').style.display === 'block' ?
+    document.querySelector('.board-drop').style.display = 'none' :
+    document.querySelector('.board-drop').style.display = 'block'
   }
 
+  putBoardsToList = () => {
+    let newDiv = document.createElement('div')
+    userBoards.forEach((board) => {
+      let button = document.createElement('button')
+      button.type = 'button'
+      button.innerHTML = board.name
+      button.addEventListener('click', () => {
+        let notes = [...board.notes]
+
+        this.setState({ notes })
+      })
+      newDiv.appendChild(button)
+    })
+    document.querySelector('.board-drop').appendChild(newDiv)
+    // return userBoards.map(({ name }) => (
+    //   <button type='button'>{name}</button>
+    // ))
+  }
+ 
   render() {
     return (
       <div className='board-backing' onDrop={this.dropHandler}>
@@ -191,21 +213,20 @@ class Board extends Component {
           </button>
           <div className='database-options'>
             <h3>Save Boards</h3>
-            <input type='text' className='save-board-input' placeholder='Enter Board Name'/>
-            <button type='button' onClick={() => this.saveCurrentBoard()}>Save</button>
+            <input
+              type='text'
+              className='save-board-input'
+              placeholder='Enter Board Name'
+            />
+            <button type='button' onClick={() => this.saveCurrentBoard()}>
+              Save
+            </button>
+            <button type='button' onClick={() => this.displayUserBoards()}>
+              Your Boards
+            </button>
             <div className='board-drop'>
-            <button type='button' onClick={() => this.displayUserBoards()}>Your Boards</button>
-              <div className='board-links'>
 
-
-              {/* {this.state.boards.map(({ boardName, boardData }) => (
-                <button type='button' onClick={IMPLEMENT BOARD DATA} >`Load ${boardName}</button>
-              ))} */}
-
-
-              </div>
             </div>
-
           </div>
         </div>
         <div className='pad-frame'>

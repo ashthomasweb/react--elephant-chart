@@ -16,6 +16,7 @@
     padding: 0px;
     background-color: rgba(0,0,0,.1);
     display: inline-block;
+    overflow: visible;
     
     button {
       display: block;
@@ -30,6 +31,7 @@
       height: 114px;
       background-color: grey;
       text-align: center;
+      overflow: visible;
 
       .save-board-input {
         width: 90%;
@@ -38,6 +40,16 @@
 
       h3 {
         margin: 0 auto 5px;
+      }
+
+      .board-drop {
+        background-color: yellow;
+        position: absolute;
+        top: 110px;
+        width: 150px;
+        // height: 100px;
+        display: none;
+        // height: 200px;
       }
     }
 
