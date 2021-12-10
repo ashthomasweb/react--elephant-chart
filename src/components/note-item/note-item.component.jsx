@@ -8,11 +8,11 @@ class NoteItem extends Component {
     super(props)
 
     this.state = {
-      id: 1,
+      id: this.props.id,
       width: this.props.width,
       height: this.props.height,
-      top: '',
-      left: '',
+      top: this.props.top,
+      left: this.props.left,
       zIndex: this.props.zHigh(),
       imageUrl: blank,
       mouseOffsetX: 0,
@@ -33,11 +33,15 @@ class NoteItem extends Component {
     let yValue = ev.clientY - this.state.mouseOffsetY + 'px'
 
     if (ev.clientX !== 0) {
-      this.setState(
+      // problem #1 work-around resolution area. if value is not passed in here, state from previously
+      // viewed board will populate the fields. Unsure where the previous state comes from.
+      this.setState( 
         {
           left: xValue,
           top: yValue,
           id: this.props.value,
+          noteText: this.props.noteText,
+
         },
         () => {
           this.props.dave(this.state)
@@ -52,6 +56,12 @@ class NoteItem extends Component {
   }
 
   resizeHandler = (e) => {
+    // console.log(this.props.self)
+    // let note = {...this.props.self}
+    // note.width = getComputedStyle(e.target).getPropertyValue('width')
+    // note.height = getComputedStyle(e.target).getPropertyValue('height')
+    // this.props.hal(note)
+
     this.setState(
       {
         width: getComputedStyle(e.target).getPropertyValue('width'),
