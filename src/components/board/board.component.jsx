@@ -52,51 +52,12 @@ class Board extends Component {
     this.hal = this.resize.bind(this)
   }
 
-  componentDidUpdate(input = false) {
-    let oldBoard = document.getElementById('board')
-
-    if (input === true) {
-      console.log('hi')
-      console.log(oldBoard)
-
-      // for (let i = 0; i < oldBoard.children.length; i++) {
-      //   console.log('num')
-
-      // if (oldBoard.firstChild.className.includes('menu-item') === true ) {
-      //     console.log('hi dave')
-      //     oldBoard.removeChild(oldBoard.firstChild)
-      //     // oldBoard.innerHTML = ''
-      //   }
-      // }
-    }
-  }
-
-  callUpdate = () => {
-    this.componentDidUpdate(true)
-  }
-
-  removeElem = () => {
-    let oldBoard = document.getElementById('board')
-    for (let i = 0; i < oldBoard.children.length; i++) {
-      console.log('num')
-
-      if (oldBoard.firstChild.className.includes('menu-item') === true) {
-        console.log('hi dave')
-        oldBoard.removeChild(oldBoard.firstChild)
-        // oldBoard.innerHTML = ''
-      }
-    }
-    // oldBoard.removeChild(oldBoard.firstChild)
-  }
-
   tester = (input) => {
     this.setState({ currentDrag: input })
     let newNote = { ...this.state.currentDrag }
     let newIndex = 0
     let notes = [...this.state.notes]
-    if (newNote.id !== 1) {
-      newIndex = newNote.id - 1
-    }
+    newIndex = newNote.id - 1
     notes[newIndex] = newNote
     notes[newIndex].zIndex = this.zIndexFinder()
     this.setState({ notes })
@@ -104,18 +65,11 @@ class Board extends Component {
 
   resize = (input) => {
     this.setState({ currentDrag: input }, () => {
-      // console.log(this.state.currentDrag)
       let newNote = this.state.currentDrag
-      console.log(newNote)
       let notes = [...this.state.notes]
       let newIndex = newNote.id - 1
       notes[newIndex] = newNote
-      console.log(notes)
-      this.setState({ notes }, () => {
-        console.log(notes[newIndex])
-        console.log(notes)
-        // this.tester()
-      })
+      this.setState({ notes })
     })
   }
 
@@ -190,11 +144,7 @@ class Board extends Component {
     let oldMenu = document.getElementById('board-drop').firstChild
     let parentMenuCont = document.getElementById('board-drop')
     let newMenu = document.createElement('div')
-    // let oldBoard = document.getElementById('board')
-
-    // console.log(oldBoard.firstChild.className.includes('menu-item'))
-    // console.log(document.getElementsByTagName('NoteItem'))
-
+  
     if (parentMenuCont.firstChild) {
       parentMenuCont.removeChild(oldMenu)
     }
@@ -204,13 +154,11 @@ class Board extends Component {
       button.type = 'button'
       button.innerHTML = board.name
       button.addEventListener('click', () => {
-        this.callUpdate()
-        // while (oldBoard.firstChild.className.includes('menu-item') === true ) {
-        //   console.log('hi dave')
-        //   oldBoard.removeChild(oldBoard.firstChild)
-        // }
-        let notes = [...board.notes]
-        this.setState({ notes }) // possible solution area to problem #1. Note component state not being updated with the board state.
+        let notes = []
+        this.setState({ notes })
+        this.forceUpdate()
+        notes = [...board.notes]
+        this.setState({ notes }) 
         document.querySelector('.board-drop').style.display = 'none'
       })
       newMenu.appendChild(button)
@@ -228,7 +176,7 @@ class Board extends Component {
             hal={this.resize}
             zHigh={this.zIndexFinder}
             value={id}
-            // self={this.state.notes[id-1]}
+            self={this.state.notes[id-1]}
             {...noteProps}
           />
         ))}
