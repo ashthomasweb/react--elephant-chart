@@ -68,6 +68,7 @@ class Board extends Component {
       let newNote = this.state.currentDrag
       let notes = [...this.state.notes]
       let newIndex = newNote.id - 1
+      newNote.zIndex = notes[newIndex].zIndex
       notes[newIndex] = newNote
       this.setState({ notes })
     })
