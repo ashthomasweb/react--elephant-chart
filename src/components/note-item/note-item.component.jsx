@@ -34,6 +34,7 @@ class NoteItem extends Component {
     let yValue = ev.clientY - this.state.mouseOffsetY + 'px'
     let width = this.state.width
     let height = this.state.height
+    let border = this.props.border === undefined ? 'none' : this.props.border
 
     if (ev.clientX !== 0) {
       this.setState( 
@@ -44,6 +45,8 @@ class NoteItem extends Component {
           width: width,
           height: height,
           noteText: this.props.noteText,
+          border: border
+
         },
         () => {
           this.props.positionUpdater(this.state)
@@ -75,6 +78,14 @@ class NoteItem extends Component {
     this.props.edit(id)
   }
 
+  displayHandler = () => {
+    if (this.props.value <= 2 && this.props.initialDisplay === false ) {
+      return 'none'
+    } else {
+      return 'block'
+    }
+  }
+
   render() {
     const {
       value,
@@ -89,6 +100,7 @@ class NoteItem extends Component {
       border
     } = this.props
 
+    
     return (
       <div
         style={{
@@ -99,6 +111,7 @@ class NoteItem extends Component {
           backgroundImage: `url(${imageUrl})`,
           zIndex: `${zIndex}`,
           border: `${border}`,
+          display: this.displayHandler()
         }}
         className={`${size} menu-item`}
         onMouseDown={this.mouseOffset}

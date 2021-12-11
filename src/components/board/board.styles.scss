@@ -38,6 +38,20 @@
 
 }
 
+.trash-frame {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 250px;
+  height: 250px;
+  background-color: darkslategrey;
+
+  &:hover {
+    background-color: green;
+
+  }
+}
+
 .options-frame {
   width: 400px;
   height: 124px;

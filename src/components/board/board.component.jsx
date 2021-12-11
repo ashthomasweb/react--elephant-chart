@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import CustomButton from '../custom-button/custom-button.component'
 import NoteItem from '../note-item/note-item.component'
+import Header from '../../components/header/header.component'
 
 import blankYellow from '../../assets/trimmed-noborder.png'
 
@@ -20,7 +21,7 @@ class Board extends Component {
         id: 1,
         width: '200px',
         height: '130px',
-        top: '145px',
+        top: '155px',
         left: '3px',
         zIndex: 0,
         imageUrl: blankYellow,
@@ -33,18 +34,47 @@ class Board extends Component {
         name: '',
         notes: [],
       },
-      notes: [
+      initialNoteDisplay: true,
+      initialArray: [
         {
           id: 1,
           width: '',
           height: '',
-          top: '145px',
+          top: '155px',
           left: '3px',
           zIndex: 0,
           imageUrl: blankYellow,
           mouseOffsetX: 0,
           mouseOffsetY: 0,
-          noteText: 'We can write notes! Right here!',
+          noteText: 'You can double-click and update me! Recycle me in the corner!',
+          border: 'none',
+        }
+      ],
+      notes: [
+        {
+          id: 2,
+          width: '',
+          height: '',
+          top: '155px',
+          left: '10px',
+          zIndex: 0,
+          imageUrl: blankYellow,
+          mouseOffsetX: 0,
+          mouseOffsetY: 0,
+          noteText: 'You can double-click and update me! Recycle me in the corner!',
+          border: 'none',
+        },
+        {
+          id: 1,
+          width: '',
+          height: '',
+          top: '155px',
+          left: '270px',
+          zIndex: 0,
+          imageUrl: blankYellow,
+          mouseOffsetX: 0,
+          mouseOffsetY: 0,
+          noteText: 'Sign in with google or any email to save your boards!',
           border: 'none',
         },
       ],
@@ -58,20 +88,30 @@ class Board extends Component {
   positionUpdater = (input) => {
     this.setState({ currentDrag: input })
     let newNote = { ...this.state.currentDrag }
-    let newIndex = 0
     let notes = [...this.state.notes]
-    newIndex = newNote.id - 1
+    let newIndex
+    notes.forEach((note) => {
+      if (note.id === newNote.id) {
+        newIndex = notes.indexOf(note)
+      }
+    })
     notes[newIndex] = newNote
     notes[newIndex].zIndex = this.zIndexFinder()
     this.setState({ notes })
   }
 
   resize = (id, width, height) => {
-    let newNote = { ...this.state.notes[id - 1] }
+    let notes = [...this.state.notes]
+    let newIndex
+    notes.forEach((note) => {
+      if (note.id === id) {
+        newIndex = notes.indexOf(note)
+      }
+    })
+
+    let newNote = { ...this.state.notes[newIndex] }
     newNote.width = width
     newNote.height = height
-    let notes = [...this.state.notes]
-    let newIndex = newNote.id - 1
     newNote.zIndex = notes[newIndex].zIndex
     notes[newIndex] = newNote
     this.setState({ notes })
@@ -92,8 +132,27 @@ class Board extends Component {
     return Math.max.apply(null, zList) + 1
   }
 
+  trashHandler = (e) => {
+    let notes = [...this.state.notes]
+    let deleteId = e.target.id
+
+    let xMax = e.view.innerWidth
+    let yMax = e.view.innerHeight
+
+    if (e.clientX > xMax - 250 && e.clientY > yMax - 250) {
+      for ( let i = 0; i < notes.length; i++ ) {
+        if ( notes[i].id === Number(deleteId) ) {
+          notes.splice(i, 1)
+        }
+      }
+    }
+
+    this.setState({ notes })
+  }
+
   dropHandler = (e) => {
     this.positionUpdater()
+    this.trashHandler(e)
   }
 
   newNoteGenerator = () => {
@@ -111,7 +170,7 @@ class Board extends Component {
     this.setState({ notes })
   }
 
-  updateNoteTemp = () => {
+  updateNote = () => {
     let id = this.state.currentUpdateId
     let notes = [...this.state.notes]
     let upNote = { ...this.state.notes[id - 1] }
@@ -119,6 +178,7 @@ class Board extends Component {
     upNote.id = id
     notes[id - 1] = upNote
     this.setState({ notes })
+    this.cancelUpdate()
   }
 
   newIdFinder = (e) => {
@@ -148,40 +208,39 @@ class Board extends Component {
     }
   }
 
-  updateNote = (id) => {
+  startUpdate = (id) => {
     console.log(this.state.notes[id - 1])
     // highlight note to edit
     document.getElementById(`${id}`).classList.add('selected')
+
     // highlight compose area
     document.querySelector('.options-frame').classList.add('selected')
-    // create 'off-click'
-    // NEEDS better event handling
-    document.querySelector('.board-backing').addEventListener(
-      'click',
-      (e) => {
-        this.cancelUpdate(id)
-      },
-      false
-    )
+    
     // send note data to compose area
     document.getElementById('input-text').value =
       this.state.notes[id - 1].noteText
     // change compose area title
     // no title yet to change!
-    // change compose area function
+
+    // display cancel button
+
+    // set note id
     let currentUpdateId = id
     this.setState({ currentUpdateId })
+
   }
 
-  cancelUpdate = (id) => {
+  cancelUpdate = () => {
+    let id = this.state.currentUpdateId
     document.getElementById(`${id}`).classList.remove('selected')
     document.querySelector('.options-frame').classList.remove('selected')
 
-    document
-      .querySelector('.board-backing')
-      .removeEventListener('click', () => {
-        this.cancelUpdate(id)
-      })
+
+    // document
+    //   .querySelector('.board-backing')
+    //   .removeEventListener('click', () => {
+    //     this.cancelUpdate(id)
+    //   })
   }
 
   userBoardDropDown = () => {
@@ -218,9 +277,22 @@ class Board extends Component {
     parentMenuCont.appendChild(newMenu)
   }
 
+
+  reRender = async () => {
+    let notes = this.state.initialArray
+    await this.forceUpdate()
+    this.setState({ notes })
+    // handle compose frame display
+  }
+
   render() {
     return (
       <div id='board' className='board-backing' onDrop={this.dropHandler}>
+        <Header
+          className='header'
+          currentUser={this.props.currentUser}
+          reset={this.reRender}
+        />
         {this.state.notes.map(({ id, ...noteProps }) => (
           <NoteItem
             key={id}
@@ -228,11 +300,12 @@ class Board extends Component {
             resizeHandler={this.resize}
             zHigh={this.zIndexFinder}
             value={id}
-            edit={this.updateNote}
+            edit={this.startUpdate}
+            initialDisplay={this.state.initialNoteDisplay}
             self={this.state.notes[id - 1]}
             {...noteProps}
-          />
-        ))}
+            />
+            ))}
         <div className='options-frame'>
           <button
             id='primary-compose'
@@ -244,15 +317,16 @@ class Board extends Component {
           <button
             className='options-btn'
             type='button'
-            onClick={this.updateNoteTemp}>
+            onClick={this.updateNote}>
             Update
           </button>
           <button
             className='options-btn'
+            id='cancel-update'
             type='button'
-            onClick={this.newNoteGenerator}
-            disabled>
-            Placeholder
+            onClick={this.cancelUpdate}
+            >
+            Cancel Update
           </button>
           <button
             className='options-btn'
@@ -282,6 +356,9 @@ class Board extends Component {
             id='input-text'
             type='text'
             placeholder='New Note Text'></textarea>
+        </div>
+        <div className='trash-frame'>
+          <h3>Trash Can</h3>
         </div>
 
         {/* development asset */}

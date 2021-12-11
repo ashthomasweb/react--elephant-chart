@@ -19,14 +19,14 @@ const modalToggle = () => {
   : (el.display = 'block')
 }
 
-const Header = ({ currentUser }) => (
+const Header = ({ currentUser, reset }) => (
   <div className='header'>
       <img src={logo} className='logo' alt='flow-post logo' />
     
     <div className='options'>
       {currentUser ? ( <div>
         <div className='welcome' >Welcome,<br/>{currentUser.displayName}</div>
-        <div className='option' onLoad={closeSignIn()} onClick={() => auth.signOut()}>SIGN OUT</div></div>
+        <div className='option' onLoad={closeSignIn()} onClick={() => { reset(); auth.signOut()}}>SIGN OUT</div></div>
       ) : (
         <button
           type='button'
