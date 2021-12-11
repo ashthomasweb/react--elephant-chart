@@ -22,7 +22,7 @@ class Board extends Component {
         width: '200px',
         height: '130px',
         top: '155px',
-        left: '3px',
+        left: '10px',
         zIndex: 0,
         imageUrl: blankYellow,
         mouseOffsetX: 0,
@@ -41,14 +41,27 @@ class Board extends Component {
           width: '',
           height: '',
           top: '155px',
-          left: '3px',
+          left: '10px',
           zIndex: 0,
           imageUrl: blankYellow,
           mouseOffsetX: 0,
           mouseOffsetY: 0,
           noteText: 'You can double-click and update me! Recycle me in the corner!',
           border: 'none',
-        }
+        },
+        {
+          id: 1,
+          width: '',
+          height: '',
+          top: '155px',
+          left: '270px',
+          zIndex: 0,
+          imageUrl: blankYellow,
+          mouseOffsetX: 0,
+          mouseOffsetY: 0,
+          noteText: 'Sign in with google or any email to save your boards!',
+          border: 'none',
+        },
       ],
       notes: [
         {
@@ -171,12 +184,18 @@ class Board extends Component {
   }
 
   updateNote = () => {
-    let id = this.state.currentUpdateId
     let notes = [...this.state.notes]
-    let upNote = { ...this.state.notes[id - 1] }
+    let newIndex
+    let id = this.state.currentUpdateId
+    notes.forEach((note) => {
+      if (note.id === id) {
+        newIndex = notes.indexOf(note)
+      }
+    })
+    let upNote = { ...this.state.notes[newIndex] }
     upNote.noteText = document.querySelector('#input-text').value
     upNote.id = id
-    notes[id - 1] = upNote
+    notes[newIndex] = upNote
     this.setState({ notes })
     this.cancelUpdate()
   }
@@ -209,7 +228,14 @@ class Board extends Component {
   }
 
   startUpdate = (id) => {
-    console.log(this.state.notes[id - 1])
+    let notes = [...this.state.notes]
+    let newIndex
+    notes.forEach((note) => {
+      if (note.id === id) {
+        newIndex = notes.indexOf(note)
+      }
+    })
+
     // highlight note to edit
     document.getElementById(`${id}`).classList.add('selected')
 
@@ -218,13 +244,11 @@ class Board extends Component {
     
     // send note data to compose area
     document.getElementById('input-text').value =
-      this.state.notes[id - 1].noteText
+      this.state.notes[newIndex].noteText
     // change compose area title
     // no title yet to change!
 
-    // display cancel button
-
-    // set note id
+    // set which note id to update
     let currentUpdateId = id
     this.setState({ currentUpdateId })
 
