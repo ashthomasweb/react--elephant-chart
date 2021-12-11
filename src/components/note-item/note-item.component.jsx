@@ -18,12 +18,13 @@ class NoteItem extends Component {
       mouseOffsetX: 0,
       mouseOffsetY: 0,
       noteText: this.props.noteText,
+      border: this.props.border
     }
   }
 
   mouseOffset = (e) => {
-    const mouseOffsetY = e.pageY - parseFloat(getComputedStyle(e.target).top)
-    const mouseOffsetX = e.pageX - parseFloat(getComputedStyle(e.target).left)
+    const mouseOffsetY = e.clientY - parseFloat(getComputedStyle(e.target).top)
+    const mouseOffsetX = e.clientX - parseFloat(getComputedStyle(e.target).left)
     this.setState({ mouseOffsetY, mouseOffsetX })
   }
 
@@ -31,6 +32,8 @@ class NoteItem extends Component {
   dragHandler = (ev) => {
     let xValue = ev.clientX - this.state.mouseOffsetX + 'px'
     let yValue = ev.clientY - this.state.mouseOffsetY + 'px'
+    let width = this.state.width
+    let height = this.state.height
 
     if (ev.clientX !== 0) {
       this.setState( 
@@ -38,9 +41,12 @@ class NoteItem extends Component {
           left: xValue,
           top: yValue,
           id: this.props.value,
+          width: width,
+          height: height,
+          noteText: this.props.noteText,
         },
         () => {
-          this.props.dave(this.state)
+          this.props.positionUpdater(this.state)
         }
       )
     } else {
@@ -52,13 +58,21 @@ class NoteItem extends Component {
   }
 
   resizeHandler = (e) => {
+    let width = getComputedStyle(e.target).getPropertyValue('width')
+    let height = getComputedStyle(e.target).getPropertyValue('height')
+    let id = this.state.id
+    this.props.resizeHandler(id, width, height)
     this.setState(
       {
-        width: getComputedStyle(e.target).getPropertyValue('width'),
-        height: getComputedStyle(e.target).getPropertyValue('height')
-      },
-      () => {console.log(this.state); this.props.hal(this.state)}
+        width: width,
+        height: height
+      }
     )
+  }
+
+  editHandler = (e) => {
+    let id = this.state.id
+    this.props.edit(id)
   }
 
   render() {
@@ -72,6 +86,7 @@ class NoteItem extends Component {
       top,
       noteText,
       zIndex,
+      border
     } = this.props
 
     return (
@@ -83,11 +98,13 @@ class NoteItem extends Component {
           top: `${top}`,
           backgroundImage: `url(${imageUrl})`,
           zIndex: `${zIndex}`,
+          border: `${border}`,
         }}
         className={`${size} menu-item`}
         onMouseDown={this.mouseOffset}
         onMouseUp={this.resizeHandler}
         onDrag={this.dragHandler}
+        onDoubleClick={this.editHandler}
         id={value}
         draggable>
         <div className='content'>

@@ -7,64 +7,69 @@
   position: absolute;
   z-index: -99999;
 
-  .options-frame {
-    width: 400px;
-    height: 124px;
+  .database-options {
     position: absolute;
-    top: 10px;
-    left: 146px;
-    padding: 0px;
-    background-color: rgba(0,0,0,.1);
-    display: inline-block;
+    left: 5px;
+    top: 5px;
+    width: 150px;
+    height: 114px;
+    background-color: grey;
+    text-align: center;
     overflow: visible;
-    
-    button {
-      display: block;
-      margin: 8px 12px;
+
+
+    .save-board-input {
+      width: 90%;
+      border: none;
     }
 
-    .database-options {
+    h3 {
+      margin: 0 auto 5px;
+    }
+
+    .board-drop {
+      background-color: yellow;
       position: absolute;
-      right: 5px;
-      top: 5px;
+      top: 110px;
       width: 150px;
-      height: 114px;
-      background-color: grey;
-      text-align: center;
-      overflow: visible;
-
-      .save-board-input {
-        width: 90%;
-        border: none;
-      }
-
-      h3 {
-        margin: 0 auto 5px;
-      }
-
-      .board-drop {
-        background-color: yellow;
-        position: absolute;
-        top: 110px;
-        width: 150px;
-        display: none;
-      }
+      display: none;
     }
-
   }
-  
-  .pad-frame {
-    width: 200px;
-    height: 124px;
-    left: 570px;
-    top: 10px;
+
+}
+
+.options-frame {
+  width: 400px;
+  height: 124px;
+  position: absolute;
+  top: 10px;
+  left: 146px;
+  padding: 0 0 0 160px;
+  background-color: rgba(0, 0, 0, .1);
+  display: inline-block;
+  overflow: visible;
+
+  button {
+    display: block;
+    margin: 8px 12px;
+  }
+
+  &.selected {
+    background-color: green;
+  }
+}
+
+.pad-frame {
+  width: 200px;
+  height: 124px;
+  left: 570px;
+  top: 10px;
+  display: inline-block;
+  position: absolute;
+
+  textarea {
+    height: 100%;
     display: inline-block;
-    position: absolute;
-
-    textarea {
-      height: 100%;
-      display: inline-block;
-    }
-
   }
+
 }
