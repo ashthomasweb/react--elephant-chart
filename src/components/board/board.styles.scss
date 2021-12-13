@@ -100,6 +100,11 @@
     background-color: rgba(255, 255, 255, .5);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     resize: both!important;
+   
+  }
+
+  #input-text:empty {
+    caret-color: transparent;
   }
   
 }
