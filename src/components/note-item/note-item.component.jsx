@@ -32,8 +32,8 @@ class NoteItem extends Component {
   dragHandler = (ev) => {
     let xValue = ev.clientX - this.state.mouseOffsetX + 'px'
     let yValue = ev.clientY - this.state.mouseOffsetY + 'px'
-    let width = this.state.width
-    let height = this.state.height
+    let width = this.props.width
+    let height = this.props.height
     let border = this.props.border === undefined ? 'none' : this.props.border
 
     if (ev.clientX !== 0) {

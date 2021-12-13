@@ -172,6 +172,7 @@ class Board extends Component {
       }
     }
     this.setState({ notes })
+    document.querySelector('.trash-frame').classList.remove('hovered')
   }
 
   dropHandler = (e) => {
@@ -189,30 +190,14 @@ class Board extends Component {
     newNote.height = getComputedStyle(textarea).getPropertyValue('height')
     let el = document.querySelector('.pad-frame')
     newNote.left =
-      parseFloat(getComputedStyle(el).getPropertyValue('left')) - 340 + 'px'
+      parseFloat(getComputedStyle(el).getPropertyValue('left')) - Math.floor(Math.random() * 70) - 440 + 'px'
     newNote.top =
-      parseFloat(getComputedStyle(el).getPropertyValue('top')) + 120 + 'px'
+      parseFloat(getComputedStyle(el).getPropertyValue('top')) + Math.floor(Math.random() * 70) + 240 + 'px'
     notes.push(newNote)
     this.setState({ notes })
+    document.querySelector('#input-text').innerText = ''
   }
-
-  updateNote = () => {
-    let notes = [...this.state.notes]
-    let newIndex
-    let id = this.state.currentUpdateId
-    notes.forEach((note) => {
-      if (note.id === id) {
-        newIndex = notes.indexOf(note)
-      }
-    })
-    let upNote = { ...this.state.notes[newIndex] }
-    upNote.noteText = document.querySelector('#input-text').innerText
-    upNote.id = id
-    notes[newIndex] = upNote
-    this.setState({ notes })
-    this.cancelUpdate()
-  }
-
+  
   newIdFinder = (e) => {
     let idList = []
     this.state.notes.forEach((note) => {
@@ -240,6 +225,26 @@ class Board extends Component {
     }
   }
 
+  updateNote = () => {
+    let notes = [...this.state.notes]
+    let newIndex
+    let id = this.state.currentUpdateId
+    notes.forEach((note) => {
+      if (note.id === id) {
+        newIndex = notes.indexOf(note)
+      }
+    })
+    let upNote = { ...this.state.notes[newIndex] }
+    upNote.noteText = document.querySelector('#input-text').innerText
+    upNote.width = getComputedStyle(document.querySelector('.pad-frame')).getPropertyValue('width')
+    upNote.height = getComputedStyle(document.querySelector('.pad-frame')).getPropertyValue('height')
+    upNote.id = id
+    notes[newIndex] = upNote
+    this.setState({ notes }, () => console.log(this.state) )
+    document.querySelector('#input-text').innerText = ''
+    this.cancelUpdate()
+  }
+
   startUpdate = (id) => {
     let notes = [...this.state.notes]
     let newIndex
@@ -255,9 +260,14 @@ class Board extends Component {
     // highlight compose area
     document.querySelector('.options-frame').classList.add('selected')
 
+
     // send note data to compose area
     document.getElementById('input-text').innerText =
       this.state.notes[newIndex].noteText
+    
+    document.querySelector('.pad-frame').style.setProperty('width', this.state.notes[newIndex].width)
+    document.querySelector('.pad-frame').style.setProperty('height', this.state.notes[newIndex].height)
+
     // change compose area title
     // no title yet to change!
 
@@ -299,6 +309,7 @@ class Board extends Component {
         await this.forceUpdate()
         notes = [...board.notes]
         this.setState({ notes })
+        document.querySelector('.save-board-input').value = board.name
         parentMenuCont.style.display = 'none'
       })
       newMenu.appendChild(button)
