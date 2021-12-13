@@ -27,11 +27,28 @@
     }
 
     .board-drop {
-      background-color: yellow;
+      background-color: darkslategrey;
+      padding: 10px 0;
       position: absolute;
-      top: 110px;
-      width: 150px;
+      top: 114px;
+      width: 250px;
       display: none;
+
+      button {
+        float: left;
+      }
+
+      .delete {
+        background-color: red;
+        color: white;
+        border-radius: 5px;
+      }
+
+      .button-cont {
+        position: relative;
+        float: left;
+      }
+      
     }
   }
 

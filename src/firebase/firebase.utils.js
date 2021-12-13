@@ -72,6 +72,26 @@ export const saveUserBoard = async (userAuth, boardObj) => {
   getUserBoards(userAuth)
 }
 
+export const deleteUserBoard = async (userAuth, boardName) => {
+  const boardRef = firestore.doc(
+    `users/${userAuth.uid}/boards/${boardName}`
+  )
+
+  const snapShot = await boardRef.get()
+
+ 
+  if (snapShot.exists) {
+    try {
+      await boardRef.delete()
+    } catch (error) {
+      console.log('error deleting board', error.message)
+    }
+  }
+
+  getUserBoards(userAuth)
+}
+
+
 // retrieves saves user boards from firestore db
 // called when App.js mounts and when user saves a board
 // userboard obj gets passed back to Board Component
@@ -88,6 +108,10 @@ export const getUserBoards = (userAuth) => {
         userBoards.push(doc.data())
       })
     })
+}
+
+export const clearBoards = () => {
+  userBoards = []
 }
 export var userBoards = []
 

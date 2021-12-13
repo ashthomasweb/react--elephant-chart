@@ -4,7 +4,7 @@ import SignInUpModal from '../signinupmodal/signinupmodal.component'
 
 import logo from '../../assets/flow-post-logo.png'
 
-import { auth } from '../../firebase/firebase.utils'
+import { auth, clearBoards } from '../../firebase/firebase.utils'
 
 import './header.styles.scss'
 
@@ -26,7 +26,7 @@ const Header = ({ currentUser, reset }) => (
     <div className='options'>
       {currentUser ? ( <div>
         <div className='welcome' >Welcome,<br/>{currentUser.displayName}</div>
-        <div className='option' onLoad={closeSignIn()} onClick={() => { reset(); auth.signOut()}}>SIGN OUT</div></div>
+        <div className='option' onLoad={closeSignIn()} onClick={() => { clearBoards(); reset(); auth.signOut()}}>SIGN OUT</div></div>
       ) : (
         <button
           type='button'

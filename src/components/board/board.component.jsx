@@ -6,7 +6,7 @@ import Header from '../../components/header/header.component'
 
 import blankYellow from '../../assets/trimmed-noborder.png'
 
-import { saveUserBoard, userBoards } from '../../firebase/firebase.utils'
+import { saveUserBoard, userBoards, deleteUserBoard } from '../../firebase/firebase.utils'
 
 import './board.styles.scss'
 
@@ -51,7 +51,7 @@ class Board extends Component {
           border: 'none',
         },
         {
-          id: 1,
+          id: 2,
           width: '',
           height: '',
           top: '155px',
@@ -66,7 +66,7 @@ class Board extends Component {
       ],
       notes: [
         {
-          id: 2,
+          id: 1,
           width: '',
           height: '',
           top: '155px',
@@ -80,7 +80,7 @@ class Board extends Component {
           border: 'none',
         },
         {
-          id: 1,
+          id: 2,
           width: '',
           height: '',
           top: '155px',
@@ -253,24 +253,15 @@ class Board extends Component {
         newIndex = notes.indexOf(note)
       }
     })
-
     // highlight note to edit
     document.getElementById(`${id}`).classList.add('selected')
-
     // highlight compose area
     document.querySelector('.options-frame').classList.add('selected')
-
-
     // send note data to compose area
     document.getElementById('input-text').innerText =
       this.state.notes[newIndex].noteText
-    
     document.querySelector('.pad-frame').style.setProperty('width', this.state.notes[newIndex].width)
     document.querySelector('.pad-frame').style.setProperty('height', this.state.notes[newIndex].height)
-
-    // change compose area title
-    // no title yet to change!
-
     // set which note id to update
     let currentUpdateId = id
     this.setState({ currentUpdateId })
@@ -290,6 +281,16 @@ class Board extends Component {
       : (elStyle.display = 'block')
   }
 
+  deleteBoardHandler = async (boardName) => {
+    if (window.confirm('Are you sure you want to delete this board? Action is permanent. Action will NOT delete the notes from the screen, only the board in the database.')) {
+      console.log('yes')
+      await deleteUserBoard(this.props.currentUser.auth, boardName)
+      document.querySelector('.board-drop').style.display = 'none'
+    }
+
+
+  }
+
   putBoardsToList = () => {
     let oldMenu = document.getElementById('board-drop').firstChild
     let parentMenuCont = document.getElementById('board-drop')
@@ -300,9 +301,21 @@ class Board extends Component {
     }
 
     userBoards.forEach((board) => {
+      let cont = document.createElement('div')
       let button = document.createElement('button')
+      let xButton = document.createElement('button')
+
       button.type = 'button'
+      xButton.type = 'button'
+
       button.innerHTML = board.name
+      xButton.innerHTML = 'X'
+      xButton.classList.add('delete')
+      cont.classList.add('button-cont')
+      xButton.addEventListener('click', () => {
+        this.deleteBoardHandler(board.name)
+      })
+
       button.addEventListener('click', async () => {
         let notes = []
         this.setState({ notes })
@@ -312,7 +325,10 @@ class Board extends Component {
         document.querySelector('.save-board-input').value = board.name
         parentMenuCont.style.display = 'none'
       })
-      newMenu.appendChild(button)
+      cont.appendChild(xButton)
+      cont.appendChild(button)
+
+      newMenu.appendChild(cont)
     })
     parentMenuCont.appendChild(newMenu)
   }
@@ -320,7 +336,9 @@ class Board extends Component {
   reRender = async () => {
     let notes = this.state.initialArray
     document.querySelector('.save-board-input').value = ''
+    document.querySelector('.board-drop').style.display = 'none'
     await this.forceUpdate()
+    this.userBoards = []
     this.setState({ notes })
   }
 
