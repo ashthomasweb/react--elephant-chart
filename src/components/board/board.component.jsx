@@ -319,9 +319,9 @@ class Board extends Component {
 
   reRender = async () => {
     let notes = this.state.initialArray
+    document.querySelector('.save-board-input').value = ''
     await this.forceUpdate()
     this.setState({ notes })
-    // handle compose frame display
   }
 
   render() {
