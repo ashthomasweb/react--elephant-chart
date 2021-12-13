@@ -49,7 +49,7 @@ class NoteItem extends Component {
 
         },
         () => {
-          this.props.positionUpdater(this.state)
+          this.props.positionUpdater(this.state, ev)
         }
       )
     } else {
@@ -121,7 +121,8 @@ class NoteItem extends Component {
         id={value}
         draggable>
         <div className='content'>
-          <p className='note-text'>{noteText}</p>
+        
+          <p className='note-text'  >{noteText}</p>
         </div>
       </div>
     )

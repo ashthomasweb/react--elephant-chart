@@ -46,7 +46,8 @@ class Board extends Component {
           imageUrl: blankYellow,
           mouseOffsetX: 0,
           mouseOffsetY: 0,
-          noteText: 'You can double-click and update me! Recycle me in the corner!',
+          noteText:
+            'You can double-click and update me! Recycle me in the corner!',
           border: 'none',
         },
         {
@@ -74,7 +75,8 @@ class Board extends Component {
           imageUrl: blankYellow,
           mouseOffsetX: 0,
           mouseOffsetY: 0,
-          noteText: 'You can double-click and update me! Recycle me in the corner!',
+          noteText:
+            'You can double-click and update me! Recycle me in the corner!',
           border: 'none',
         },
         {
@@ -98,7 +100,7 @@ class Board extends Component {
     // this.resizeHandler = this.resize.bind(this)
   }
 
-  positionUpdater = (input) => {
+  positionUpdater = (input, e, final = false) => {
     this.setState({ currentDrag: input })
     let newNote = { ...this.state.currentDrag }
     let notes = [...this.state.notes]
@@ -111,6 +113,7 @@ class Board extends Component {
     notes[newIndex] = newNote
     notes[newIndex].zIndex = this.zIndexFinder()
     this.setState({ notes })
+    final === false && this.trashBox(e)
   }
 
   resize = (id, width, height) => {
@@ -145,35 +148,45 @@ class Board extends Component {
     return Math.max.apply(null, zList) + 1
   }
 
+  trashBox = (e) => {
+    let xMax = e.view.innerWidth
+    let yMax = e.view.innerHeight
+    if (e.clientX > xMax - 250 && e.clientY > yMax - 250) {
+      console.log('hi dave')
+      document.querySelector('.trash-frame').classList.add('hovered')
+    } else {
+      document.querySelector('.trash-frame').classList.remove('hovered')
+    }
+  }
+
   trashHandler = (e) => {
     let notes = [...this.state.notes]
     let deleteId = e.target.id
-
     let xMax = e.view.innerWidth
     let yMax = e.view.innerHeight
-
     if (e.clientX > xMax - 250 && e.clientY > yMax - 250) {
-      for ( let i = 0; i < notes.length; i++ ) {
-        if ( notes[i].id === Number(deleteId) ) {
+      for (let i = 0; i < notes.length; i++) {
+        if (notes[i].id === Number(deleteId)) {
           notes.splice(i, 1)
         }
       }
     }
-
     this.setState({ notes })
   }
 
   dropHandler = (e) => {
-    this.positionUpdater()
+    this.positionUpdater(null, e, true)
     this.trashHandler(e)
   }
 
   newNoteGenerator = () => {
-    // make new note
     let newNote = { ...this.state.newNote }
     let notes = [...this.state.notes]
-    newNote.noteText = document.querySelector('#input-text').value
+    let textarea = document.querySelector('.pad-frame')
+    newNote.noteText = document.querySelector('#input-text').innerText
     newNote.id = this.newIdFinder()
+    newNote.width = getComputedStyle(textarea).getPropertyValue('width')
+    newNote.height = getComputedStyle(textarea).getPropertyValue('height')
     let el = document.querySelector('.pad-frame')
     newNote.left =
       parseFloat(getComputedStyle(el).getPropertyValue('left')) - 340 + 'px'
@@ -193,7 +206,7 @@ class Board extends Component {
       }
     })
     let upNote = { ...this.state.notes[newIndex] }
-    upNote.noteText = document.querySelector('#input-text').value
+    upNote.noteText = document.querySelector('#input-text').innerText
     upNote.id = id
     notes[newIndex] = upNote
     this.setState({ notes })
@@ -241,9 +254,9 @@ class Board extends Component {
 
     // highlight compose area
     document.querySelector('.options-frame').classList.add('selected')
-    
+
     // send note data to compose area
-    document.getElementById('input-text').value =
+    document.getElementById('input-text').innerText =
       this.state.notes[newIndex].noteText
     // change compose area title
     // no title yet to change!
@@ -251,20 +264,12 @@ class Board extends Component {
     // set which note id to update
     let currentUpdateId = id
     this.setState({ currentUpdateId })
-
   }
 
   cancelUpdate = () => {
     let id = this.state.currentUpdateId
     document.getElementById(`${id}`).classList.remove('selected')
     document.querySelector('.options-frame').classList.remove('selected')
-
-
-    // document
-    //   .querySelector('.board-backing')
-    //   .removeEventListener('click', () => {
-    //     this.cancelUpdate(id)
-    //   })
   }
 
   userBoardDropDown = () => {
@@ -301,7 +306,6 @@ class Board extends Component {
     parentMenuCont.appendChild(newMenu)
   }
 
-
   reRender = async () => {
     let notes = this.state.initialArray
     await this.forceUpdate()
@@ -328,8 +332,8 @@ class Board extends Component {
             initialDisplay={this.state.initialNoteDisplay}
             self={this.state.notes[id - 1]}
             {...noteProps}
-            />
-            ))}
+          />
+        ))}
         <div className='options-frame'>
           <button
             id='primary-compose'
@@ -348,8 +352,7 @@ class Board extends Component {
             className='options-btn'
             id='cancel-update'
             type='button'
-            onClick={this.cancelUpdate}
-            >
+            onClick={this.cancelUpdate}>
             Cancel Update
           </button>
           <button
@@ -375,11 +378,9 @@ class Board extends Component {
             <div id='board-drop' className='board-drop'></div>
           </div>
         </div>
-        <div className='pad-frame'>
-          <textarea
-            id='input-text'
-            type='text'
-            placeholder='New Note Text'></textarea>
+        <div className='pad-frame'style={{backgroundImage: `url(${blankYellow})`, display: 'table'}}>
+          <div id='input-text' contentEditable='true' style={{display: 'table-cell', verticalAlign: 'middle'}} >
+          </div>
         </div>
         <div className='trash-frame'>
           <h3>Trash Can</h3>

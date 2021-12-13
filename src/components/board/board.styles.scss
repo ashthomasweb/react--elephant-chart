@@ -17,7 +17,6 @@
     text-align: center;
     overflow: visible;
 
-
     .save-board-input {
       width: 90%;
       border: none;
@@ -48,9 +47,13 @@
 
   &:hover {
     background-color: green;
+  }
 
+  &.hovered {
+    background-color: green;
   }
 }
+
 
 .options-frame {
   width: 400px;
@@ -74,16 +77,29 @@
 }
 
 .pad-frame {
-  width: 200px;
-  height: 124px;
   left: 570px;
   top: 10px;
-  display: inline-block;
+  height: 200px;
+  display: block;
   position: absolute;
+  background-size: cover;
+  resize: both!important;
+  border: 1px solid black;
+  overflow: hidden;
+  padding: 10px;
 
-  textarea {
-    height: 100%;
-    display: inline-block;
+  #input-text {
+    box-sizing: content-box;
+    width: 240px;
+    text-align: center;
+    font-size: 28px;
+    line-height: 1.4;
+    color: darkred!important;
+    font-weight: 900;
+    align-items: center;
+    background-color: rgba(255, 255, 255, .5);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    resize: both!important;
   }
-
+  
 }
