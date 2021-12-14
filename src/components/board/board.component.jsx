@@ -8,6 +8,7 @@ import blankYellow from '../../assets/trimmed-noborder.png'
 
 import { saveUserBoard, userBoards, deleteUserBoard } from '../../firebase/firebase.utils'
 import { initialArray } from '../../assets/initial-array.js'
+import { trashBox, trashHandler } from '../../methods/trash/trashHandlers.js'
 
 import './board.styles.scss'
 
@@ -42,7 +43,6 @@ class Board extends Component {
 
     // not needed, anymore or ever?
     this.positionUpdater = this.positionUpdater.bind(this)
-    // this.resizeHandler = this.resize.bind(this)
   }
 
   positionUpdater = (input, e, final = false) => {
@@ -58,7 +58,7 @@ class Board extends Component {
     notes[newIndex] = newNote
     notes[newIndex].zIndex = this.zIndexFinder()
     this.setState({ notes })
-    final === false && this.trashBox(e)
+    final === false && trashBox(e)
   }
 
   resize = (id, width, height) => {
@@ -94,35 +94,11 @@ class Board extends Component {
     return Math.max.apply(null, zList) + 1
   }
 
-  trashBox = (e) => {
-    let xMax = e.view.innerWidth
-    let yMax = e.view.innerHeight
-    if (e.clientX > xMax - 250 && e.clientY > yMax - 250) {
-      document.querySelector('.trash-frame').classList.add('hovered')
-    } else {
-      document.querySelector('.trash-frame').classList.remove('hovered')
-    }
-  }
-
-  trashHandler = (e) => {
-    let notes = [...this.state.notes]
-    let deleteId = e.target.id
-    let xMax = e.view.innerWidth
-    let yMax = e.view.innerHeight
-    if (e.clientX > xMax - 250 && e.clientY > yMax - 250) {
-      for (let i = 0; i < notes.length; i++) {
-        if (notes[i].id === Number(deleteId)) {
-          notes.splice(i, 1)
-        }
-      }
-    }
-    this.setState({ notes })
-    document.querySelector('.trash-frame').classList.remove('hovered')
-  }
-
-  dropHandler = (e) => {
+  dropHandler = async (e) => {
     this.positionUpdater(null, e, true)
-    this.trashHandler(e)
+    let notesArray = [...this.state.notes]
+    let notes = await trashHandler(e, notesArray)
+    this.setState({notes})
   }
 
   newNoteGenerator = () => {
