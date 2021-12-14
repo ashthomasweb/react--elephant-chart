@@ -7,6 +7,7 @@ import Header from '../../components/header/header.component'
 import blankYellow from '../../assets/trimmed-noborder.png'
 
 import { saveUserBoard, userBoards, deleteUserBoard } from '../../firebase/firebase.utils'
+import { initialArray } from '../../assets/initial-array.js'
 
 import './board.styles.scss'
 
@@ -35,64 +36,8 @@ class Board extends Component {
         notes: [],
       },
       initialNoteDisplay: true,
-      initialArray: [
-        {
-          id: 1,
-          width: '',
-          height: '',
-          top: '155px',
-          left: '10px',
-          zIndex: 0,
-          imageUrl: blankYellow,
-          mouseOffsetX: 0,
-          mouseOffsetY: 0,
-          noteText:
-            'You can double-click and update me! Recycle me in the corner!',
-          border: 'none',
-        },
-        {
-          id: 2,
-          width: '',
-          height: '',
-          top: '155px',
-          left: '270px',
-          zIndex: 0,
-          imageUrl: blankYellow,
-          mouseOffsetX: 0,
-          mouseOffsetY: 0,
-          noteText: 'Sign in with google or any email to save your boards!',
-          border: 'none',
-        },
-      ],
-      notes: [
-        {
-          id: 1,
-          width: '',
-          height: '',
-          top: '155px',
-          left: '10px',
-          zIndex: 0,
-          imageUrl: blankYellow,
-          mouseOffsetX: 0,
-          mouseOffsetY: 0,
-          noteText:
-            'You can double-click and update me! Recycle me in the corner!',
-          border: 'none',
-        },
-        {
-          id: 2,
-          width: '',
-          height: '',
-          top: '155px',
-          left: '270px',
-          zIndex: 0,
-          imageUrl: blankYellow,
-          mouseOffsetX: 0,
-          mouseOffsetY: 0,
-          noteText: 'Sign in with google or any email to save your boards!',
-          border: 'none',
-        },
-      ],
+      initialArray: initialArray,
+      notes: initialArray,
     }
 
     // not needed, anymore or ever?
@@ -138,6 +83,7 @@ class Board extends Component {
     this.state.notes.forEach((note) => {
       zList.push(note.zIndex)
     })
+
     // if (Math.max.apply(null, zList) > 1000000) {
     //   this.state.notes.forEach((note, i) => {
     //     note.zIndex = note.zIndex - 500000
@@ -152,7 +98,6 @@ class Board extends Component {
     let xMax = e.view.innerWidth
     let yMax = e.view.innerHeight
     if (e.clientX > xMax - 250 && e.clientY > yMax - 250) {
-      console.log('hi dave')
       document.querySelector('.trash-frame').classList.add('hovered')
     } else {
       document.querySelector('.trash-frame').classList.remove('hovered')
@@ -197,7 +142,7 @@ class Board extends Component {
     this.setState({ notes })
     document.querySelector('#input-text').innerText = ''
   }
-  
+
   newIdFinder = (e) => {
     let idList = []
     this.state.notes.forEach((note) => {

@@ -37,7 +37,7 @@ class NoteItem extends Component {
     let border = this.props.border === undefined ? 'none' : this.props.border
 
     if (ev.clientX !== 0) {
-      this.setState( 
+      this.setState(
         {
           left: xValue,
           top: yValue,
@@ -100,7 +100,7 @@ class NoteItem extends Component {
       border
     } = this.props
 
-    
+
     return (
       <div
         style={{
@@ -121,7 +121,7 @@ class NoteItem extends Component {
         id={value}
         draggable>
         <div className='content'>
-        
+
           <p className='note-text'  >{noteText}</p>
         </div>
       </div>
