@@ -26,7 +26,7 @@ const Header = ({ currentUser, reset }) => (
     <div className='user-options'>
       {currentUser ? ( <div>
         <div className='welcome' >Welcome,<br/>{currentUser.displayName}</div>
-        <div className='option' onLoad={closeSignIn()} onClick={() => { clearBoards(); reset(); auth.signOut()}}>SIGN OUT</div></div>
+        <button className='option' onLoad={closeSignIn()} onClick={() => { clearBoards(); reset(); auth.signOut()}}>SIGN OUT</button></div>
       ) : (
         <button
           type='button'

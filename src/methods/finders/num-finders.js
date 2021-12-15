@@ -1,13 +1,16 @@
 export const newIdFinder = (stateObj) => {
-    let idList = []
-    stateObj.notes.forEach((note) => {
-      idList.push(note.id)
-    })
+    let idList = [0]
+    if (stateObj.notes.length !== 0) {
+      stateObj.notes.forEach((note) => {
+        idList.push(note.id)
+      })
+    }
+    
     return Math.max.apply(null, idList) + 1
 }
   
 export const zIndexFinder = (notesObj) => {
-    let zList = []
+    let zList = [0]
     notesObj.forEach((note) => {
       zList.push(note.zIndex)
     })

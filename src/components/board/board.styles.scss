@@ -28,6 +28,14 @@
     margin: 2px auto 1px;
   }
 
+  .new-button {
+    position: absolute;
+    left: 50px;
+    top: 49px;
+    width: 80px;
+    padding: 1px 5px;
+  }
+
   .board-drop {
     background-color: darkslategrey;
     padding: 10px 0;
@@ -38,6 +46,7 @@
 
     button {
       float: left;
+      margin: 3px 6px 3px 12px;
     }
 
     .delete {
@@ -112,6 +121,7 @@
   padding: 10px;
   display: table;
   box-shadow: 3px 3px 3px #4a4a4a, -3px -3px 55px -35px #4a4a4a;
+  z-index: 1000000000;
 
 
   #input-text {
@@ -140,44 +150,45 @@
   box-sizing: content-box;
   position: absolute;
   text-align: center;
-  top: 0;
-  right: 0;
-  width: 250px;
-  height: 150px;
+  top: 10px;
+  right: 10px;
+  width: 125px;
+  height: 124px;
+  border-radius: 2px;
+  border: 1px solid lightgrey;
+  background-color: var(--primary);
 
   &:hover {
-    background-color: var(--secondary);
-    border-left: 4px solid grey;
-    border-bottom: 4px solid grey;
+    background-color: var(--tertiary);
   }
 
   &.hovered {
-    background-color: var(--secondary);
-    border-left: 4px solid grey;
-    border-bottom: 4px solid grey;
+    background-color: var(--tertiary);
   }
 
   .trash-cont {
     position: absolute;
-    margin: 30px 30px 0 0;
-    right: 0;
-    top: 0;
-    height: 74px;
-    width: 52px;
+    height: 60px;
+    width: 45px;
     opacity: 1;
-    
+    left: 50%;
+    top: 50%;
+    background-color: var(--primary-dark);
+
+    transform: translateX(-50%) translateY(-50%);
+    border: 1px solid lightgrey;
     
     .trash-top {
       display: block;
-      margin: 0 0 1px 1px;
-      width: 50px;
-      
+      margin: 3px 0 1px 1px;
+      width: 40px;
     }
     
     .trash-bottom {
+      margin: 0 0 0px 1px;
+
       display: block;
-      width: 50px;
-      margin-left: 1px;
+      width: 40px;
     }
 
   }

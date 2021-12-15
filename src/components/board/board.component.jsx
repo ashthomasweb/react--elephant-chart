@@ -109,6 +109,12 @@ class Board extends Component {
     }
   }
 
+  newBoard = () => {
+    let notes = []
+    this.setState({ notes })
+  }
+
+
   // confirmation, then firestore method
   deleteBoardHandler = async (boardName) => {
     let dropMenu = this.$('.board-drop')
@@ -142,8 +148,11 @@ class Board extends Component {
 
   cancelUpdateMode = () => {
     let id = this.state.currentUpdateId
-    document.getElementById(`${id}`).classList.remove('selected')
-    this.$('.update-frame').classList.remove('selected')
+    if (document.getElementById(`${id}`)) {
+
+      document.getElementById(`${id}`).classList.remove('selected')
+      this.$('.update-frame').classList.remove('selected')
+    }
   }
 
   // Drop Down Menu
@@ -240,8 +249,12 @@ class Board extends Component {
               className='save-board-input'
               placeholder='Enter Board Name'
             />
+            
             <button type='button' onClick={() => this.saveCurrentBoard()}>
               Save
+            </button>
+            <button type='button' className='new-button' onClick={() => this.newBoard()}>
+              New Board
             </button>
             <button type='button' onClick={() => this.userBoardDropDown()}>
               Your Boards
@@ -255,6 +268,7 @@ class Board extends Component {
             onClick={this.newNoteGenerator}>
             Place on Board
           </button>
+          <button type='button' onClick={() => console.log(this.state.notes)} >State</button>
 
         </div>
         <div className='update-frame'>
@@ -296,4 +310,3 @@ export default Board
 
 
 
-{/* <button type='button' onClick={() => console.log(this.state)} >State</button> */}
