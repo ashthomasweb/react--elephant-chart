@@ -1,10 +1,8 @@
-import { newIdFinder } from "../finders/num-finders"
+import { newIdFinder, zIndexFinder } from "../finders/num-finders"
 
 export const newNoteGenerator = (stateObj) => {
     let newNote = { ...stateObj.newNote }
     let notes = [...stateObj.notes]
-
-
     let textarea = document.querySelector('.pad-frame')
     let inputText = document.querySelector('#input-text')
 
@@ -13,8 +11,9 @@ export const newNoteGenerator = (stateObj) => {
     newNote.id = newIdFinder(stateObj)
     newNote.width = getComputedStyle(textarea).getPropertyValue('width')
     newNote.height = getComputedStyle(textarea).getPropertyValue('height')
-    newNote.left = `${parseFloat(getComputedStyle(textarea).getPropertyValue('left'))-Math.floor(Math.random() * 70)-440}px`
-    newNote.top = `${parseFloat(getComputedStyle(textarea).getPropertyValue('top'))+Math.floor(Math.random() * 70)+240}px`
+    newNote.left = `${Math.floor(Math.random() * 70)+180}px`
+    newNote.top = `${Math.floor(Math.random() * 70)+270}px`
+    newNote.zIndex = zIndexFinder(notes)
     inputText.innerText = ''
     notes.push(newNote)
 

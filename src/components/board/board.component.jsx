@@ -22,13 +22,13 @@ class Board extends Component {
     super(props)
 
     this.state = {
-      currentUpdateId: 0,
+      currentUpdateId: 1,
       newNote: {
         id: 1,
-        width: '200px',
-        height: '130px',
-        top: '155px',
-        left: '10px',
+        width: '',
+        height: '',
+        top: '',
+        left: '',
         zIndex: 0,
         imageUrl: blankYellow,
         mouseOffsetX: 0,
@@ -83,6 +83,7 @@ class Board extends Component {
   newNoteGenerator = async () => {
     let notes = await newNoteGenerator(this.state)
     this.setState({ notes })
+    this.cancelUpdateMode()
   }
 
   // data handling methods for user board storage. Database calls BELOW.
@@ -123,6 +124,7 @@ class Board extends Component {
 
   // Update state and display properties of notes. NOT database calls.
   startUpdateHandler = (id) => {
+    this.cancelUpdateMode()
     let notes = [...this.state.notes]
     startUpdate(id, notes)
     // set which note id to update
@@ -141,7 +143,7 @@ class Board extends Component {
   cancelUpdateMode = () => {
     let id = this.state.currentUpdateId
     document.getElementById(`${id}`).classList.remove('selected')
-    this.$('.options-frame').classList.remove('selected')
+    this.$('.update-frame').classList.remove('selected')
   }
 
   // Drop Down Menu
@@ -253,19 +255,21 @@ class Board extends Component {
             onClick={this.newNoteGenerator}>
             Place on Board
           </button>
+
+        </div>
+        <div className='update-frame'>
           <button
-            className='options-btn'
+            className='update-btn'
             type='button'
             onClick={this.updateNoteHandler}>
             Update
           </button>
           <button
-            className='options-btn'
+            className='update-btn'
             type='button'
             onClick={this.cancelUpdateMode}>
             Cancel Update
           </button>
-
         </div>
         <div
           className='pad-frame'
@@ -276,7 +280,6 @@ class Board extends Component {
             ></div>
         </div>
         <div className='trash-frame'>
-          <h3>Recycle Can</h3>
           <div className='trash-cont'>
             <img src={trashTop} className='trash-top' alt='Lid of recycle can'/>
             <img src={trashBottom} className='trash-bottom' alt='Body of recycle can'/>
@@ -289,3 +292,8 @@ class Board extends Component {
 }
 
 export default Board
+
+
+
+
+{/* <button type='button' onClick={() => console.log(this.state)} >State</button> */}

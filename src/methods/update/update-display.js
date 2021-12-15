@@ -4,12 +4,13 @@ export const startUpdate = (id, notesObj) => {
   let newIndex = indexFinder(notesObj, id)
   let noteToUpdate = document.getElementById(`${id}`)
   let inputText = document.querySelector('#input-text')
-  let opFrame = document.querySelector('.options-frame')
+  let upFrame = document.querySelector('.update-frame')
   let padFrame = document.querySelector('.pad-frame')
+
 
   // display cues
   noteToUpdate.classList.add('selected')
-  opFrame.classList.add('selected')
+  upFrame.classList.add('selected')
 
   // send note data to compose area
   inputText.innerText = notesObj[newIndex].noteText
