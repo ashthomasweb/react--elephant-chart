@@ -8,7 +8,7 @@ class NoteItem extends Component {
     super(props)
 
     this.state = {
-      id: this.props.value,
+      id: this.props.id,
       width: this.props.width,
       height: this.props.height,
       top: this.props.top,
@@ -28,10 +28,10 @@ class NoteItem extends Component {
     this.setState({ mouseOffsetY, mouseOffsetX })
   }
 
-  // sets current position of dragged note to Note Component's state, makes it immediately accesible with anon callback.
+  // sets current position of dragged note to Note Component's state for skewmorphic effect
   dragHandler = (ev) => {
-    let xValue = ev.clientX - this.state.mouseOffsetX + 'px'
-    let yValue = ev.clientY - this.state.mouseOffsetY + 'px'
+    let xValue = `${ev.clientX - this.state.mouseOffsetX}px`
+    let yValue = `${ev.clientY - this.state.mouseOffsetY}px`
     let width = this.props.width
     let height = this.props.height
     let border = this.props.border === undefined ? 'none' : this.props.border
@@ -41,12 +41,11 @@ class NoteItem extends Component {
         {
           left: xValue,
           top: yValue,
-          id: this.props.value,
+          id: this.props.id,
           width: width,
           height: height,
           noteText: this.props.noteText,
           border: border
-
         },
         () => {
           this.props.positionUpdater(this.state, ev)
@@ -55,7 +54,7 @@ class NoteItem extends Component {
     } else {
       // handles remaining bad clientX value
       console.log(
-        'ERROR: dragend/dragover clientX value error. Displaying previously known good position. Error occurs during fast clicking of notes due to client not having time to update.'
+        'ERROR: dragend/dragover clientX value error. Displaying previously known good position. Error occurs during fast clicking of notes due to client not having time to update. No notes were lost.'
       )
     }
   }
@@ -73,13 +72,12 @@ class NoteItem extends Component {
     )
   }
 
-  editHandler = (e) => {
-    let id = this.state.id
-    this.props.edit(id)
+  editHandler = () => {
+    this.props.edit(this.state.id)
   }
 
   displayHandler = () => {
-    if (this.props.value <= 2 && this.props.initialDisplay === false ) {
+    if (this.props.id <= 2 && this.props.initialDisplay === false ) {
       return 'none'
     } else {
       return 'block'
@@ -88,9 +86,8 @@ class NoteItem extends Component {
 
   render() {
     const {
-      value,
+      id,
       imageUrl,
-      size,
       width,
       height,
       left,
@@ -99,7 +96,6 @@ class NoteItem extends Component {
       zIndex,
       border
     } = this.props
-
 
     return (
       <div
@@ -113,16 +109,15 @@ class NoteItem extends Component {
           border: `${border}`,
           display: this.displayHandler()
         }}
-        className={`${size} menu-item`}
+        id={id}
+        className={`menu-item`}
         onMouseDown={this.mouseOffset}
         onMouseUp={this.resizeHandler}
         onDrag={this.dragHandler}
         onDoubleClick={this.editHandler}
-        id={value}
         draggable>
         <div className='content'>
-
-          <p className='note-text'  >{noteText}</p>
+          <p className='note-text'>{noteText}</p>
         </div>
       </div>
     )

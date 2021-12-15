@@ -9,17 +9,17 @@ export const trashBox = (e) => {
     }
 }
 
-export const trashHandler = (e, stateObj) => {
+export const trashHandler = (e, notesObj) => {
     let deleteId = e.target.id
     let xMax = e.view.innerWidth
     let yMax = e.view.innerHeight
     if (e.clientX > xMax - 250 && e.clientY > yMax - 250) {
-      for (let i = 0; i < stateObj.length; i++) {
-        if (stateObj[i].id === Number(deleteId)) {
-          stateObj.splice(i, 1)
+      for (let i = 0; i < notesObj.length; i++) {
+        if (notesObj[i].id === Number(deleteId)) {
+          notesObj.splice(i, 1)
         }
       }
     }
     document.querySelector('.trash-frame').classList.remove('hovered')
-    return stateObj
+    return notesObj
 }

@@ -1,22 +1,18 @@
 import React, { Component } from 'react'
-import {
-  auth,
-  createNewUserProfile,
-  getUserRef,
-  getUserBoards,
-} from './firebase/firebase.utils'
+import { auth, createNewUserProfile, getUserRef, getUserBoards } from './firebase/firebase.utils'
 
 import './App.css'
 
 import HomePage from './pages/homepage/homepage.component'
-import CustomButton from './components/custom-button/custom-button.component'
 
 class App extends Component {
   constructor() {
     super()
+    
     this.state = {
       currentUser: null,
     }
+
   }
 
   unsubsribeFromAuth = null
@@ -59,15 +55,6 @@ class App extends Component {
     return (
       <div>
         <HomePage currentUser={this.state.currentUser} />
-
-        {/* development asset */}
-        <CustomButton
-          className='custom-button log'
-          onClick={() => console.log(this.state.currentUser)}>
-          LOG Current User
-        </CustomButton>
-        {/* development asset */}
-
       </div>
     )
   }
