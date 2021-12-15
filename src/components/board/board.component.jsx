@@ -5,6 +5,9 @@ import Header from '../../components/header/header.component'
 
 import blankYellow from '../../assets/trimmed-noborder.png'
 
+import trashTop from '../../assets/trash-top.png'
+import trashBottom from '../../assets/trash-bottom.png'
+
 import { saveUserBoard, userBoards, deleteUserBoard } from '../../firebase/firebase.utils'
 import { initialArray } from '../../assets/initial-array.js'
 import { trashBox, trashHandler } from '../../methods/trash/trashHandlers.js'
@@ -44,7 +47,6 @@ class Board extends Component {
 
   }
 
-  // jQuery-esque universal selector
   $ = (input) => document.querySelector(input)
 
   positionUpdater = (input, e, final = false) => {
@@ -274,7 +276,11 @@ class Board extends Component {
             ></div>
         </div>
         <div className='trash-frame'>
-          <h3>Trash Can</h3>
+          <h3>Recycle Can</h3>
+          <div className='trash-cont'>
+            <img src={trashTop} className='trash-top' alt='Lid of recycle can'/>
+            <img src={trashBottom} className='trash-bottom' alt='Body of recycle can'/>
+          </div>
         </div>
 
       </div>

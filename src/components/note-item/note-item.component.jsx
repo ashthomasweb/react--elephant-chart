@@ -110,7 +110,7 @@ class NoteItem extends Component {
           display: this.displayHandler()
         }}
         id={id}
-        className={`menu-item`}
+        className={`note-comp`}
         onMouseDown={this.mouseOffset}
         onMouseUp={this.resizeHandler}
         onDrag={this.dragHandler}

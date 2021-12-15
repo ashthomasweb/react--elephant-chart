@@ -23,7 +23,7 @@ const Header = ({ currentUser, reset }) => (
   <div className='header'>
       <img src={logo} className='logo' alt='flow-post logo' />
     
-    <div className='options'>
+    <div className='user-options'>
       {currentUser ? ( <div>
         <div className='welcome' >Welcome,<br/>{currentUser.displayName}</div>
         <div className='option' onLoad={closeSignIn()} onClick={() => { clearBoards(); reset(); auth.signOut()}}>SIGN OUT</div></div>

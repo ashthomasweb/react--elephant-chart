@@ -2,7 +2,7 @@
   height: 70px;
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
   position: absolute;
   top: 0;
   pointer-events: none;
@@ -18,7 +18,7 @@
     pointer-events: all;
   }
 
-  .options {
+  .user-options {
     width: 124px;
     height: 124px;
     pointer-events: all;
@@ -26,7 +26,7 @@
     margin-top: 10px;
     text-align: center;
     border: 1px solid lightgray;
-    background-color: rgb(70, 104, 126);
+    background-color: var(--primary);
     border-radius: 2px;
     color: white;
  
