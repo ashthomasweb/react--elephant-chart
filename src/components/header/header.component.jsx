@@ -28,12 +28,14 @@ const Header = ({ currentUser, reset }) => (
         <div className='welcome' >Welcome,<br/>{currentUser.displayName}</div>
         <button className='option' onLoad={closeSignIn()} onClick={() => { clearBoards(); reset(); auth.signOut()}}>SIGN OUT</button></div>
       ) : (
+        <div>
+        <div className='welcome' >Welcome!</div>
         <button
           type='button'
           className='sign-in-modal-btn'
           onClick={() => modalToggle()}>
           SIGN IN / UP
-        </button>
+        </button></div>
       )}
     </div>
     <div

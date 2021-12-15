@@ -6,6 +6,7 @@
   background-color: rgb(22, 112, 215);
   position: absolute;
   z-index: -99999;
+  overflow: hidden;
 
 }
 
@@ -33,15 +34,15 @@
     left: 50px;
     top: 49px;
     width: 80px;
-    padding: 1px 5px;
+    padding: 1px 5px 2px;
   }
 
   .board-drop {
-    background-color: darkslategrey;
+    background-color: var(--secondary);
     padding: 10px 0;
     position: absolute;
     top: 114px;
-    width: 250px;
+    width: 200px;
     display: none;
 
     button {
@@ -58,6 +59,7 @@
     .button-cont {
       position: relative;
       float: left;
+      width: 100%;
     }
     
   }
@@ -75,7 +77,7 @@
   overflow: visible;
   border: 1px solid lightgrey;
   border-radius: 2px;
-  z-index: 0;
+  z-index: 100000000;
 
   button {
     display: block;
@@ -88,9 +90,9 @@
 }
 
 .update-frame {
-  width: 218px;
+  width: 230px;
   height: 45px;
-  left: 316px;
+  left: 310px;
   top: 85px;
   position: absolute;
   background-color: var(--secondary);
@@ -122,7 +124,6 @@
   display: table;
   box-shadow: 3px 3px 3px #4a4a4a, -3px -3px 55px -35px #4a4a4a;
   z-index: 1000000000;
-
 
   #input-text {
     box-sizing: content-box;

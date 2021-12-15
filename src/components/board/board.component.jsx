@@ -53,7 +53,6 @@ class Board extends Component {
     let newNote = { ...input }
     let notes = [...this.state.notes]
     let newIndex = indexFinder(notes, newNote.id)
-
     notes[newIndex] = newNote
     notes[newIndex].zIndex = zIndexFinder(this.state.notes)
     this.setState({ notes })
@@ -111,6 +110,8 @@ class Board extends Component {
 
   newBoard = () => {
     let notes = []
+    this.$('#input-text').innerHTML = ''
+    this.cancelUpdateMode()
     this.setState({ notes })
   }
 
@@ -222,7 +223,7 @@ class Board extends Component {
 
   render() {
     return (
-      <div className='board-backing' onDrop={this.dropHandler}>
+      <div className='board-backing zoom' onDrop={this.dropHandler}>
         <Header
           className='header'
           currentUser={this.props.currentUser}
@@ -268,7 +269,6 @@ class Board extends Component {
             onClick={this.newNoteGenerator}>
             Place on Board
           </button>
-          <button type='button' onClick={() => console.log(this.state.notes)} >State</button>
 
         </div>
         <div className='update-frame'>
@@ -310,3 +310,4 @@ export default Board
 
 
 
+{/* <button type='button' onClick={() => console.log(this.state.notes)} >State</button> */}

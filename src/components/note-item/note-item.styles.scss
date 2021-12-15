@@ -13,7 +13,7 @@
   box-shadow: 3px 3px 3px #4a4a4a, -3px -3px 55px -35px #4a4a4a;
   resize: both;
   white-space: pre-line;
-
+  
   &.large {
     height: 380px;
   }
@@ -28,7 +28,6 @@
 
   &.selected {
     box-shadow: 3px 3px 3px #c9c9c9, -3px -3px 95px -15px #c9c9c9;
-
     outline: 5px solid green!important;
   }
 
