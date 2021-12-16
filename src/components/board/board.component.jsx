@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import NoteItem from '../note-item/note-item.component'
 import Header from '../../components/header/header.component'
 
-import blankYellow from '../../assets/trimmed-noborder.png'
+// import blankYellow from '../../assets/trimmed-noborder.png'
 
 import trashTop from '../../assets/trash-top.png'
 import trashBottom from '../../assets/trash-bottom.png'
@@ -13,9 +13,9 @@ import { initialArray } from '../../assets/initial-array.js'
 import { trashBox, trashHandler } from '../../methods/trash/trashHandlers.js'
 import { indexFinder, zIndexFinder } from '../../methods/finders/num-finders.js'
 import { newNoteGenerator } from '../../methods/new-note/new-note'
+import { startUpdate, updateNote } from '../../methods/update/update-display'
 
 import './board.styles.scss'
-import { startUpdate, updateNote } from '../../methods/update/update-display'
 
 class Board extends Component {
   constructor(props) {
@@ -30,15 +30,17 @@ class Board extends Component {
         top: '',
         left: '',
         zIndex: 0,
-        imageUrl: blankYellow,
+        // imageUrl: blankYellow,
         mouseOffsetX: 0,
         mouseOffsetY: 0,
         noteText: '',
         border: 'none',
+        noteBColor: '#f2ecb3',
       },
       boardObj: {
         name: '',
         notes: [],
+        backgroundColor: 'rgb(22, 112, 215)',
       },
       initialNoteDisplay: true,
       initialArray: initialArray,
@@ -91,6 +93,7 @@ class Board extends Component {
     let boardObj = {
       name: saveInput.value,
       notes: [...this.state.notes],
+      backgroundColor: this.state.boardObj.backgroundColor
     }
     this.setState({ boardObj }, () => {
       // save board to firestore
@@ -195,9 +198,14 @@ class Board extends Component {
       })
       button.addEventListener('click', async () => {
         let notes = []
+        let boardObj = board
         await this.setState({ notes }, () => this.forceUpdate() )
         notes = [...board.notes]
-        this.setState({ notes })
+        
+        if (boardObj.backgroundColor === undefined) {
+          boardObj.backgroundColor = 'rgb(22,112,215)'
+        } 
+        this.setState({ notes, boardObj })
         boardInput.value = board.name
         parentMenuCont.style.display = 'none'
       })
@@ -206,6 +214,18 @@ class Board extends Component {
       newMenu.appendChild(cont)
     })
     parentMenuCont.appendChild(newMenu)
+  }
+
+  // background color styling
+  setBackgroundColor = () => {
+    let boardObj = {...this.state.boardObj}
+    let color = this.$('#color-pick').value
+    console.log(color)
+    boardObj.backgroundColor = this.$('#color-pick').value
+    this.setState({ boardObj })
+
+
+
   }
 
   // used on new user and board load to prevent data leakage
@@ -223,7 +243,11 @@ class Board extends Component {
 
   render() {
     return (
-      <div className='board-backing zoom' onDrop={this.dropHandler}>
+      <div 
+      className='board-backing' 
+      onDrop={this.dropHandler}
+      style={{backgroundColor: this.state.boardObj.backgroundColor}}
+      >
         <Header
           className='header'
           currentUser={this.props.currentUser}
@@ -269,7 +293,9 @@ class Board extends Component {
             onClick={this.newNoteGenerator}>
             Place on Board
           </button>
-
+          {/* <label for="color-pick">Select your background color:</label> */}
+          <button type='button' className='color-elements' onClick={this.setBackgroundColor} >Set Background</button>
+          <input type='color' className='color-elements'  id='color-pick' ></input>
         </div>
         <div className='update-frame'>
           <button
@@ -287,12 +313,13 @@ class Board extends Component {
         </div>
         <div
           className='pad-frame'
-          style={{ backgroundImage: `url(${blankYellow})` }}>
+          style={{ backgroundColor: this.state.newNote.noteBColor }}>
           <div
             id='input-text'
             contentEditable='true'
             ></div>
         </div>
+        <button type='button' onClick={() => console.log(this.state)} >State</button>
         <div className='trash-frame'>
           <div className='trash-cont'>
             <img src={trashTop} className='trash-top' alt='Lid of recycle can'/>
@@ -310,4 +337,3 @@ export default Board
 
 
 
-{/* <button type='button' onClick={() => console.log(this.state.notes)} >State</button> */}

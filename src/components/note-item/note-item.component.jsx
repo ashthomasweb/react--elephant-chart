@@ -87,14 +87,15 @@ class NoteItem extends Component {
   render() {
     const {
       id,
-      imageUrl,
+      // imageUrl,
       width,
       height,
       left,
       top,
       noteText,
       zIndex,
-      border
+      border,
+      noteBColor
     } = this.props
 
     return (
@@ -104,7 +105,8 @@ class NoteItem extends Component {
           height: `${height}`,
           left: `${left}`,
           top: `${top}`,
-          backgroundImage: `url(${imageUrl})`,
+          // backgroundImage: `url(${imageUrl})`,
+          backgroundColor: `${noteBColor ?? '#f2ecb3'}`,
           zIndex: `${zIndex}`,
           border: `${border}`,
           display: this.displayHandler()
