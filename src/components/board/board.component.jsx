@@ -3,8 +3,6 @@ import React, { Component } from 'react'
 import NoteItem from '../note-item/note-item.component'
 import Header from '../../components/header/header.component'
 
-// import blankYellow from '../../assets/trimmed-noborder.png'
-
 import trashTop from '../../assets/trash-top.png'
 import trashBottom from '../../assets/trash-bottom.png'
 
@@ -23,7 +21,12 @@ class Board extends Component {
 
     this.state = {
       currentUpdateId: 1,
-      prevNoteColor: '#f2ecb3',
+      updateCycleActive: false,
+      prevNote: {
+        color: '#f2ecb3',
+        width: '',
+        height: '',
+      },
       newNote: {
         id: 1,
         width: '',
@@ -31,7 +34,6 @@ class Board extends Component {
         top: '',
         left: '',
         zIndex: 0,
-        // imageUrl: blankYellow,
         mouseOffsetX: 0,
         mouseOffsetY: 0,
         noteText: '',
@@ -41,7 +43,7 @@ class Board extends Component {
       boardObj: {
         name: '',
         notes: [],
-        backgroundColor: 'rgb(22, 112, 215)',
+        backgroundColor: '#1670d7',
       },
       initialNoteDisplay: true,
       initialArray: initialArray,
@@ -49,6 +51,7 @@ class Board extends Component {
     }
 
   }
+
 
   $ = (input) => document.querySelector(input)
 
@@ -84,8 +87,11 @@ class Board extends Component {
 
   newNoteGenerator = async () => {
     let notes = await newNoteGenerator(this.state)
+    if ( this.state.updateCycleActive === true ) {
+      notes[notes.length-1].noteBColor = this.$('.pad-frame').style.backgroundColor
+    }
     this.setState({ notes })
-    this.cancelUpdateMode()
+    this.cancelUpdateMode(true)
   }
 
   // data handling methods for user board storage. Database calls BELOW.
@@ -98,7 +104,7 @@ class Board extends Component {
     }
     this.setState({ boardObj }, () => {
       // save board to firestore
-      this.saveBoardToDatabase(this.state.boardObj)
+      this.saveBoardToDatabase(boardObj)
     })
   }
 
@@ -135,14 +141,19 @@ class Board extends Component {
 
   // Update state and display properties of notes. NOT database calls.
   startUpdateHandler = (id) => {
+    
+    let padFrame = this.$('.pad-frame')
     this.cancelUpdateMode()
     let notes = [...this.state.notes]
-    startUpdate(id, notes)
     // set which note id to update
+    let prevNote = {...this.state.prevNote}
     let prevNoteColor = this.$('#note-color-pick').value
-    
+    prevNote.color = prevNoteColor
+    prevNote.width = getComputedStyle(padFrame).getPropertyValue('width')
+    prevNote.height = getComputedStyle(padFrame).getPropertyValue('height')
     let currentUpdateId = id
-    this.setState({ currentUpdateId, prevNoteColor })
+    let updateCycleActive = true
+    this.setState({ currentUpdateId, prevNote, updateCycleActive }, () => startUpdate(id, notes))
   }
 
   updateNoteHandler = async () => {
@@ -150,19 +161,28 @@ class Board extends Component {
     let id = this.state.currentUpdateId
     let notes = await updateNote(id, notesArray)
     this.setState({ notes })
-    this.cancelUpdateMode()
+    this.cancelUpdateMode(true)
   }
 
-  cancelUpdateMode = () => {
+  cancelUpdateMode = (reset=false) => {
     let id = this.state.currentUpdateId
     let padFrame = this.$('.pad-frame')
     let noteColorPicker = this.$('#note-color-pick')
-    padFrame.style.setProperty('background-color', this.state.prevNoteColor)
-    noteColorPicker.value = this.state.prevNoteColor
+    let inputText = this.$('#input-text')
+
+    if (reset === true) {
+      padFrame.style.setProperty('background-color', this.state.prevNote.color)
+      padFrame.style.setProperty('height', this.state.prevNote.height)
+      padFrame.style.setProperty('width', this.state.prevNote.width)
+      noteColorPicker.value = this.state.prevNote.color
+      inputText.innerHTML = ''
+    } 
     if (document.getElementById(`${id}`)) {
       document.getElementById(`${id}`).classList.remove('selected')
       this.$('.update-frame').classList.remove('selected')
     }
+    let updateCycleActive = false
+    this.setState({ updateCycleActive })
   }
 
   // Drop Down Menu
@@ -209,11 +229,13 @@ class Board extends Component {
         notes = [...board.notes]
         
         if (boardObj.backgroundColor === undefined) {
-          boardObj.backgroundColor = 'rgb(22,112,215)'
+          boardObj.backgroundColor = '#1670d7'
         } 
-        this.setState({ notes, boardObj })
-        boardInput.value = board.name
-        parentMenuCont.style.display = 'none'
+        this.setState({ notes, boardObj }, () => {
+          this.displayUpdate()
+          boardInput.value = board.name
+          parentMenuCont.style.display = 'none'
+        })
       })
       cont.appendChild(xButton)
       cont.appendChild(button)
@@ -231,13 +253,13 @@ class Board extends Component {
   }
 
   setNoteColor = () => {
-    let newNote = this.state.newNote
+    let newNote = {...this.state.newNote}
     let noteBColor = this.$('#note-color-pick').value
+    let prevNote = {...this.state.prevNote}
+    prevNote.color = noteBColor
     newNote.noteBColor = noteBColor
-    this.setState({ newNote })
+    this.setState({ newNote, prevNote })
   }
-
-
 
   // used on new user and board load to prevent data leakage
   reRender = async () => {
@@ -251,6 +273,16 @@ class Board extends Component {
     this.userBoards = []
     this.setState({ notes })
   }
+  
+  displayUpdate = () => {
+    this.$('#note-color-pick').defaultValue = this.state.newNote.noteBColor
+    this.$('#bg-color-pick').defaultValue = this.state.boardObj.backgroundColor
+  }
+
+  componentDidMount() {
+    this.displayUpdate()
+  }
+
 
   render() {
     return (
@@ -304,11 +336,10 @@ class Board extends Component {
             onClick={this.newNoteGenerator}>
             Place on Board
           </button>
-          {/* <label for="color-pick">Select your background color:</label> */}
           <button type='button' className='color-elements' onClick={this.setBackgroundColor} >Set Background</button>
           <input type='color' className='color-elements'  id='bg-color-pick' ></input>
           <button type='button' className='color-elements' onClick={this.setNoteColor} >Set Note Color</button>
-          <input type='color' className='color-elements'  id='note-color-pick'></input>
+          <input type='color' className='color-elements'  id='note-color-pick' ></input>
         </div>
         <div className='update-frame'>
           <button
@@ -320,7 +351,7 @@ class Board extends Component {
           <button
             className='update-btn'
             type='button'
-            onClick={this.cancelUpdateMode}>
+            onClick={() => this.cancelUpdateMode(true)}>
             Cancel Update
           </button>
         </div>
@@ -332,7 +363,6 @@ class Board extends Component {
             contentEditable='true'
             ></div>
         </div>
-        <button type='button' style={{position: 'absolute', top: '0', height: '30px', zIndex: '9999999999'}} onClick={() => console.log(this.state)} >Board State</button>
         <div className='trash-frame'>
           <div className='trash-cont'>
             <img src={trashTop} className='trash-top' alt='Lid of recycle can'/>
@@ -349,4 +379,5 @@ export default Board
 
 
 
+{/* <button type='button' style={{position: 'absolute', top: '0', height: '30px', zIndex: '9999999999'}} onClick={() => console.log(this.state)} >Board State</button> */}
 

@@ -15,6 +15,7 @@ export const initialArray = [
     noteText:
       'You can double-click and update me! Recycle me in the corner!',
     border: 'none',
+    noteBColor: '#f2ecb3',
   },
   {
     id: 2,
@@ -28,5 +29,6 @@ export const initialArray = [
     mouseOffsetY: 0,
     noteText: 'Sign in with google or any email to save your boards!',
     border: 'none',
+    noteBColor: '#f2ecb3',
   },
 ]

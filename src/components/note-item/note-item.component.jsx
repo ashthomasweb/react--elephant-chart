@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import blank from '../../assets/trimmed-noborder.png'
 
 import './note-item.styles.scss'
 
@@ -14,7 +13,6 @@ class NoteItem extends Component {
       top: this.props.top,
       left: this.props.left,
       zIndex: this.props.zHigh(),
-      imageUrl: blank,
       mouseOffsetX: 0,
       mouseOffsetY: 0,
       noteText: this.props.noteText,
@@ -35,8 +33,8 @@ class NoteItem extends Component {
     let yValue = `${ev.clientY - this.state.mouseOffsetY}px`
     let width = this.props.width
     let height = this.props.height
-    let border = this.props.border === undefined ? 'none' : this.props.border
-    let color = this.props.noteBColor
+    let border = this.props.border ?? 'none'
+    let color = this.props.noteBColor ?? '#f2ecb3'
 
     if (ev.clientX !== 0) {
       this.setState(
