@@ -18,7 +18,8 @@ class NoteItem extends Component {
       mouseOffsetX: 0,
       mouseOffsetY: 0,
       noteText: this.props.noteText,
-      border: this.props.border
+      border: this.props.border,
+      noteBColor: this.props.noteBColor,
     }
   }
 
@@ -35,6 +36,7 @@ class NoteItem extends Component {
     let width = this.props.width
     let height = this.props.height
     let border = this.props.border === undefined ? 'none' : this.props.border
+    let color = this.props.noteBColor
 
     if (ev.clientX !== 0) {
       this.setState(
@@ -45,7 +47,8 @@ class NoteItem extends Component {
           width: width,
           height: height,
           noteText: this.props.noteText,
-          border: border
+          border: border,
+          noteBColor: color,
         },
         () => {
           this.props.positionUpdater(this.state, ev)

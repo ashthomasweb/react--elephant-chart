@@ -23,6 +23,7 @@ class Board extends Component {
 
     this.state = {
       currentUpdateId: 1,
+      prevNoteColor: '#f2ecb3',
       newNote: {
         id: 1,
         width: '',
@@ -138,8 +139,10 @@ class Board extends Component {
     let notes = [...this.state.notes]
     startUpdate(id, notes)
     // set which note id to update
+    let prevNoteColor = this.$('#note-color-pick').value
+    
     let currentUpdateId = id
-    this.setState({ currentUpdateId })
+    this.setState({ currentUpdateId, prevNoteColor })
   }
 
   updateNoteHandler = async () => {
@@ -152,8 +155,11 @@ class Board extends Component {
 
   cancelUpdateMode = () => {
     let id = this.state.currentUpdateId
+    let padFrame = this.$('.pad-frame')
+    let noteColorPicker = this.$('#note-color-pick')
+    padFrame.style.setProperty('background-color', this.state.prevNoteColor)
+    noteColorPicker.value = this.state.prevNoteColor
     if (document.getElementById(`${id}`)) {
-
       document.getElementById(`${id}`).classList.remove('selected')
       this.$('.update-frame').classList.remove('selected')
     }
@@ -219,14 +225,19 @@ class Board extends Component {
   // background color styling
   setBackgroundColor = () => {
     let boardObj = {...this.state.boardObj}
-    let color = this.$('#color-pick').value
-    console.log(color)
-    boardObj.backgroundColor = this.$('#color-pick').value
+    let color = this.$('#bg-color-pick').value
+    boardObj.backgroundColor = color
     this.setState({ boardObj })
-
-
-
   }
+
+  setNoteColor = () => {
+    let newNote = this.state.newNote
+    let noteBColor = this.$('#note-color-pick').value
+    newNote.noteBColor = noteBColor
+    this.setState({ newNote })
+  }
+
+
 
   // used on new user and board load to prevent data leakage
   reRender = async () => {
@@ -295,7 +306,9 @@ class Board extends Component {
           </button>
           {/* <label for="color-pick">Select your background color:</label> */}
           <button type='button' className='color-elements' onClick={this.setBackgroundColor} >Set Background</button>
-          <input type='color' className='color-elements'  id='color-pick' ></input>
+          <input type='color' className='color-elements'  id='bg-color-pick' ></input>
+          <button type='button' className='color-elements' onClick={this.setNoteColor} >Set Note Color</button>
+          <input type='color' className='color-elements'  id='note-color-pick'></input>
         </div>
         <div className='update-frame'>
           <button
@@ -319,7 +332,7 @@ class Board extends Component {
             contentEditable='true'
             ></div>
         </div>
-        <button type='button' onClick={() => console.log(this.state)} >State</button>
+        <button type='button' style={{position: 'absolute', top: '0', height: '30px', zIndex: '9999999999'}} onClick={() => console.log(this.state)} >Board State</button>
         <div className='trash-frame'>
           <div className='trash-cont'>
             <img src={trashTop} className='trash-top' alt='Lid of recycle can'/>

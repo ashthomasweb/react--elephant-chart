@@ -6,7 +6,7 @@ export const startUpdate = (id, notesObj) => {
   let inputText = document.querySelector('#input-text')
   let upFrame = document.querySelector('.update-frame')
   let padFrame = document.querySelector('.pad-frame')
-
+  let noteColorPick = document.querySelector('#note-color-pick')
 
   // display cues
   noteToUpdate.classList.add('selected')
@@ -14,6 +14,8 @@ export const startUpdate = (id, notesObj) => {
 
   // send note data to compose area
   inputText.innerText = notesObj[newIndex].noteText
+  noteColorPick.value = notesObj[newIndex].noteBColor
+  padFrame.style.setProperty('background-color', notesObj[newIndex].noteBColor)
   padFrame.style.setProperty('width', notesObj[newIndex].width)
   padFrame.style.setProperty('height', notesObj[newIndex].height)
 }
@@ -21,11 +23,13 @@ export const startUpdate = (id, notesObj) => {
 export const updateNote = (id, notesObj) => {
     let inputText = document.querySelector('#input-text')
     let padFrame = document.querySelector('.pad-frame')
+    let noteColor = document.querySelector('#note-color-pick')
     let newIndex = indexFinder(notesObj, id)
     let upNote = { ...notesObj[newIndex] }
 
     // get dimensions and content from selected note
     upNote.noteText = inputText.innerText
+    upNote.noteBColor = noteColor.value
     upNote.width = getComputedStyle(padFrame).getPropertyValue('width')
     upNote.height = getComputedStyle(padFrame).getPropertyValue('height')
     upNote.id = id
