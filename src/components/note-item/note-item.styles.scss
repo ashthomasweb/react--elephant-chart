@@ -46,6 +46,14 @@
       color: darkred;
       font-weight: 900;
     }
+
+    .note-check {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      display: none;
+      height: 15px;
+    }
   }
 
 }

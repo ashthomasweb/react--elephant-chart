@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import check from '../../assets/check.png'
+
 import './note-item.styles.scss'
 
 class NoteItem extends Component {
@@ -18,6 +20,17 @@ class NoteItem extends Component {
       noteText: this.props.noteText,
       border: this.props.border,
       noteBColor: this.props.noteBColor,
+      isMatBoard: this.props.isMatBoard,
+      isChecked: this.props.isChecked,
+    }
+  }
+
+  clickHandler = (e) => {
+    this.mouseOffset(e)
+    if (document.querySelector('#check-toggle').checked === true) {
+      this.props.checkHandler(!this.state.isChecked, e.target.id)
+      let isChecked = !this.state.isChecked
+      this.setState({ isChecked })
     }
   }
 
@@ -65,12 +78,10 @@ class NoteItem extends Component {
     let height = getComputedStyle(e.target).getPropertyValue('height')
     let id = this.state.id
     this.props.resizeHandler(id, width, height)
-    this.setState(
-      {
-        width: width,
-        height: height
-      }
-    )
+    this.setState({
+      width: width,
+      height: height,
+    })
   }
 
   editHandler = () => {
@@ -78,7 +89,7 @@ class NoteItem extends Component {
   }
 
   displayHandler = () => {
-    if (this.props.id <= 2 && this.props.initialDisplay === false ) {
+    if (this.props.id <= 2 && this.props.initialDisplay === false) {
       return 'none'
     } else {
       return 'block'
@@ -88,7 +99,6 @@ class NoteItem extends Component {
   render() {
     const {
       id,
-      // imageUrl,
       width,
       height,
       left,
@@ -96,7 +106,7 @@ class NoteItem extends Component {
       noteText,
       zIndex,
       border,
-      noteBColor
+      noteBColor,
     } = this.props
 
     return (
@@ -106,20 +116,25 @@ class NoteItem extends Component {
           height: `${height}`,
           left: `${left}`,
           top: `${top}`,
-          // backgroundImage: `url(${imageUrl})`,
           backgroundColor: `${noteBColor ?? '#f2ecb3'}`,
           zIndex: `${zIndex}`,
           border: `${border}`,
-          display: this.displayHandler()
+          display: this.displayHandler(),
         }}
         id={id}
         className={`note-comp`}
-        onMouseDown={this.mouseOffset}
+        onMouseDown={this.clickHandler}
         onMouseUp={this.resizeHandler}
         onDrag={this.dragHandler}
         onDoubleClick={this.editHandler}
         draggable>
         <div className='content'>
+          <img
+            src={check}
+            style={{ display: `${this.props.isChecked ? 'block' : 'none'}` }}
+            className='note-check'
+            alt='checkmark'
+          />
           <p className='note-text'>{noteText}</p>
         </div>
       </div>

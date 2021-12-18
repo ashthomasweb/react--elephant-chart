@@ -22,7 +22,7 @@ export const zIndexFinder = (notesObj) => {
 export const indexFinder = (notesObj, id) => {
     let newIndex
     notesObj.forEach((note) => {
-        if (note.id === id) {
+        if (note.id === Number(id)) {
           newIndex = notesObj.indexOf(note)
         }
       })
