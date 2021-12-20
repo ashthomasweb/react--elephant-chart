@@ -1,4 +1,4 @@
-import { newIdFinder, zIndexFinder } from "../finders/num-finders"
+import { newIdFinder, zIndexFinder, zIndexFinderMat } from "../finders/num-finders"
 
 export const newNoteGenerator = (stateObj, isMat=false) => {
     let newNote = { ...stateObj.newNote }
@@ -14,8 +14,12 @@ export const newNoteGenerator = (stateObj, isMat=false) => {
     newNote.top = `${Math.floor(Math.random() * 70)+270}px`
     newNote.noteText = inputText.innerText
     inputText.innerText = ''
-    newNote.zIndex = zIndexFinder(notes, newNote.id, isMat)
-    if (isMat) newNote.isMatBoard = true
+    if (isMat) {
+        newNote.isMatBoard = true
+        newNote.zIndex = zIndexFinderMat(notes)
+    } else {
+        newNote.zIndex = zIndexFinder(notes)
+    }
     notes.push(newNote)
 
     return notes

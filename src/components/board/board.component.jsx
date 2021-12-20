@@ -9,7 +9,7 @@ import trashBottom from '../../assets/trash-bottom.png'
 import { saveUserBoard, userBoards, deleteUserBoard } from '../../firebase/firebase.utils'
 import { initialArray } from '../../assets/initial-array.js'
 import { trashBox, trashHandler } from '../../methods/trash/trashHandlers.js'
-import { indexFinder, zIndexFinder } from '../../methods/finders/num-finders.js'
+import { indexFinder, zIndexFinder, zIndexDrag } from '../../methods/finders/num-finders.js'
 import { newNoteGenerator } from '../../methods/new-note/new-note'
 import { startUpdate, updateNote } from '../../methods/update/update-display'
 
@@ -58,17 +58,16 @@ class Board extends Component {
   $ = (input) => document.querySelector(input)
 
   positionUpdater = (input, e, final = false) => { 
-    if (final) {
-      // don't check for trash handling until drop
-      final === false && trashBox(e)
-      return
+    if (input) {
+
+      let newNote = { ...input }
+      let notes = [...this.state.notes]
+      let newIndex = indexFinder(notes, newNote.id)
+      notes[newIndex] = newNote
+      notes[newIndex].zIndex = zIndexDrag(this.state.notes, newNote.isMatBoard)
+      this.setState({ notes })
     }
-    let newNote = { ...input }
-    let notes = [...this.state.notes]
-    let newIndex = indexFinder(notes, newNote.id)
-    notes[newIndex] = newNote
-    notes[newIndex].zIndex = zIndexFinder(this.state.notes, newNote.id)
-    this.setState({ notes })
+    final === false && trashBox(e)
   }
 
   dropHandler = async (e) => {
@@ -88,6 +87,10 @@ class Board extends Component {
     newNote.zIndex = notes[newIndex].zIndex
     notes[newIndex] = newNote
     this.setState({ notes })
+  }
+
+  newMatHandler = () => {
+    this.newNoteHandler(true)
   }
 
   newNoteHandler = async (isMat) => {
@@ -315,7 +318,7 @@ class Board extends Component {
             id={id}
             positionUpdater={this.positionUpdater}
             resizeHandler={this.resize}
-            zHigh={() => zIndexFinder(this.state.notes, id)}
+            zHigh={() => zIndexFinder(this.state.notes)}
             edit={this.startUpdateHandler}
             initialDisplay={this.state.initialNoteDisplay}
             checkHandler={this.checkHandler}
@@ -347,13 +350,13 @@ class Board extends Component {
           <button
             className='options-btn'
             type='button'
-            onClick={() => this.newNoteHandler(false)}>
+            onClick={() => this.newNoteHandler()}>
             Place on Board
           </button>
           <button
             className='options-btn mat'
             type='button'
-            onClick={() => this.newNoteHandler(true)}>
+            onClick={() => this.newMatHandler()}>
             Mat
           </button>
 

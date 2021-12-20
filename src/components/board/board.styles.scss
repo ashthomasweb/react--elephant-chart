@@ -238,7 +238,7 @@
   border-radius: 2px;
   border: 1px solid lightgrey;
   background-color: var(--primary);
-  z-index: 2147483646;
+  z-index: -2147483646;
 
   &:hover {
     background-color: var(--tertiary);

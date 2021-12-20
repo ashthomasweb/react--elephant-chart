@@ -9,35 +9,32 @@ export const newIdFinder = (stateObj) => {
   return Math.max.apply(null, idList) + 1
 }
 
-export const zIndexFinder = async (notesObj, id, isMat = false) => {
-  let zList = []
-
+export const zIndexDrag = (notes, isMat) => {
+  console.log('hi dave')
   if (isMat) {
-    zList = [-2147483645]
-    notesObj.forEach((note) => {
-      if (note.isMatBoard === true) {
-        zList.push(note.zIndex)
-      }
-    })
+    return zIndexFinderMat(notes)
   } else {
-    let newIndex = await indexFinder(notesObj, id)
-    console.log(newIndex)
-    if (notesObj[newIndex].isMatBoard === undefined) {
-      zList = [0]
-      notesObj.forEach((note) => {
-        zList.push(note.zIndex)
-      })
-    } else if (notesObj[newIndex].isMatBoard === true) {
-      zList = [-2147483645]
-      notesObj.forEach((note) => {
-        if (note.isMatBoard === true) {
-          zList.push(note.zIndex)
-        }
-      })
-    } else {
-      console.log('zIndexHandler error')
-    }
+    return zIndexFinder(notes)
   }
+}
+
+export const zIndexFinderMat = (notesObj) => {
+  let zList = [-2147483645]
+  notesObj.forEach((note) => {
+    if (note.isMatBoard === true) {
+      zList.push(note.zIndex)
+    }
+  })
+
+  return Math.max.apply(null, zList) + 1
+}
+
+export const zIndexFinder = (notesObj) => {
+  let zList = [0]
+  notesObj.forEach((note) => {
+    zList.push(note.zIndex)
+  })
+
   // NEED conditional to reset index if too large...outlying case, but would stop the stacking ability if maxed.
   // Needs to retain stack order, but reduce zIndexes to a workable range, without taking them below 0
   return Math.max.apply(null, zList) + 1
