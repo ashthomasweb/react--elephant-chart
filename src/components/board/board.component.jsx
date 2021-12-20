@@ -57,15 +57,18 @@ class Board extends Component {
 
   $ = (input) => document.querySelector(input)
 
-  positionUpdater = (input, e, final = false) => {
+  positionUpdater = (input, e, final = false) => { 
+    if (final) {
+      // don't check for trash handling until drop
+      final === false && trashBox(e)
+      return
+    }
     let newNote = { ...input }
     let notes = [...this.state.notes]
     let newIndex = indexFinder(notes, newNote.id)
     notes[newIndex] = newNote
-    notes[newIndex].zIndex = zIndexFinder(this.state.notes)
+    notes[newIndex].zIndex = zIndexFinder(this.state.notes, newNote.id)
     this.setState({ notes })
-    // don't check for trash handling until drop
-    final === false && trashBox(e)
   }
 
   dropHandler = async (e) => {
@@ -87,8 +90,8 @@ class Board extends Component {
     this.setState({ notes })
   }
 
-  newNoteGenerator = async () => {
-    let notes = await newNoteGenerator(this.state)
+  newNoteHandler = async (isMat) => {
+    let notes = await newNoteGenerator(this.state, isMat)
     if ( this.state.updateCycleActive === true ) {
       notes[notes.length-1].noteBColor = this.$('.pad-frame').style.backgroundColor
     }
@@ -312,7 +315,7 @@ class Board extends Component {
             id={id}
             positionUpdater={this.positionUpdater}
             resizeHandler={this.resize}
-            zHigh={() => zIndexFinder(this.state.notes)}
+            zHigh={() => zIndexFinder(this.state.notes, id)}
             edit={this.startUpdateHandler}
             initialDisplay={this.state.initialNoteDisplay}
             checkHandler={this.checkHandler}
@@ -344,13 +347,13 @@ class Board extends Component {
           <button
             className='options-btn'
             type='button'
-            onClick={this.newNoteGenerator}>
+            onClick={() => this.newNoteHandler(false)}>
             Place on Board
           </button>
           <button
             className='options-btn mat'
             type='button'
-            onClick={this.newMatGenerator}>
+            onClick={() => this.newNoteHandler(true)}>
             Mat
           </button>
 

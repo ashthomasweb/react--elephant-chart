@@ -5,7 +5,7 @@
   flex-wrap: wrap;
   // background-color: rgb(22, 112, 215);
   position: absolute;
-  z-index: -99999;
+  z-index: -2147483647;
   overflow: hidden;
 
 }
@@ -198,7 +198,7 @@
   position: absolute;
   background-size: cover;
   resize: both!important;
-  border: 1px solid black;
+  outline: 1px solid black;
   overflow: hidden;
   padding: 10px;
   display: table;
@@ -238,6 +238,7 @@
   border-radius: 2px;
   border: 1px solid lightgrey;
   background-color: var(--primary);
+  z-index: 2147483646;
 
   &:hover {
     background-color: var(--tertiary);

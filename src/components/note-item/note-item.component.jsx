@@ -107,6 +107,7 @@ class NoteItem extends Component {
       zIndex,
       border,
       noteBColor,
+      isMatBoard
     } = this.props
 
     return (
@@ -128,7 +129,7 @@ class NoteItem extends Component {
         onDrag={this.dragHandler}
         onDoubleClick={this.editHandler}
         draggable>
-        <div className='content'>
+        <div className={`content isMat-${isMatBoard}`}>
           <img
             src={check}
             style={{ display: `${this.props.isChecked ? 'block' : 'none'}` }}
