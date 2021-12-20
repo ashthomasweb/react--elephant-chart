@@ -23,18 +23,31 @@
   .save-board-input {
     width: 134px;
     border: none;
+    height: 20px;
+    margin-bottom: -2px;
+    padding-left: 3px;
+
+    &:focus {
+      outline: 1px solid grey;
+    }
   }
 
   h3 {
-    margin: 2px auto 1px;
+    margin: 1px auto 1px;
   }
 
   .new-button {
     position: absolute;
-    left: 50px;
-    top: 49px;
+    left: 55px;
+    top: 48px;
     width: 80px;
     padding: 1px 5px 2px;
+    height: 22px;
+  }
+
+  button {
+    margin: 8px 8px!important;
+    height: 22px;
   }
 
   .board-drop {
@@ -66,9 +79,10 @@
 }
 
 .options-frame {
-  width: 340px;
+  width: 341px;
   height: 124px;
   position: absolute;
+  margin: 0 5px;
   top: 10px;
   left: 275px;
   padding: 0 0 0 160px;
@@ -81,7 +95,7 @@
 
   button {
     display: block;
-    margin: 8px 12px;
+    margin: 4px 12px 0;
   }
 
   &.selected {
@@ -90,25 +104,49 @@
 
   .color-elements {
     display: inline-block;
-    margin: 0 0 0 5px;
+    margin: 8px 0 0px 5px;
     bottom: 0;
     position: relative;
+    height: 21px;
   }
 
   .mat {
     position: absolute;
-    top: 4px;
-    right: 8px;
+    top: 6px;
+    right: 7px;
     margin: 0;
+    height: 21px;
+    width: 50px;
+  }
+
+  .place-btn {
+    height: 21px;
+    position: relative;
+    right: 7px;
+    width: 111px;
+    margin-top: 6px;
+
+  }
+
+  .check-label {
+    margin: 0;
+    cursor: pointer;
+    z-index: 10;
+    position: relative;
+    left: 13px;
+    top: 7px;
+    font-size: 14px;
+    user-select: none;
   }
 
   .switch {
     position: absolute;
     display: inline-block;
-    width: 54px;
-    height: 28px;
-    bottom: 4px;
-    right: 8px;
+    width: 163px;
+    height: 24px;
+    bottom: 6px;
+    right: 10px;
+    z-index: 9;
   }
   
   /* Hide default HTML checkbox */
@@ -134,27 +172,31 @@
   .slider:before {
     position: absolute;
     content: "";
-    height: 20px;
-    width: 20px;
-    left: 5px;
+    height: 16px;
+    width: 16px;
+    right: 24px;
     bottom: 4px;
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
   }
+
+  input {
+    left: 0px;
+  }
   
   input:checked + .slider {
-    background-color: #2196F3;
+    background-color: #359b42;
   }
   
   input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px #359b42;
   }
   
   input:checked + .slider:before {
-    -webkit-transform: translateX(21px);
-    -ms-transform: translateX(21px);
-    transform: translateX(21px);
+    -webkit-transform: translateX(18px);
+    -ms-transform: translateX(18px);
+    transform: translateX(18px);
   }
   
   /* Rounded sliders */
@@ -192,7 +234,7 @@
 }
 
 .pad-frame {
-  left: 625px;
+  left: 632px;
   top: 10px;
   height: 124px;
   position: absolute;

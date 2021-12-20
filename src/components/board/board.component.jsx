@@ -341,14 +341,14 @@ class Board extends Component {
             <button type='button' className='new-button' onClick={() => this.newBoard()}>
               New Board
             </button>
-            <button type='button' onClick={() => this.userBoardDropDown()}>
-              Your Boards
+            <button type='button' style={{width: '135px'}} onClick={() => this.userBoardDropDown()}>
+              Your Saved Boards
             </button>
             <div className='board-drop'></div>
           </div>
 
           <button
-            className='options-btn'
+            className='place-btn'
             type='button'
             onClick={() => this.newNoteHandler()}>
             Place on Board
@@ -362,17 +362,14 @@ class Board extends Component {
 
           <button type='button' className='color-elements' onClick={this.setBackgroundColor} >Set Background</button>
           <input type='color' className='color-elements'  id='bg-color-pick' ></input>
-          <button type='button' className='color-elements' onClick={this.setNoteColor} >Set Note Color</button>
+          <button type='button' className='color-elements' style={{width: '110px'}} onClick={this.setNoteColor} >Set Note Color</button>
           <input type='color' className='color-elements'  id='note-color-pick' ></input>
-          <p style={{margin: '0'}}>Mark Complete</p>
+          <label htmlFor='check-toggle' className='check-label'>Check Off Note</label>
           <label className="switch">
             <input id='check-toggle' type="checkbox"/>
             <span className="slider round"></span>
           </label>
         </div>
-<button type='button' style={{position: 'absolute', top: '0', height: '30px', zIndex: '9999999999'}} onClick={() => console.log(this.state)} >Board State</button>
-
-
         <div className='update-frame'>
           <button
             className='update-btn'
@@ -412,3 +409,4 @@ export default Board
 
 
 
+{/* <button type='button' style={{position: 'absolute', top: '0', height: '30px', zIndex: '9999999999'}} onClick={() => console.log(this.state)} >Board State</button> */}

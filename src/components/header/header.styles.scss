@@ -1,5 +1,5 @@
 .header {
-  height: 70px;
+  height: 134px;
   width: 100%;
   display: flex;
   // justify-content: space-between;
@@ -22,8 +22,7 @@
     width: 124px;
     height: 124px;
     pointer-events: all;
-    margin-right: 10px;
-    margin-top: 10px;
+    margin: 10px 5px;
     text-align: center;
     border: 1px solid lightgray;
     background-color: var(--primary);
