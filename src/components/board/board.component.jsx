@@ -6,10 +6,18 @@ import Header from '../../components/header/header.component'
 import trashTop from '../../assets/trash-top.png'
 import trashBottom from '../../assets/trash-bottom.png'
 
-import { saveUserBoard, userBoards, deleteUserBoard } from '../../firebase/firebase.utils'
+import {
+  saveUserBoard,
+  userBoards,
+  deleteUserBoard,
+} from '../../firebase/firebase.utils'
 import { initialArray } from '../../assets/initial-array.js'
 import { trashBox, trashHandler } from '../../methods/trash/trashHandlers.js'
-import { indexFinder, zIndexFinder, zIndexDrag } from '../../methods/finders/num-finders.js'
+import {
+  indexFinder,
+  zIndexFinder,
+  zIndexDrag,
+} from '../../methods/finders/num-finders.js'
 import { newNoteGenerator } from '../../methods/new-note/new-note'
 import { startUpdate, updateNote } from '../../methods/update/update-display'
 
@@ -20,7 +28,7 @@ class Board extends Component {
     super(props)
 
     this.state = {
-      currentUpdateId: 1,
+      currentUpdateId: 0,
       updateCycleActive: false,
       prevNote: {
         color: '#f2ecb3',
@@ -51,15 +59,12 @@ class Board extends Component {
       initialArray: initialArray,
       notes: initialArray,
     }
-
   }
-
 
   $ = (input) => document.querySelector(input)
 
-  positionUpdater = (input, e, final = false) => { 
+  positionUpdater = (input, e, final = false) => {
     if (input) {
-
       let newNote = { ...input }
       let notes = [...this.state.notes]
       let newIndex = indexFinder(notes, newNote.id)
@@ -74,11 +79,8 @@ class Board extends Component {
     this.positionUpdater(null, e, true)
     let notesArray = [...this.state.notes]
     let notes = await trashHandler(e, notesArray)
-    const isMatch = notes.some(elem => elem.id === this.state.currentUpdateId)
-    if (isMatch === false) {
-      this.cancelUpdateMode(true)
-    }
-    console.log(isMatch)
+    let isMatch = notes.some((elem) => elem.id === this.state.currentUpdateId)
+    isMatch === false & this.state.currentUpdateId !== 0 && this.cancelUpdateMode(true)
     this.setState({ notes })
   }
 
@@ -100,11 +102,12 @@ class Board extends Component {
 
   newNoteHandler = async (isMat) => {
     let notes = await newNoteGenerator(this.state, isMat)
-    if ( this.state.updateCycleActive === true ) {
-      notes[notes.length-1].noteBColor = this.$('.pad-frame').style.backgroundColor
+    if (this.state.updateCycleActive === true) {
+      notes[notes.length - 1].noteBColor =
+        this.$('.pad-frame').style.backgroundColor
     }
     this.setState({ notes })
-    this.cancelUpdateMode()
+    this.state.updateCycleActive && this.cancelUpdateMode(true)
   }
 
   // data handling methods for user board storage. Database calls BELOW.
@@ -113,7 +116,7 @@ class Board extends Component {
     let boardObj = {
       name: saveInput.value,
       notes: [...this.state.notes],
-      backgroundColor: this.state.boardObj.backgroundColor
+      backgroundColor: this.state.boardObj.backgroundColor,
     }
     this.setState({ boardObj }, () => {
       // save board to firestore
@@ -138,7 +141,6 @@ class Board extends Component {
     this.setState({ notes })
   }
 
-
   // confirmation, then firestore method
   deleteBoardHandler = async (boardName) => {
     let dropMenu = this.$('.board-drop')
@@ -154,19 +156,20 @@ class Board extends Component {
 
   // Update state and display properties of notes. NOT database calls.
   startUpdateHandler = (id) => {
-    
     let padFrame = this.$('.pad-frame')
     this.cancelUpdateMode()
     let notes = [...this.state.notes]
     // set which note id to update
-    let prevNote = {...this.state.prevNote}
+    let prevNote = { ...this.state.prevNote }
     let prevNoteColor = this.$('#note-color-pick').value
     prevNote.color = prevNoteColor
     prevNote.width = getComputedStyle(padFrame).getPropertyValue('width')
     prevNote.height = getComputedStyle(padFrame).getPropertyValue('height')
     let currentUpdateId = id
     let updateCycleActive = true
-    this.setState({ currentUpdateId, prevNote, updateCycleActive }, () => startUpdate(id, notes))
+    this.setState({ currentUpdateId, prevNote, updateCycleActive }, () =>
+      startUpdate(id, notes)
+    )
   }
 
   updateNoteHandler = async () => {
@@ -177,7 +180,7 @@ class Board extends Component {
     this.cancelUpdateMode(true)
   }
 
-  cancelUpdateMode = (reset=false) => {
+  cancelUpdateMode = (reset = false) => {
     let id = this.state.currentUpdateId
     let padFrame = this.$('.pad-frame')
     let noteColorPicker = this.$('#note-color-pick')
@@ -189,7 +192,7 @@ class Board extends Component {
       padFrame.style.setProperty('width', this.state.prevNote.width)
       noteColorPicker.value = this.state.prevNote.color
       inputText.innerHTML = ''
-    } 
+    }
     if (document.getElementById(`${id}`)) {
       document.getElementById(`${id}`).classList.remove('selected')
       this.$('.update-frame').classList.remove('selected')
@@ -238,12 +241,12 @@ class Board extends Component {
       button.addEventListener('click', async () => {
         let notes = []
         let boardObj = board
-        await this.setState({ notes }, () => this.forceUpdate() )
+        await this.setState({ notes }, () => this.forceUpdate())
         notes = [...board.notes]
-        
+
         if (boardObj.backgroundColor === undefined) {
           boardObj.backgroundColor = '#1670d7'
-        } 
+        }
         this.setState({ notes, boardObj }, () => {
           this.displayUpdate()
           boardInput.value = board.name
@@ -259,16 +262,16 @@ class Board extends Component {
 
   // background color styling
   setBackgroundColor = () => {
-    let boardObj = {...this.state.boardObj}
+    let boardObj = { ...this.state.boardObj }
     let color = this.$('#bg-color-pick').value
     boardObj.backgroundColor = color
     this.setState({ boardObj })
   }
 
   setNoteColor = () => {
-    let newNote = {...this.state.newNote}
+    let newNote = { ...this.state.newNote }
     let noteBColor = this.$('#note-color-pick').value
-    let prevNote = {...this.state.prevNote}
+    let prevNote = { ...this.state.prevNote }
     prevNote.color = noteBColor
     newNote.noteBColor = noteBColor
     this.setState({ newNote, prevNote })
@@ -286,7 +289,7 @@ class Board extends Component {
     this.userBoards = []
     this.setState({ notes })
   }
-  
+
   displayUpdate = () => {
     this.$('#note-color-pick').defaultValue = this.state.newNote.noteBColor
     this.$('#bg-color-pick').defaultValue = this.state.boardObj.backgroundColor
@@ -304,14 +307,12 @@ class Board extends Component {
     this.setState({ notes })
   }
 
-
   render() {
     return (
-      <div 
-      className='board-backing' 
-      onDrop={this.dropHandler}
-      style={{backgroundColor: this.state.boardObj.backgroundColor}}
-      >
+      <div
+        className='board-backing'
+        onDrop={this.dropHandler}
+        style={{ backgroundColor: this.state.boardObj.backgroundColor }}>
         <Header
           className='header'
           currentUser={this.props.currentUser}
@@ -331,7 +332,6 @@ class Board extends Component {
           />
         ))}
         <div className='options-frame'>
-
           <div className='database-options'>
             <h3>Save Boards</h3>
             <input
@@ -339,14 +339,20 @@ class Board extends Component {
               className='save-board-input'
               placeholder='Enter Board Name'
             />
-            
+
             <button type='button' onClick={() => this.saveCurrentBoard()}>
               Save
             </button>
-            <button type='button' className='new-button' onClick={() => this.newBoard()}>
+            <button
+              type='button'
+              className='new-button'
+              onClick={() => this.newBoard()}>
               New Board
             </button>
-            <button type='button' style={{width: '135px'}} onClick={() => this.userBoardDropDown()}>
+            <button
+              type='button'
+              style={{ width: '135px' }}
+              onClick={() => this.userBoardDropDown()}>
               Your Saved Boards
             </button>
             <div className='board-drop'></div>
@@ -365,14 +371,33 @@ class Board extends Component {
             Mat
           </button>
 
-          <button type='button' className='color-elements' onClick={this.setBackgroundColor} >Set Background</button>
-          <input type='color' className='color-elements'  id='bg-color-pick' ></input>
-          <button type='button' className='color-elements' style={{width: '110px'}} onClick={this.setNoteColor} >Set Note Color</button>
-          <input type='color' className='color-elements'  id='note-color-pick' ></input>
-          <label className="switch">
-          <label htmlFor='check-toggle' className='check-label'>Check Off Note</label>
-            <input id='check-toggle' type="checkbox"/>
-            <span className="slider round"></span>
+          <button
+            type='button'
+            className='color-elements'
+            onClick={this.setBackgroundColor}>
+            Set Background
+          </button>
+          <input
+            type='color'
+            className='color-elements'
+            id='bg-color-pick'></input>
+          <button
+            type='button'
+            className='color-elements'
+            style={{ width: '110px' }}
+            onClick={this.setNoteColor}>
+            Set Note Color
+          </button>
+          <input
+            type='color'
+            className='color-elements'
+            id='note-color-pick'></input>
+          <label className='switch'>
+            <label htmlFor='check-toggle' className='check-label'>
+              Check Off Note
+            </label>
+            <input id='check-toggle' type='checkbox' />
+            <span className='slider round'></span>
           </label>
         </div>
         <div className='update-frame'>
@@ -392,24 +417,38 @@ class Board extends Component {
         <div
           className='pad-frame'
           style={{ backgroundColor: this.state.newNote.noteBColor }}>
-          <div
-            id='input-text'
-            contentEditable='true'
-            ></div>
+          <div id='input-text' contentEditable='true'></div>
         </div>
 
         <div className='trash-frame'>
           <div className='trash-cont'>
-            <img src={trashTop} className='trash-top' alt='Lid of recycle can'/>
-            <img src={trashBottom} className='trash-bottom' alt='Body of recycle can'/>
+            <img
+              src={trashTop}
+              className='trash-top'
+              alt='Lid of recycle can'
+            />
+            <img
+              src={trashBottom}
+              className='trash-bottom'
+              alt='Body of recycle can'
+            />
           </div>
         </div>
-
       </div>
     )
   }
 }
 
 export default Board
-{/* <button type='button' style={{position: 'absolute', top: '0', height: '30px', zIndex: '9999999999'}} onClick={() => console.log(this.state)} >Board State</button> */}
 
+        // <button
+        //   type='button'
+        //   style={{
+        //     position: 'absolute',
+        //     top: '0',
+        //     height: '30px',
+        //     zIndex: '9999999999',
+        //   }}
+        //   onClick={() => console.log(this.state)}>
+        //   Board State
+        // </button>
