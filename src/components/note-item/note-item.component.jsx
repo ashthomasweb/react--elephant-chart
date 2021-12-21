@@ -48,6 +48,8 @@ class NoteItem extends Component {
     let height = this.props.height
     let border = this.props.border ?? 'none'
     let color = this.props.noteBColor ?? '#f2ecb3'
+    let isChecked = this.props.isChecked ?? false
+    let isMatBoard = this.props.isMatBoard ?? false
 
     if (ev.clientX !== 0) {
       this.setState(
@@ -60,6 +62,8 @@ class NoteItem extends Component {
           noteText: this.props.noteText,
           border: border,
           noteBColor: color,
+          isChecked: isChecked,
+          isMatBoard: isMatBoard
         },
         () => {
           this.props.positionUpdater(this.state, ev)

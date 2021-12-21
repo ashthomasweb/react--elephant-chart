@@ -74,6 +74,11 @@ class Board extends Component {
     this.positionUpdater(null, e, true)
     let notesArray = [...this.state.notes]
     let notes = await trashHandler(e, notesArray)
+    const isMatch = notes.some(elem => elem.id === this.state.currentUpdateId)
+    if (isMatch === false) {
+      this.cancelUpdateMode(true)
+    }
+    console.log(isMatch)
     this.setState({ notes })
   }
 
@@ -99,7 +104,7 @@ class Board extends Component {
       notes[notes.length-1].noteBColor = this.$('.pad-frame').style.backgroundColor
     }
     this.setState({ notes })
-    this.cancelUpdateMode(true)
+    this.cancelUpdateMode()
   }
 
   // data handling methods for user board storage. Database calls BELOW.
@@ -364,8 +369,8 @@ class Board extends Component {
           <input type='color' className='color-elements'  id='bg-color-pick' ></input>
           <button type='button' className='color-elements' style={{width: '110px'}} onClick={this.setNoteColor} >Set Note Color</button>
           <input type='color' className='color-elements'  id='note-color-pick' ></input>
-          <label htmlFor='check-toggle' className='check-label'>Check Off Note</label>
           <label className="switch">
+          <label htmlFor='check-toggle' className='check-label'>Check Off Note</label>
             <input id='check-toggle' type="checkbox"/>
             <span className="slider round"></span>
           </label>
@@ -392,6 +397,8 @@ class Board extends Component {
             contentEditable='true'
             ></div>
         </div>
+<button type='button' style={{position: 'absolute', top: '0', height: '30px', zIndex: '9999999999'}} onClick={() => console.log(this.state)} >Board State</button>
+
         <div className='trash-frame'>
           <div className='trash-cont'>
             <img src={trashTop} className='trash-top' alt='Lid of recycle can'/>
@@ -406,7 +413,3 @@ class Board extends Component {
 
 export default Board
 
-
-
-
-{/* <button type='button' style={{position: 'absolute', top: '0', height: '30px', zIndex: '9999999999'}} onClick={() => console.log(this.state)} >Board State</button> */}

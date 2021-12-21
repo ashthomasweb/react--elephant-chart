@@ -130,13 +130,13 @@
 
   .check-label {
     margin: 0;
-    cursor: pointer;
     z-index: 10;
     position: relative;
-    left: 13px;
-    top: 7px;
+    left: 9px;
+    top: 0px;
     font-size: 14px;
     user-select: none;
+    cursor: pointer;
   }
 
   .switch {

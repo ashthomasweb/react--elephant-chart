@@ -10,7 +10,6 @@ export const newIdFinder = (stateObj) => {
 }
 
 export const zIndexDrag = (notes, isMat) => {
-  console.log('hi dave')
   if (isMat) {
     return zIndexFinderMat(notes)
   } else {
