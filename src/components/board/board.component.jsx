@@ -397,7 +397,6 @@ class Board extends Component {
             contentEditable='true'
             ></div>
         </div>
-<button type='button' style={{position: 'absolute', top: '0', height: '30px', zIndex: '9999999999'}} onClick={() => console.log(this.state)} >Board State</button>
 
         <div className='trash-frame'>
           <div className='trash-cont'>
@@ -412,4 +411,5 @@ class Board extends Component {
 }
 
 export default Board
+{/* <button type='button' style={{position: 'absolute', top: '0', height: '30px', zIndex: '9999999999'}} onClick={() => console.log(this.state)} >Board State</button> */}
 
