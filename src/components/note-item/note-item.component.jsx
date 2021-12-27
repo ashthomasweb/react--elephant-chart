@@ -93,7 +93,7 @@ class NoteItem extends Component {
   }
 
   displayHandler = () => {
-    if (this.props.id <= 2 && this.props.initialDisplay === false) {
+    if (this.props.id <= 4 && this.props.initialDisplay === false) {
       return 'none'
     } else {
       return 'block'
