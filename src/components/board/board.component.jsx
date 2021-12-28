@@ -80,7 +80,8 @@ class Board extends Component {
     let notesArray = [...this.state.notes]
     let notes = await trashHandler(e, notesArray)
     let isMatch = notes.some((elem) => elem.id === this.state.currentUpdateId)
-    isMatch === false & this.state.currentUpdateId !== 0 && this.cancelUpdateMode(true)
+    ;(isMatch === false) & (this.state.currentUpdateId !== 0) &&
+      this.cancelUpdateMode(true)
     this.setState({ notes })
   }
 
@@ -307,6 +308,56 @@ class Board extends Component {
     this.setState({ notes })
   }
 
+  findMatGroup = () => {
+    if (!this.state.updateCycleActive) {
+      console.log('Please select a Mat')
+      return 
+    }
+
+    let notes = [...this.state.notes]
+    let newMatId = this.state.currentUpdateId
+    let newIndex = indexFinder(notes, newMatId)
+    let mat = notes[newIndex]
+    let groupTop = parseFloat(mat.top)
+    let groupBottom = parseFloat(mat.top) + parseFloat(mat.height)
+    let groupLeft = parseFloat(mat.left)
+    let groupRight = parseFloat(mat.left) + parseFloat(mat.width)
+
+    notes.forEach((note) => {
+      let noteTop = parseFloat(note.top)
+      let noteBottom = parseFloat(note.top) + parseFloat(note.height)
+      let noteLeft = parseFloat(note.left)
+      let noteRight = parseFloat(note.left) + parseFloat(note.width)
+
+      if (noteTop > groupTop & noteTop < groupBottom) {
+        if (noteLeft > groupLeft & noteLeft < groupRight) {
+          console.log('1.1: ' + note.id)
+          return
+        }
+        if (noteRight < groupRight & noteRight > groupLeft ) {
+          console.log('1.2: ' + note.id)
+          return
+        }
+      } else if (noteBottom > groupTop & noteBottom < groupBottom) {
+        if (noteLeft > groupLeft & noteLeft < groupRight) {
+          console.log('2.1: ' + note.id)
+          return
+        }
+        if (noteRight < groupRight & noteRight > groupLeft ) {
+          console.log('2.2: ' + note.id)
+          return
+        }
+      }
+
+      // if (noteBottom > groupTop & noteBottom < groupBottom) console.log('2: ' + note.id)
+      // if (noteLeft > groupLeft & noteLeft < groupRight) console.log('3: ' + note.id) 
+      // if (noteRight < groupRight & noteRight > groupLeft ) console.log('4: ' + note.id)
+    })
+
+    // console.log(groupBottom, groupLeft, groupRight, groupTop)
+    // console.log(notes[newIndex])
+  }
+
   render() {
     return (
       <div
@@ -420,6 +471,28 @@ class Board extends Component {
           <div id='input-text' contentEditable='true'></div>
         </div>
 
+        <button
+          type='button'
+          style={{
+            position: 'absolute',
+            height: '30px',
+            top: '0',
+            zIndex: '9999999999',
+          }}
+          onClick={() => console.log(this.state)}>
+          Board State
+        </button>
+        <button
+          type='button'
+          style={{
+            position: 'absolute',
+            height: '30px',
+            top: '30px',
+            zIndex: '9999999999',
+          }}
+          onClick={(e) => this.findMatGroup(e)}>
+          Mat Group
+        </button>
         <div className='trash-frame'>
           <div className='trash-cont'>
             <img
@@ -440,15 +513,3 @@ class Board extends Component {
 }
 
 export default Board
-
-        // <button
-        //   type='button'
-        //   style={{
-        //     position: 'absolute',
-        //     top: '0',
-        //     height: '30px',
-        //     zIndex: '9999999999',
-        //   }}
-        //   onClick={() => console.log(this.state)}>
-        //   Board State
-        // </button>
