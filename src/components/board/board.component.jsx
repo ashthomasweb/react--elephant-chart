@@ -353,7 +353,12 @@ class Board extends Component {
      
     })
 
+    notesGroup.forEach( (id) => {
+      let noteId = indexFinder(notes, id)
+      notes[noteId].left = parseFloat(notes[noteId].left) + 50 + 'px'
+    })
     console.log(notesGroup)
+    this.setState({ notes })
   }
 
   render() {
