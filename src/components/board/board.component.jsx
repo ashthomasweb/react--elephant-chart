@@ -322,6 +322,7 @@ class Board extends Component {
     let groupBottom = parseFloat(mat.top) + parseFloat(mat.height)
     let groupLeft = parseFloat(mat.left)
     let groupRight = parseFloat(mat.left) + parseFloat(mat.width)
+    let notesGroup = []
 
     notes.forEach((note) => {
       let noteTop = parseFloat(note.top)
@@ -331,31 +332,28 @@ class Board extends Component {
 
       if (noteTop > groupTop & noteTop < groupBottom) {
         if (noteLeft > groupLeft & noteLeft < groupRight) {
-          console.log('1.1: ' + note.id)
+          notesGroup.push(note.id)
           return
         }
         if (noteRight < groupRight & noteRight > groupLeft ) {
-          console.log('1.2: ' + note.id)
+          notesGroup.push(note.id)
           return
         }
       } else if (noteBottom > groupTop & noteBottom < groupBottom) {
         if (noteLeft > groupLeft & noteLeft < groupRight) {
-          console.log('2.1: ' + note.id)
+          notesGroup.push(note.id)
           return
         }
         if (noteRight < groupRight & noteRight > groupLeft ) {
-          console.log('2.2: ' + note.id)
+          notesGroup.push(note.id)
           return
         }
       }
 
-      // if (noteBottom > groupTop & noteBottom < groupBottom) console.log('2: ' + note.id)
-      // if (noteLeft > groupLeft & noteLeft < groupRight) console.log('3: ' + note.id) 
-      // if (noteRight < groupRight & noteRight > groupLeft ) console.log('4: ' + note.id)
+     
     })
 
-    // console.log(groupBottom, groupLeft, groupRight, groupTop)
-    // console.log(notes[newIndex])
+    console.log(notesGroup)
   }
 
   render() {

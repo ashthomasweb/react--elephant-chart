@@ -3,8 +3,8 @@
 export const initialArray = [
   {
     id: 1,
-    width: '',
-    height: '',
+    width: '190px',
+    height: '190px',
     top: '302px',
     left: '153px',
     zIndex: 2,
@@ -19,8 +19,8 @@ export const initialArray = [
   },
   {
     id: 2,
-    width: '',
-    height: '',
+    width: '190px',
+    height: '190px',
     top: '333px',
     left: '332px',
     zIndex: 1,
