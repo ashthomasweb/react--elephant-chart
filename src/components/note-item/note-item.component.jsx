@@ -26,6 +26,7 @@ class NoteItem extends Component {
   }
 
   clickHandler = (e) => {
+    if ( this.state.isMatBoard ) this.props.findMatGroup(e.target.id)
     this.mouseOffset(e)
     if (document.querySelector('#check-toggle').checked === true) {
       this.props.checkHandler(!this.state.isChecked, e.target.id)
@@ -67,6 +68,7 @@ class NoteItem extends Component {
         },
         () => {
           this.props.positionUpdater(this.state, ev)
+          // this.props.matUpdater(id, this.state.notesGroup, xValue, yValue)
         }
       )
     } else {

@@ -308,14 +308,10 @@ class Board extends Component {
     this.setState({ notes })
   }
 
-  findMatGroup = () => {
-    if (!this.state.updateCycleActive) {
-      console.log('Please select a Mat')
-      return 
-    }
+  findMatGroup = (id) => {
 
     let notes = [...this.state.notes]
-    let newMatId = this.state.currentUpdateId
+    let newMatId = id
     let newIndex = indexFinder(notes, newMatId)
     let mat = notes[newIndex]
     let groupTop = parseFloat(mat.top)
@@ -349,15 +345,21 @@ class Board extends Component {
           return
         }
       }
-
      
     })
 
+    console.log(notesGroup)
+    // needs to set noteGroup to mat
+
+  }
+  
+  matUpdater = (id, notesGroup, xValue, yValue) => {
+    let notes = [...this.state.notes]
+    
     notesGroup.forEach( (id) => {
       let noteId = indexFinder(notes, id)
       notes[noteId].left = parseFloat(notes[noteId].left) + 50 + 'px'
     })
-    console.log(notesGroup)
     this.setState({ notes })
   }
 
@@ -382,6 +384,7 @@ class Board extends Component {
             edit={this.startUpdateHandler}
             initialDisplay={this.state.initialNoteDisplay}
             checkHandler={this.checkHandler}
+            findMatGroup={this.findMatGroup}
             {...noteProps}
           />
         ))}
