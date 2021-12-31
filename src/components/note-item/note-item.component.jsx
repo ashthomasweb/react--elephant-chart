@@ -74,7 +74,6 @@ class NoteItem extends Component {
         () => {
           if ( isMatBoard ) {
             let matPack = [this.state.id, noteGroup, ev]
-            // this.props.matUpdater(matPack)
             this.props.positionUpdater(this.state, ev, false, matPack)
           } else {
             this.props.positionUpdater(this.state, ev)

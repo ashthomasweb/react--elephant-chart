@@ -6,18 +6,10 @@ import Header from '../../components/header/header.component'
 import trashTop from '../../assets/trash-top.png'
 import trashBottom from '../../assets/trash-bottom.png'
 
-import {
-  saveUserBoard,
-  userBoards,
-  deleteUserBoard,
-} from '../../firebase/firebase.utils'
+import { saveUserBoard, userBoards, deleteUserBoard } from '../../firebase/firebase.utils'
 import { initialArray } from '../../assets/initial-array.js'
 import { trashBox, trashHandler } from '../../methods/trash/trashHandlers.js'
-import {
-  indexFinder,
-  zIndexFinder,
-  zIndexDrag,
-} from '../../methods/finders/num-finders.js'
+import { indexFinder, zIndexFinder, zIndexDrag } from '../../methods/finders/num-finders.js'
 import { newNoteGenerator } from '../../methods/new-note/new-note'
 import { startUpdate, updateNote } from '../../methods/update/update-display'
 
@@ -66,7 +58,6 @@ class Board extends Component {
 
   $ = (input) => document.querySelector(input)
 
-  
   matUpdater = (matPack, notes) => {
     const [ matId, noteGroup, ev ] = matPack
     let mat = notes[indexFinder(notes, matId)]
@@ -97,16 +88,13 @@ class Board extends Component {
   positionUpdater = async (input, e, final = false, matPack = []) => {
     let notes = [...this.state.notes]
     if (input) {
-      
       let newNote = { ...input }
       let newIndex = indexFinder(notes, newNote.id)
       notes[newIndex] = newNote
       notes[newIndex].zIndex = zIndexDrag(this.state.notes, newNote.isMatBoard)
-      
       if (matPack.length > 0) {
         notes = await this.matUpdater(matPack, notes)
       }
-      
       this.setState({ notes })
     }
     final === false && trashBox(e)
@@ -381,12 +369,9 @@ class Board extends Component {
           return
         }
       }
-     
     })
-
     notes[newIndex].noteGroup = noteGroup
     this.setState({ notes }, () => this.assignMatOffset(id, noteGroup))
-
   }
   
   render() {
@@ -455,7 +440,6 @@ class Board extends Component {
             onClick={() => this.newMatHandler()}>
             Mat
           </button>
-
           <button
             type='button'
             className='color-elements'
@@ -504,6 +488,27 @@ class Board extends Component {
           style={{ backgroundColor: this.state.newNote.noteBColor }}>
           <div id='input-text' contentEditable='true'></div>
         </div>
+        <div className='trash-frame'>
+          <div className='trash-cont'>
+            <img
+              src={trashTop}
+              className='trash-top'
+              alt='Lid of recycle can'
+              />
+            <img
+              src={trashBottom}
+              className='trash-bottom'
+              alt='Body of recycle can'
+              />
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default Board
+
 
         {/* <button
           type='button'
@@ -527,23 +532,3 @@ class Board extends Component {
           onClick={(e) => this.findMatGroup(e)}>
           Mat Group
         </button> */}
-        <div className='trash-frame'>
-          <div className='trash-cont'>
-            <img
-              src={trashTop}
-              className='trash-top'
-              alt='Lid of recycle can'
-            />
-            <img
-              src={trashBottom}
-              className='trash-bottom'
-              alt='Body of recycle can'
-            />
-          </div>
-        </div>
-      </div>
-    )
-  }
-}
-
-export default Board
