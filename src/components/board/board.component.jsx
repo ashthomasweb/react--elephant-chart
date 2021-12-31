@@ -48,6 +48,9 @@ class Board extends Component {
         border: 'none',
         noteBColor: '#f2ecb3',
         isMatBoard: false,
+        noteGroup: [],
+        matOffsetX: 0,
+        matOffsetY: 0,
         isChecked: false,
       },
       boardObj: {
@@ -63,13 +66,47 @@ class Board extends Component {
 
   $ = (input) => document.querySelector(input)
 
-  positionUpdater = (input, e, final = false) => {
+  
+  matUpdater = (matPack, notes) => {
+    const [ matId, noteGroup, ev ] = matPack
+    let mat = notes[indexFinder(notes, matId)]
+    noteGroup.forEach( (item) => {
+      let noteId = indexFinder(notes, item)
+      let note = notes[noteId]
+      if (ev.clientX !== 0) {
+        note.left = parseFloat(mat.left) - note.matOffsetX + 'px'
+        note.top = parseFloat(mat.top) - note.matOffsetY + 'px'
+      }
+    })
+    return notes
+  }
+
+  assignMatOffset = (id, noteGroup) => {
+    let notes = [...this.state.notes]
+    let mat = notes[indexFinder(notes, id)]
+
+    noteGroup.forEach( (item) => {
+      let noteId = indexFinder(notes, item)
+      let note = notes[noteId]
+      note.matOffsetX = parseFloat(mat.left) - parseFloat(note.left)
+      note.matOffsetY = parseFloat(mat.top) - parseFloat(note.top)
+    })
+    this.setState({ notes })
+  }
+
+  positionUpdater = async (input, e, final = false, matPack = []) => {
+    let notes = [...this.state.notes]
     if (input) {
+      
       let newNote = { ...input }
-      let notes = [...this.state.notes]
       let newIndex = indexFinder(notes, newNote.id)
       notes[newIndex] = newNote
       notes[newIndex].zIndex = zIndexDrag(this.state.notes, newNote.isMatBoard)
+      
+      if (matPack.length > 0) {
+        notes = await this.matUpdater(matPack, notes)
+      }
+      
       this.setState({ notes })
     }
     final === false && trashBox(e)
@@ -80,8 +117,7 @@ class Board extends Component {
     let notesArray = [...this.state.notes]
     let notes = await trashHandler(e, notesArray)
     let isMatch = notes.some((elem) => elem.id === this.state.currentUpdateId)
-    ;(isMatch === false) & (this.state.currentUpdateId !== 0) &&
-      this.cancelUpdateMode(true)
+    ;(isMatch === false) & (this.state.currentUpdateId !== 0) && this.cancelUpdateMode(true)
     this.setState({ notes })
   }
 
@@ -318,7 +354,7 @@ class Board extends Component {
     let groupBottom = parseFloat(mat.top) + parseFloat(mat.height)
     let groupLeft = parseFloat(mat.left)
     let groupRight = parseFloat(mat.left) + parseFloat(mat.width)
-    let notesGroup = []
+    let noteGroup = []
 
     notes.forEach((note) => {
       let noteTop = parseFloat(note.top)
@@ -328,41 +364,31 @@ class Board extends Component {
 
       if (noteTop > groupTop & noteTop < groupBottom) {
         if (noteLeft > groupLeft & noteLeft < groupRight) {
-          notesGroup.push(note.id)
+          noteGroup.push(note.id)
           return
         }
         if (noteRight < groupRight & noteRight > groupLeft ) {
-          notesGroup.push(note.id)
+          noteGroup.push(note.id)
           return
         }
       } else if (noteBottom > groupTop & noteBottom < groupBottom) {
         if (noteLeft > groupLeft & noteLeft < groupRight) {
-          notesGroup.push(note.id)
+          noteGroup.push(note.id)
           return
         }
         if (noteRight < groupRight & noteRight > groupLeft ) {
-          notesGroup.push(note.id)
+          noteGroup.push(note.id)
           return
         }
       }
      
     })
 
-    console.log(notesGroup)
-    // needs to set noteGroup to mat
+    notes[newIndex].noteGroup = noteGroup
+    this.setState({ notes }, () => this.assignMatOffset(id, noteGroup))
 
   }
   
-  matUpdater = (id, notesGroup, xValue, yValue) => {
-    let notes = [...this.state.notes]
-    
-    notesGroup.forEach( (id) => {
-      let noteId = indexFinder(notes, id)
-      notes[noteId].left = parseFloat(notes[noteId].left) + 50 + 'px'
-    })
-    this.setState({ notes })
-  }
-
   render() {
     return (
       <div
@@ -385,6 +411,8 @@ class Board extends Component {
             initialDisplay={this.state.initialNoteDisplay}
             checkHandler={this.checkHandler}
             findMatGroup={this.findMatGroup}
+            matUpdater={this.matUpdater}
+            assignMatOffset={this.assignMatOffset}
             {...noteProps}
           />
         ))}
@@ -477,7 +505,7 @@ class Board extends Component {
           <div id='input-text' contentEditable='true'></div>
         </div>
 
-        <button
+        {/* <button
           type='button'
           style={{
             position: 'absolute',
@@ -498,7 +526,7 @@ class Board extends Component {
           }}
           onClick={(e) => this.findMatGroup(e)}>
           Mat Group
-        </button>
+        </button> */}
         <div className='trash-frame'>
           <div className='trash-cont'>
             <img
