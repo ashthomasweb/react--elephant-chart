@@ -15,6 +15,7 @@ export const initialArray = [
     border: 'none',
     noteBColor: '#f2ecb3',
     isMatBoard: false,
+    noteGroup: [],
     isChecked: false,
   },
   {
@@ -30,6 +31,7 @@ export const initialArray = [
     border: 'none',
     noteBColor: '#f2ecb3',
     isMatBoard: false,
+    noteGroup: [],
     isChecked: false,
   },
   {
@@ -45,6 +47,7 @@ export const initialArray = [
     border: 'none',
     noteBColor: '#c9c0ce',
     isMatBoard: true,
+    noteGroup: [],
     isChecked: false,
   },
   {
@@ -60,6 +63,7 @@ export const initialArray = [
     border: 'none',
     noteBColor: '#f5c89e',
     isMatBoard: false,
+    noteGroup: [],
     isChecked: true,
   },
 ]

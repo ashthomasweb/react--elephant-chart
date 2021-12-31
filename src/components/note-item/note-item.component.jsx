@@ -21,6 +21,9 @@ class NoteItem extends Component {
       border: this.props.border,
       noteBColor: this.props.noteBColor,
       isMatBoard: this.props.isMatBoard,
+      matOffsetX: this.props.matOffsetX ?? 0,
+      matOffsetY: this.props.matOffsetY ?? 0,
+      noteGroup: this.props.noteGroup,
       isChecked: this.props.isChecked,
     }
   }
@@ -51,6 +54,7 @@ class NoteItem extends Component {
     let color = this.props.noteBColor ?? '#f2ecb3'
     let isChecked = this.props.isChecked ?? false
     let isMatBoard = this.props.isMatBoard ?? false
+    let noteGroup = this.props.noteGroup ?? []
 
     if (ev.clientX !== 0) {
       this.setState(
@@ -64,11 +68,17 @@ class NoteItem extends Component {
           border: border,
           noteBColor: color,
           isChecked: isChecked,
-          isMatBoard: isMatBoard
+          isMatBoard: isMatBoard,
+          noteGroup: noteGroup
         },
         () => {
-          this.props.positionUpdater(this.state, ev)
-          // this.props.matUpdater(id, this.state.notesGroup, xValue, yValue)
+          if ( isMatBoard ) {
+            let matPack = [this.state.id, noteGroup, ev]
+            // this.props.matUpdater(matPack)
+            this.props.positionUpdater(this.state, ev, false, matPack)
+          } else {
+            this.props.positionUpdater(this.state, ev)
+          }
         }
       )
     } else {
