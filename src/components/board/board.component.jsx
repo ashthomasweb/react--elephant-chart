@@ -75,7 +75,6 @@ class Board extends Component {
   assignMatOffset = (id, noteGroup) => {
     let notes = [...this.state.notes]
     let mat = notes[indexFinder(notes, id)]
-
     noteGroup.forEach( (item) => {
       let noteId = indexFinder(notes, item)
       let note = notes[noteId]
@@ -113,7 +112,6 @@ class Board extends Component {
     let notes = [...this.state.notes]
     let newIndex = indexFinder(notes, id)
     let newNote = { ...notes[newIndex] }
-
     newNote.width = width
     newNote.height = height
     newNote.zIndex = notes[newIndex].zIndex
@@ -242,7 +240,6 @@ class Board extends Component {
     let oldMenu = parentMenuCont.firstChild
     let boardInput = this.$('.save-board-input')
     let newMenu = document.createElement('div')
-
     // remove all previous board references
     if (oldMenu) parentMenuCont.removeChild(oldMenu)
 
@@ -251,7 +248,6 @@ class Board extends Component {
       let cont = document.createElement('div')
       let xButton = document.createElement('button')
       let button = document.createElement('button')
-
       xButton.type = 'button'
       xButton.innerHTML = 'X'
       xButton.classList.add('delete')
@@ -268,7 +264,6 @@ class Board extends Component {
         let boardObj = board
         await this.setState({ notes }, () => this.forceUpdate())
         notes = [...board.notes]
-
         if (boardObj.backgroundColor === undefined) {
           boardObj.backgroundColor = '#1670d7'
         }
