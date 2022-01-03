@@ -34,7 +34,7 @@ export const zIndexFinder = (notesObj) => {
     zList.push(note.zIndex)
   })
 
-  // NEED conditional to reset index if too large...outlying case, but would stop the stacking ability if maxed.
+  // NEED conditional to reset index if too large...outlying case, but would stop the stacking ability if maxed...after an estimated 2038.1 hours of dragging of notes.
   // Needs to retain stack order, but reduce zIndexes to a workable range, without taking them below 0
   return Math.max.apply(null, zList) + 1
 }
