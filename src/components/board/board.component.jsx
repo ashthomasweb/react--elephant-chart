@@ -12,6 +12,7 @@ import { trashBox, trashHandler } from '../../methods/trash/trashHandlers.js'
 import { indexFinder, zIndexFinder, zIndexDrag } from '../../methods/finders/num-finders.js'
 import { newNoteGenerator } from '../../methods/new-note/new-note'
 import { startUpdate, updateNote } from '../../methods/update/update-display'
+import { getGroupIds } from '../../methods/mat-methods/find-group'
 
 import './board.styles.scss'
 
@@ -58,32 +59,6 @@ class Board extends Component {
 
   $ = (input) => document.querySelector(input)
 
-  matUpdater = (matPack, notes) => {
-    const [ matId, noteGroup, ev ] = matPack
-    let mat = notes[indexFinder(notes, matId)]
-    noteGroup.forEach( (item) => {
-      let noteId = indexFinder(notes, item)
-      let note = notes[noteId]
-      if (ev.clientX !== 0) {
-        note.left = parseFloat(mat.left) - note.matOffsetX + 'px'
-        note.top = parseFloat(mat.top) - note.matOffsetY + 'px'
-      }
-    })
-    return notes
-  }
-
-  assignMatOffset = (id, noteGroup) => {
-    let notes = [...this.state.notes]
-    let mat = notes[indexFinder(notes, id)]
-    noteGroup.forEach( (item) => {
-      let noteId = indexFinder(notes, item)
-      let note = notes[noteId]
-      note.matOffsetX = parseFloat(mat.left) - parseFloat(note.left)
-      note.matOffsetY = parseFloat(mat.top) - parseFloat(note.top)
-    })
-    this.setState({ notes })
-  }
-
   positionUpdater = async (input, e, final = false, matPack = []) => {
     let notes = [...this.state.notes]
     if (input) {
@@ -116,6 +91,39 @@ class Board extends Component {
     newNote.height = height
     newNote.zIndex = notes[newIndex].zIndex
     notes[newIndex] = newNote
+    this.setState({ notes })
+  }
+  
+  findMatGroup = async (id) => {
+    let notes = [...this.state.notes]
+    let noteGroup = await getGroupIds(id, notes)
+    notes[indexFinder(notes, id)].noteGroup = noteGroup
+    this.setState({ notes }, () => this.assignMatOffset(id, noteGroup))
+  }
+  
+  matUpdater = (matPack, notes) => {
+    const [ matId, noteGroup, ev ] = matPack
+    let mat = notes[indexFinder(notes, matId)]
+    noteGroup.forEach( (item) => {
+      let noteId = indexFinder(notes, item)
+      let note = notes[noteId]
+      if (ev.clientX !== 0) {
+        note.left = parseFloat(mat.left) - note.matOffsetX + 'px'
+        note.top = parseFloat(mat.top) - note.matOffsetY + 'px'
+      }
+    })
+    return notes
+  }
+
+  assignMatOffset = (id, noteGroup) => {
+    let notes = [...this.state.notes]
+    let mat = notes[indexFinder(notes, id)]
+    noteGroup.forEach( (item) => {
+      let noteId = indexFinder(notes, item)
+      let note = notes[noteId]
+      note.matOffsetX = parseFloat(mat.left) - parseFloat(note.left)
+      note.matOffsetY = parseFloat(mat.top) - parseFloat(note.top)
+    })
     this.setState({ notes })
   }
 
@@ -327,48 +335,7 @@ class Board extends Component {
     this.setState({ notes })
   }
 
-  findMatGroup = (id) => {
 
-    let notes = [...this.state.notes]
-    let newMatId = id
-    let newIndex = indexFinder(notes, newMatId)
-    let mat = notes[newIndex]
-    let groupTop = parseFloat(mat.top)
-    let groupBottom = parseFloat(mat.top) + parseFloat(mat.height)
-    let groupLeft = parseFloat(mat.left)
-    let groupRight = parseFloat(mat.left) + parseFloat(mat.width)
-    let noteGroup = []
-
-    notes.forEach((note) => {
-      let noteTop = parseFloat(note.top)
-      let noteBottom = parseFloat(note.top) + parseFloat(note.height)
-      let noteLeft = parseFloat(note.left)
-      let noteRight = parseFloat(note.left) + parseFloat(note.width)
-
-      if (noteTop > groupTop & noteTop < groupBottom) {
-        if (noteLeft > groupLeft & noteLeft < groupRight) {
-          noteGroup.push(note.id)
-          return
-        }
-        if (noteRight < groupRight & noteRight > groupLeft ) {
-          noteGroup.push(note.id)
-          return
-        }
-      } else if (noteBottom > groupTop & noteBottom < groupBottom) {
-        if (noteLeft > groupLeft & noteLeft < groupRight) {
-          noteGroup.push(note.id)
-          return
-        }
-        if (noteRight < groupRight & noteRight > groupLeft ) {
-          noteGroup.push(note.id)
-          return
-        }
-      }
-    })
-    notes[newIndex].noteGroup = noteGroup
-    this.setState({ notes }, () => this.assignMatOffset(id, noteGroup))
-  }
-  
   render() {
     return (
       <div
