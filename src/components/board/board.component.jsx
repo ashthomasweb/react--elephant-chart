@@ -13,6 +13,7 @@ import { indexFinder, zIndexFinder, zIndexDrag } from '../../methods/finders/num
 import { newNoteGenerator } from '../../methods/new-note/new-note'
 import { startUpdate, updateNote } from '../../methods/update/update-display'
 import { getGroupIds } from '../../methods/mat-methods/find-group'
+import { rgbToHex } from '../../methods/new-note/rgb-hex'
 
 import './board.styles.scss'
 
@@ -134,8 +135,8 @@ class Board extends Component {
   newNoteHandler = async (isMat) => {
     let notes = await newNoteGenerator(this.state, isMat)
     if (this.state.updateCycleActive === true) {
-      notes[notes.length - 1].noteBColor =
-        this.$('.pad-frame').style.backgroundColor
+      let newColorValue = rgbToHex(this.$('.pad-frame').style.backgroundColor)
+      notes[notes.length - 1].noteBColor = newColorValue
     }
     this.setState({ notes })
     this.state.updateCycleActive && this.cancelUpdateMode(true)
