@@ -43,3 +43,20 @@ export const updateNote = (id, notesObj) => {
 
     return notesObj
 }
+
+export const cancelUpdate = (reset, id, prevNote) => {
+  let padFrame = document.querySelector('.pad-frame')
+  let noteColorPicker = document.querySelector('#note-color-pick')
+  let inputText = document.querySelector('#input-text')
+  if (reset === true) {
+    padFrame.style.setProperty('background-color', prevNote.color)
+    padFrame.style.setProperty('height', prevNote.height)
+    padFrame.style.setProperty('width', prevNote.width)
+    noteColorPicker.value = prevNote.color
+    inputText.innerHTML = ''
+  }
+  if (document.getElementById(`${id}`)) {
+    document.getElementById(`${id}`).classList.remove('selected')
+    document.querySelector('.update-frame').classList.remove('selected')
+  }
+}

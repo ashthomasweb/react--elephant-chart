@@ -5,15 +5,15 @@ import Header from '../../components/header/header.component'
 
 import trashTop from '../../assets/trash-top.png'
 import trashBottom from '../../assets/trash-bottom.png'
+import { initialArray } from '../../assets/initial-array.js'
 
 import { saveUserBoard, userBoards, deleteUserBoard } from '../../firebase/firebase.utils'
-import { initialArray } from '../../assets/initial-array.js'
 import { trashBox, trashHandler } from '../../methods/trash/trashHandlers.js'
 import { indexFinder, zIndexFinder, zIndexDrag } from '../../methods/finders/num-finders.js'
-import { newNoteGenerator } from '../../methods/new-note/new-note'
-import { startUpdate, updateNote } from '../../methods/update/update-display'
+import { newNoteGenerator, rgbToHex } from '../../methods/new-note/new-note'
+import { startUpdate, updateNote, cancelUpdate } from '../../methods/update/update-display'
 import { getGroupIds } from '../../methods/mat-methods/find-group'
-import { rgbToHex } from '../../methods/new-note/rgb-hex'
+import { dropHelper } from '../../methods/menus/drop-helper'
 
 import './board.styles.scss'
 
@@ -66,7 +66,7 @@ class Board extends Component {
       let newNote = { ...input }
       let newIndex = indexFinder(notes, newNote.id)
       notes[newIndex] = newNote
-      notes[newIndex].zIndex = zIndexDrag(this.state.notes, newNote.isMatBoard)
+      newNote.zIndex = zIndexDrag(this.state.notes, newNote.isMatBoard)
       if (matPack.length > 0) {
         notes = await this.matUpdater(matPack, notes)
       }
@@ -120,8 +120,7 @@ class Board extends Component {
     let notes = [...this.state.notes]
     let mat = notes[indexFinder(notes, id)]
     noteGroup.forEach( (item) => {
-      let noteId = indexFinder(notes, item)
-      let note = notes[noteId]
+      let note = notes[indexFinder(notes, item)]
       note.matOffsetX = parseFloat(mat.left) - parseFloat(note.left)
       note.matOffsetY = parseFloat(mat.top) - parseFloat(note.top)
     })
@@ -151,7 +150,6 @@ class Board extends Component {
       backgroundColor: this.state.boardObj.backgroundColor,
     }
     this.setState({ boardObj }, () => {
-      // save board to firestore
       this.saveBoardToDatabase(boardObj)
     })
   }
@@ -161,7 +159,6 @@ class Board extends Component {
       // NEED localhost option
       console.log('no user')
     } else {
-      // firebase utils export
       saveUserBoard(this.props.currentUser.auth, boardObj)
     }
   }
@@ -178,7 +175,7 @@ class Board extends Component {
     let dropMenu = this.$('.board-drop')
     if (
       window.confirm(
-        `Are you sure you want to delete the board "${boardName}"? Action is permanent! however, this will NOT delete the notes from the screen, only the board in the database.`
+        `Are you sure you want to delete the board "${boardName}"? Action is permanent! However, this will NOT delete the notes from the screen, only the board in the database.`
       )
     ) {
       await deleteUserBoard(this.props.currentUser.auth, boardName)
@@ -191,10 +188,8 @@ class Board extends Component {
     let padFrame = this.$('.pad-frame')
     this.cancelUpdateMode()
     let notes = [...this.state.notes]
-    // set which note id to update
     let prevNote = { ...this.state.prevNote }
-    let prevNoteColor = this.$('#note-color-pick').value
-    prevNote.color = prevNoteColor
+    prevNote.color = this.$('#note-color-pick').value
     prevNote.width = getComputedStyle(padFrame).getPropertyValue('width')
     prevNote.height = getComputedStyle(padFrame).getPropertyValue('height')
     let currentUpdateId = id
@@ -213,35 +208,18 @@ class Board extends Component {
   }
 
   cancelUpdateMode = (reset = false) => {
-    let id = this.state.currentUpdateId
-    let padFrame = this.$('.pad-frame')
-    let noteColorPicker = this.$('#note-color-pick')
-    let inputText = this.$('#input-text')
-
-    if (reset === true) {
-      padFrame.style.setProperty('background-color', this.state.prevNote.color)
-      padFrame.style.setProperty('height', this.state.prevNote.height)
-      padFrame.style.setProperty('width', this.state.prevNote.width)
-      noteColorPicker.value = this.state.prevNote.color
-      inputText.innerHTML = ''
-    }
-    if (document.getElementById(`${id}`)) {
-      document.getElementById(`${id}`).classList.remove('selected')
-      this.$('.update-frame').classList.remove('selected')
-    }
+    cancelUpdate(reset, this.state.currentUpdateId, this.state.prevNote )
     let updateCycleActive = false
     this.setState({ updateCycleActive })
   }
 
   // Drop Down Menu
   userBoardDropDown = () => {
-    let elStyle = this.$('.board-drop').style
+    let el = this.$('.board-drop').style
     // data handling
     this.putBoardsToList()
     // menu display toggle
-    elStyle.display === 'block'
-      ? (elStyle.display = 'none')
-      : (elStyle.display = 'block')
+    ;(el.display === 'block') ? (el.display = 'none') : (el.display = 'block')
   }
 
   putBoardsToList = () => {
@@ -249,44 +227,26 @@ class Board extends Component {
     let oldMenu = parentMenuCont.firstChild
     let boardInput = this.$('.save-board-input')
     let newMenu = document.createElement('div')
-    // remove all previous board references
     if (oldMenu) parentMenuCont.removeChild(oldMenu)
-
-    // repopulate with new elements
-    userBoards.forEach((board) => {
-      let cont = document.createElement('div')
-      let xButton = document.createElement('button')
-      let button = document.createElement('button')
-      xButton.type = 'button'
-      xButton.innerHTML = 'X'
-      xButton.classList.add('delete')
-      button.type = 'button'
-      button.innerHTML = board.name
-      cont.classList.add('button-cont')
-
+    userBoards.forEach((boardObj) => {
+      const [ cont, button, xButton ] = dropHelper(boardObj)
       // confirmation, then firestore method
-      xButton.addEventListener('click', () => {
-        this.deleteBoardHandler(board.name)
-      })
+      xButton.addEventListener('click', () => this.deleteBoardHandler(boardObj.name) )
       button.addEventListener('click', async () => {
         let notes = []
-        let boardObj = board
         await this.setState({ notes }, () => this.forceUpdate())
-        notes = [...board.notes]
-        if (boardObj.backgroundColor === undefined) {
-          boardObj.backgroundColor = '#1670d7'
-        }
+        notes = [...boardObj.notes]
+        boardObj.backgroundColor ?? (boardObj.backgroundColor = '#1670d7')
         this.setState({ notes, boardObj }, () => {
           this.displayUpdate()
-          boardInput.value = board.name
+          boardInput.value = boardObj.name
           parentMenuCont.style.display = 'none'
         })
       })
-      cont.appendChild(xButton)
-      cont.appendChild(button)
-      newMenu.appendChild(cont)
+      cont.append(xButton, button)
+      newMenu.append(cont)
     })
-    parentMenuCont.appendChild(newMenu)
+    parentMenuCont.append(newMenu)
   }
 
   // background color styling
@@ -311,7 +271,6 @@ class Board extends Component {
     let notes = this.state.initialArray
     let dropMenu = this.$('.board-drop')
     let boardInput = this.$('.save-board-input')
-
     boardInput.value = ''
     dropMenu.style.display = 'none'
     await this.forceUpdate()
@@ -320,8 +279,9 @@ class Board extends Component {
   }
 
   displayUpdate = () => {
+    let bg = this.state.boardObj.backgroundColor
     this.$('#note-color-pick').defaultValue = this.state.newNote.noteBColor
-    this.$('#bg-color-pick').defaultValue = this.state.boardObj.backgroundColor
+    this.$('#bg-color-pick').defaultValue = (bg.length > 7) ? '#1670d7' : bg
   }
 
   componentDidMount() {
