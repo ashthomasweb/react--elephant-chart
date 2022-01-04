@@ -417,14 +417,4 @@ export default Board
   onClick={() => console.log(this.state)}>
   Board State
   </button>
-  <button
-  type='button'
-  style={{
-    position: 'absolute',
-    height: '30px',
-    top: '30px',
-    zIndex: '9999999999',
-  }}
-  onClick={(e) => this.findMatGroup(e)}>
-  Mat Group
-</button> */}
+ */}
