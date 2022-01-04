@@ -9,22 +9,9 @@ class NoteItem extends Component {
     super(props)
 
     this.state = {
-      id: this.props.id,
-      width: this.props.width,
-      height: this.props.height,
-      top: this.props.top,
-      left: this.props.left,
-      zIndex: this.props.zHigh(),
-      mouseOffsetX: 0,
-      mouseOffsetY: 0,
-      noteText: this.props.noteText,
-      border: this.props.border,
-      noteBColor: this.props.noteBColor,
       isMatBoard: this.props.isMatBoard,
-      matOffsetX: this.props.matOffsetX ?? 0,
-      matOffsetY: this.props.matOffsetY ?? 0,
-      noteGroup: this.props.noteGroup,
       isChecked: this.props.isChecked,
+      id: this.props.id,
     }
   }
 
@@ -44,44 +31,37 @@ class NoteItem extends Component {
     this.setState({ mouseOffsetY, mouseOffsetX })
   }
 
-  // sets current position of dragged note to Note Component's state for skewmorphic effect
-  dragHandler = (ev) => {
-    let xValue = `${ev.clientX - this.state.mouseOffsetX}px`
-    let yValue = `${ev.clientY - this.state.mouseOffsetY}px`
-    let width = this.props.width
-    let height = this.props.height
-    let border = this.props.border ?? 'none'
-    let color = this.props.noteBColor ?? '#f2ecb3'
-    let isChecked = this.props.isChecked ?? false
-    let isMatBoard = this.props.isMatBoard ?? false
-    let noteGroup = this.props.noteGroup ?? []
+  dragHandler = (e) => {
+    const p = this.props
+    const s = this.state
+    const { width, height } = p
+    let xValue = `${e.clientX - s.mouseOffsetX}px`
+    let yValue = `${e.clientY - s.mouseOffsetY}px`
+    // handling of undefined db values set before feature implementation
+    let border = p.border ?? 'none'
+    let color = p.noteBColor ?? '#f2ecb3'
+    let noteGroup = p.noteGroup ?? []
+    let isChecked = p.isChecked ?? false
+    let isMatBoard = s.isMatBoard ?? false
+    let pUpdate = p.positionUpdater
 
-    if (ev.clientX !== 0) {
+    if (e.clientX !== 0) {
       this.setState(
         {
           left: xValue,
           top: yValue,
-          id: this.props.id,
           width: width,
           height: height,
-          noteText: this.props.noteText,
+          noteText: p.noteText,
           border: border,
           noteBColor: color,
           isChecked: isChecked,
           isMatBoard: isMatBoard,
           noteGroup: noteGroup
         },
-        () => {
-          if ( isMatBoard ) {
-            let matPack = [this.state.id, noteGroup, ev]
-            this.props.positionUpdater(this.state, ev, false, matPack)
-          } else {
-            this.props.positionUpdater(this.state, ev)
-          }
-        }
+        () => isMatBoard ? pUpdate(this.state, e, false, [this.state.id, noteGroup, e]) : pUpdate(this.state, e)
       )
-    } else {
-      // handles remaining bad clientX value
+    } else { // handles remaining bad clientX value
       console.log(
         'ERROR: dragend/dragover clientX value error. Displaying previously known good position. Error occurs during fast clicking of notes due to client not having time to update. No notes were lost.'
       )
@@ -91,8 +71,7 @@ class NoteItem extends Component {
   resizeHandler = (e) => {
     let width = getComputedStyle(e.target).getPropertyValue('width')
     let height = getComputedStyle(e.target).getPropertyValue('height')
-    let id = this.state.id
-    this.props.resizeHandler(id, width, height)
+    this.props.resizeHandler(this.state.id, width, height)
     this.setState({
       width: width,
       height: height,
@@ -104,7 +83,7 @@ class NoteItem extends Component {
   }
 
   displayHandler = () => {
-    if (this.props.id <= 4 && this.props.initialDisplay === false) {
+    if (this.state.id <= 4 && this.props.initialDisplay === false) {
       return 'none'
     } else {
       return 'block'
