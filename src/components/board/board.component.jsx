@@ -274,14 +274,15 @@ class Board extends Component {
 
   componentDidMount() {
     this.displayUpdate()
+    const sizeListener = () => {
+      let multiplier = 1 / window.devicePixelRatio
+      this.$('.options-frame').style.setProperty('transform', `scale(${multiplier})`)
+      this.$('.update-frame').style.setProperty('transform', `scale(${multiplier})`)
+      this.$('.trash-frame').style.setProperty('transform', `scale(${multiplier})`)
+    }
+    sizeListener()
     window.addEventListener('resize', (e) => {
-      if (window.devicePixelRatio < 1) {
-        let multiplier = 1 / window.devicePixelRatio
-        this.$('.options-frame').style.setProperty('transform', `scale(${multiplier})`)
-      }
-      // console.log(1/window.devicePixelRatio)
-      // console.log(window.devicePixelRatio)
-
+      sizeListener()
     })
 
   }
