@@ -274,6 +274,16 @@ class Board extends Component {
 
   componentDidMount() {
     this.displayUpdate()
+    window.addEventListener('resize', (e) => {
+      if (window.devicePixelRatio < 1) {
+        let multiplier = 1 / window.devicePixelRatio
+        this.$('.options-frame').style.setProperty('transform', `scale(${multiplier})`)
+      }
+      // console.log(1/window.devicePixelRatio)
+      // console.log(window.devicePixelRatio)
+
+    })
+
   }
 
   render() {
@@ -281,7 +291,8 @@ class Board extends Component {
       <div
         className='board-backing'
         onDrop={this.dropHandler}
-        style={{ backgroundColor: this.state.boardObj.backgroundColor }}>
+        style={{ backgroundColor: this.state.boardObj.backgroundColor }}
+        >
         <Header
           className='header'
           currentUser={this.props.currentUser}

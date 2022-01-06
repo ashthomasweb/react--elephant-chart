@@ -44,7 +44,6 @@ class App extends Component {
     // partially handles bad clientX value on fast note clicking
     window.addEventListener('dragover', (e) => e.preventDefault(), false)
     window.addEventListener('dragend', (e) => e.preventDefault(), false)
-    
   }
 
   componentWillUnmount() {
