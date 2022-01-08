@@ -281,21 +281,13 @@
   position: fixed;
   text-align: center;
   top: 10px;
-  right: 55px;
+  right: 45px;
   width: 125px;
   height: 124px;
   border-radius: 2px;
   border: 1px solid lightgrey;
   background-color: var(--primary);
   z-index: -2147483646;
-
-  // &.large {
-  //   transform: scale(.9090);
-  // }
-
-  // &.small {
-  //   transform: scale(1.11);
-  // }
 
   &:hover {
     background-color: var(--tertiary);

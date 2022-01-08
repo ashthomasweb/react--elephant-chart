@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import SignInUpModal from '../signinupmodal/signinupmodal.component'
 
-import logo from '../../assets/flow-post-logo.png'
+import logo from '../../assets/idea-logo.png'
 
 import { auth, clearBoards } from '../../firebase/firebase.utils'
 
