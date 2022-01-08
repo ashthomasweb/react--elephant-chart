@@ -44,7 +44,7 @@ class App extends Component {
     // partially handles bad clientX value on fast note clicking
     window.addEventListener('dragover', (e) => e.preventDefault(), false)
     window.addEventListener('dragend', (e) => e.preventDefault(), false)
-    window.addEventListener('click', (e) => console.log(e))
+   
   }
 
   componentWillUnmount() {
@@ -54,6 +54,7 @@ class App extends Component {
   render() {
     return (
       <div>
+         
         <HomePage currentUser={this.state.currentUser} />
       </div>
     )

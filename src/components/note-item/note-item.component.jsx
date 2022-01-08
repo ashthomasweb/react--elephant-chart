@@ -83,7 +83,7 @@ class NoteItem extends Component {
   }
 
   displayHandler = () => {
-    if (this.state.id <= 4 && this.props.initialDisplay === false) {
+    if ((this.state.id <= 4) & (this.state.id !== 0) && this.props.initialDisplay === false) {
       return 'none'
     } else {
       return 'block'
@@ -101,7 +101,7 @@ class NoteItem extends Component {
       zIndex,
       border,
       noteBColor,
-      isMatBoard
+      isMatBoard,
     } = this.props
 
     return (
@@ -109,7 +109,7 @@ class NoteItem extends Component {
         style={{
           width: `${width}`,
           height: `${height}`,
-          left: `${left}`,
+          left: `${(left)}`,
           top: `${top}`,
           backgroundColor: `${noteBColor ?? '#f2ecb3'}`,
           zIndex: `${zIndex}`,

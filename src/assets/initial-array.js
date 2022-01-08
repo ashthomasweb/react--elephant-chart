@@ -2,6 +2,22 @@
 
 export const initialArray = [
   {
+    id: 0,
+      width: '100px',
+      height: '62px',
+      top: '1760px',
+      left: '3610px',
+      zIndex: 3,
+      mouseOffsetX: 0,
+      mouseOffsetY: 0,
+      noteText: 'Corner Anchor',
+      border: 'none',
+      noteBColor: '#000',
+      isMatBoard: false,
+      noteGroup: [],
+      isChecked: false,
+  },
+  {
     id: 1,
     width: '190px',
     height: '190px',

@@ -24,16 +24,6 @@ class Header extends Component {
     el.display === 'block' ? (el.display = 'none') : (el.display = 'block')
   }
 
-  // componentDidMount() {
-  //   const sizeListener = () => {
-  //     let multiplier = 1 / window.devicePixelRatio
-  //    
-  //   sizeListener()
-  //   window.addEventListener('resize', (e) => {
-  //     sizeListener()
-  //   })
-  // }
-
   render() {
     return (
       <div className='header'>
@@ -77,31 +67,5 @@ class Header extends Component {
     )
   }
 }
-
-// const Header = ({ currentUser, reset }) => (
-//   <div className='header'>
-//       <img src={logo} className='logo' alt='flow-post logo' />
-
-//     <div className='user-options'>
-//       {currentUser ? ( <div>
-//         <div className='welcome' >Welcome,<br/>{currentUser.displayName}</div>
-//         <button className='option' onLoad={closeSignIn()} onClick={() => { clearBoards(); reset(); auth.signOut()}}>SIGN OUT</button></div>
-//       ) : (
-//         <div>
-//         <div className='welcome' >Welcome!</div>
-//         <button
-//           type='button'
-//           className='sign-in-modal-btn'
-//           onClick={() => modalToggle()}>
-//           SIGN IN / UP
-//         </button></div>
-//       )}
-//     </div>
-//     <div
-//       className='sign-modal'>
-//       <SignInUpModal />
-//     </div>
-//   </div>
-// )
 
 export default Header

@@ -6,8 +6,7 @@
   // background-color: rgb(22, 112, 215);
   position: absolute;
   z-index: -2147483647;
-  overflow: hidden;
-
+  overflow: scroll;
 }
 
 .database-options {
@@ -81,7 +80,7 @@
 .options-frame {
   width: 341px;
   height: 124px;
-  position: absolute;
+  position: fixed;
   margin: 0 5px;
   top: 10px;
   left: 275px;
@@ -93,15 +92,13 @@
   border-radius: 2px;
   z-index: 100000000;
   
-  &.large {
-    width: calc(341px * 1.33);
-    height: calc(124px * 1.33);
-  }
+  // &.large {
+  //   transform: scale(.9);
+  // }
 
-  &.small {
-    width: calc(341px * .8);
-    height: calc(124px * .8);
-  }
+  // &.small {
+  //   transform: scale(1.11);
+  // }
 
   button {
     display: block;
@@ -225,7 +222,7 @@
   height: 45px;
   left: 310px;
   top: 85px;
-  position: absolute;
+  position: fixed;
   background-color: var(--secondary);
   border: 1px solid lightgrey;
   border-radius: 2px;
@@ -247,7 +244,7 @@
   left: 632px;
   top: 10px;
   height: 124px;
-  position: absolute;
+  position: fixed;
   background-size: cover;
   resize: both!important;
   outline: 1px solid black;
@@ -281,16 +278,24 @@
 
 .trash-frame {
   box-sizing: content-box;
-  position: absolute;
+  position: fixed;
   text-align: center;
   top: 10px;
-  right: 10px;
+  right: 55px;
   width: 125px;
   height: 124px;
   border-radius: 2px;
   border: 1px solid lightgrey;
   background-color: var(--primary);
   z-index: -2147483646;
+
+  // &.large {
+  //   transform: scale(.9090);
+  // }
+
+  // &.small {
+  //   transform: scale(1.11);
+  // }
 
   &:hover {
     background-color: var(--tertiary);

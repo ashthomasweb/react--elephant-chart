@@ -170,7 +170,7 @@ class Board extends Component {
   }
 
   newBoard = () => {
-    let notes = []
+    let notes = [this.state.initialArray[0]]
     this.$('#input-text').innerHTML = ''
     this.cancelUpdateMode()
     this.setState({ notes })
@@ -296,43 +296,34 @@ class Board extends Component {
 
   componentDidMount() {
     this.displayUpdate()
-    const sizeListener = () => {
-      let multiplier = 1 / window.devicePixelRatio
-      console.log(multiplier)
-      if (multiplier === 1) {
-      this.$('.options-frame').classList.remove('large')
-      this.$('.options-frame').classList.remove('small')
-      } else if (multiplier < 1) {
-        this.$('.options-frame').classList.add('small')
-        this.$('.options-frame').classList.remove('large')
-      } else if (multiplier > 1) {
-        this.$('.options-frame').classList.remove('small')
-        this.$('.options-frame').classList.add('large')
+    // drag board listener and handler
+    window.addEventListener('mousedown', (e) => {
+      if (e.target.id === 'backing') {
+        let board = e.target
+        let initialClientX = e.clientX
+        let initialClientY = e.clientY
+        let initialScrollX = board.scrollLeft
+        let initialScrollY = board.scrollTop
+        let logPosition = (e) => {
+          let xFromOrigin = e.clientX - initialClientX
+          let yFromOrigin = e.clientY - initialClientY
+          board.scrollTo(initialScrollX - xFromOrigin, initialScrollY - yFromOrigin)
+        }
+        window.addEventListener('mousemove', logPosition)
+        window.addEventListener('mouseup', (e) => {
+          window.removeEventListener('mousemove', logPosition)
+        })
       }
-    }
-    sizeListener()
-    window.addEventListener('resize', (e) => {
-      sizeListener()
     })
   }
 
   render() {
     return (
       <div
+        id='backing'
         className='board-backing'
         onDrop={this.dropHandler}
         style={{ backgroundColor: this.state.boardObj.backgroundColor }}>
-        <div
-          className='fixed-parent'
-          style={{
-            position: 'absolute',
-            backgroundColor: 'rgba(20,0,0,.2)',
-            width: '50px',
-            height: '50px',
-            zIndex: '999999999',
-          }}>
-         
-        </div>
         <Header
           className='header'
           currentUser={this.props.currentUser}
@@ -418,19 +409,19 @@ class Board extends Component {
           </label>
         </div>
         <div className='update-frame'>
-            <button
-              className='update-btn'
-              type='button'
-              onClick={this.updateNoteHandler}>
-              Update
-            </button>
-            <button
-              className='update-btn'
-              type='button'
-              onClick={() => this.cancelUpdateMode(true)}>
-              Cancel Update
-            </button>
-          </div>
+          <button
+            className='update-btn'
+            type='button'
+            onClick={this.updateNoteHandler}>
+            Update
+          </button>
+          <button
+            className='update-btn'
+            type='button'
+            onClick={() => this.cancelUpdateMode(true)}>
+            Cancel Update
+          </button>
+        </div>
         <div
           className='pad-frame'
           style={{ backgroundColor: this.state.newNote.noteBColor }}>
@@ -450,7 +441,7 @@ class Board extends Component {
             />
           </div>
         </div>
-        <button
+        {/* <button
           type='button'
           style={{
             position: 'absolute',
@@ -458,9 +449,9 @@ class Board extends Component {
             top: '0',
             zIndex: '9999999999',
           }}
-          onClick={() => this.findSize()}>
+          onClick={() => window.scrollTo(200,10)}>
           Board State
-        </button>
+        </button> */}
       </div>
     )
   }
