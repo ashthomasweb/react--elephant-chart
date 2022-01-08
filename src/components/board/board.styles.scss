@@ -92,6 +92,16 @@
   border: 1px solid lightgrey;
   border-radius: 2px;
   z-index: 100000000;
+  
+  &.large {
+    width: calc(341px * 1.33);
+    height: calc(124px * 1.33);
+  }
+
+  &.small {
+    width: calc(341px * .8);
+    height: calc(124px * .8);
+  }
 
   button {
     display: block;

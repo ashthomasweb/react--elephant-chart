@@ -7,11 +7,19 @@ import trashTop from '../../assets/trash-top.png'
 import trashBottom from '../../assets/trash-bottom.png'
 import { initialArray } from '../../assets/initial-array.js'
 
-import { saveUserBoard, userBoards, deleteUserBoard } from '../../firebase/firebase.utils'
+import {
+  saveUserBoard,
+  userBoards,
+  deleteUserBoard,
+} from '../../firebase/firebase.utils'
 import { trashBox, trashHandler } from '../../methods/trash/trashHandlers.js'
 import { indexFinder, zIndexDrag } from '../../methods/finders/num-finders.js'
 import { newNoteGenerator, rgbToHex } from '../../methods/new-note/new-note'
-import { startUpdate, updateNote, cancelUpdate } from '../../methods/update/update-display'
+import {
+  startUpdate,
+  updateNote,
+  cancelUpdate,
+} from '../../methods/update/update-display'
 import { getGroupIds } from '../../methods/mat-methods/find-group'
 import { dropHelper } from '../../methods/menus/drop-helper'
 
@@ -76,7 +84,8 @@ class Board extends Component {
     this.positionUpdater(null, e, true)
     let notes = await trashHandler(e, [...this.state.notes])
     let isMatch = notes.some((elem) => elem.id === this.state.currentUpdateId)
-    ;(isMatch === false) & (this.state.currentUpdateId !== 0) && this.cancelUpdateMode(true)
+    ;(isMatch === false) & (this.state.currentUpdateId !== 0) &&
+      this.cancelUpdateMode(true)
     this.setState({ notes })
   }
 
@@ -84,22 +93,27 @@ class Board extends Component {
     let notes = [...this.state.notes]
     let newIndex = indexFinder(notes, id)
     let newNote = { ...notes[newIndex] }
-    newNote = {...newNote, width: width, height: height, zIndex: notes[newIndex].zIndex }
+    newNote = {
+      ...newNote,
+      width: width,
+      height: height,
+      zIndex: notes[newIndex].zIndex,
+    }
     notes[newIndex] = newNote
     this.setState({ notes })
   }
-  
+
   findMatGroup = async (id) => {
     let notes = [...this.state.notes]
     let noteGroup = await getGroupIds(id, notes)
     notes[indexFinder(notes, id)].noteGroup = noteGroup
     this.setState({ notes }, () => this.assignMatOffset(id, noteGroup))
   }
-  
+
   matUpdater = (matPack, notes) => {
-    const [ matId, noteGroup, e ] = matPack
+    const [matId, noteGroup, e] = matPack
     let mat = notes[indexFinder(notes, matId)]
-    noteGroup.forEach( (item) => {
+    noteGroup.forEach((item) => {
       let note = notes[indexFinder(notes, item)]
       if (e.clientX !== 0) {
         note.left = parseFloat(mat.left) - note.matOffsetX + 'px'
@@ -112,7 +126,7 @@ class Board extends Component {
   assignMatOffset = (id, noteGroup) => {
     let notes = [...this.state.notes]
     let mat = notes[indexFinder(notes, id)]
-    noteGroup.forEach( (itemID) => {
+    noteGroup.forEach((itemID) => {
       let note = notes[indexFinder(notes, itemID)]
       note.matOffsetX = parseFloat(mat.left) - parseFloat(note.left)
       note.matOffsetY = parseFloat(mat.top) - parseFloat(note.top)
@@ -126,7 +140,10 @@ class Board extends Component {
 
   newNoteHandler = async (isMat) => {
     let notes = await newNoteGenerator(this.state, isMat)
-    this.state.updateCycleActive && ( notes[notes.length - 1].noteBColor = rgbToHex(this.$('.pad-frame').style.backgroundColor) )
+    this.state.updateCycleActive &&
+      (notes[notes.length - 1].noteBColor = rgbToHex(
+        this.$('.pad-frame').style.backgroundColor
+      ))
     this.setState({ notes })
     this.state.updateCycleActive && this.cancelUpdateMode(true)
   }
@@ -175,11 +192,11 @@ class Board extends Component {
   // Update state and display properties of notes. NOT database calls.
   startUpdateHandler = (currentUpdateId) => {
     this.cancelUpdateMode()
-    let prevNote = { 
-      ...this.state.prevNote, 
-      color: this.$('#note-color-pick').value, 
-      width: getComputedStyle(this.$('.pad-frame')).getPropertyValue('width'), 
-      height: getComputedStyle(this.$('.pad-frame')).getPropertyValue('height') 
+    let prevNote = {
+      ...this.state.prevNote,
+      color: this.$('#note-color-pick').value,
+      width: getComputedStyle(this.$('.pad-frame')).getPropertyValue('width'),
+      height: getComputedStyle(this.$('.pad-frame')).getPropertyValue('height'),
     }
     let updateCycleActive = true
     this.setState({ currentUpdateId, prevNote, updateCycleActive }, () =>
@@ -188,13 +205,15 @@ class Board extends Component {
   }
 
   updateNoteHandler = async () => {
-    let notes = await updateNote(this.state.currentUpdateId, [...this.state.notes])
+    let notes = await updateNote(this.state.currentUpdateId, [
+      ...this.state.notes,
+    ])
     this.setState({ notes })
     this.cancelUpdateMode(true)
   }
 
   cancelUpdateMode = (reset = false) => {
-    cancelUpdate(reset, this.state.currentUpdateId, this.state.prevNote )
+    cancelUpdate(reset, this.state.currentUpdateId, this.state.prevNote)
     let updateCycleActive = false
     this.setState({ updateCycleActive })
   }
@@ -202,15 +221,16 @@ class Board extends Component {
   userBoardDropDown = () => {
     let el = this.$('.board-drop').style
     this.putBoardsToList()
-    ;(el.display === 'block') ? (el.display = 'none') : (el.display = 'block')
+    el.display === 'block' ? (el.display = 'none') : (el.display = 'block')
   }
-  
+
   putBoardsToList = () => {
     let parentMenuCont = this.$('.board-drop')
     let newMenu = document.createElement('div')
-    if (parentMenuCont.firstChild) parentMenuCont.removeChild(parentMenuCont.firstChild)
+    if (parentMenuCont.firstChild)
+      parentMenuCont.removeChild(parentMenuCont.firstChild)
     userBoards.forEach((boardObj) => {
-      const [ cont, button, xButton ] = dropHelper(boardObj)
+      const [cont, button, xButton] = dropHelper(boardObj)
       this.buildBoardButton(boardObj, button, xButton)
       cont.append(xButton, button)
       newMenu.append(cont)
@@ -219,18 +239,20 @@ class Board extends Component {
   }
 
   buildBoardButton = (boardObj, button, xButton) => {
-    xButton.addEventListener('click', () => this.deleteBoardHandler(boardObj.name) )
-      button.addEventListener('click', async () => {
-        let notes = []
-        await this.setState({ notes }, () => this.forceUpdate())
-        notes = [...boardObj.notes]
-        boardObj.backgroundColor ?? (boardObj.backgroundColor = '#1670d7')
-        this.setState({ notes, boardObj }, () => {
-          this.displayUpdate()
-          this.$('.save-board-input').value = boardObj.name
-          this.$('.board-drop').style.display = 'none'
-        })
+    xButton.addEventListener('click', () =>
+      this.deleteBoardHandler(boardObj.name)
+    )
+    button.addEventListener('click', async () => {
+      let notes = []
+      await this.setState({ notes }, () => this.forceUpdate())
+      notes = [...boardObj.notes]
+      boardObj.backgroundColor ?? (boardObj.backgroundColor = '#1670d7')
+      this.setState({ notes, boardObj }, () => {
+        this.displayUpdate()
+        this.$('.save-board-input').value = boardObj.name
+        this.$('.board-drop').style.display = 'none'
       })
+    })
   }
 
   setBackgroundColor = () => {
@@ -269,22 +291,29 @@ class Board extends Component {
   displayUpdate = () => {
     let bg = this.state.boardObj.backgroundColor
     this.$('#note-color-pick').defaultValue = this.state.newNote.noteBColor
-    this.$('#bg-color-pick').defaultValue = (bg.length > 7) ? '#1670d7' : bg
+    this.$('#bg-color-pick').defaultValue = bg.length > 7 ? '#1670d7' : bg
   }
 
   componentDidMount() {
     this.displayUpdate()
     const sizeListener = () => {
       let multiplier = 1 / window.devicePixelRatio
-      this.$('.options-frame').style.setProperty('transform', `scale(${multiplier})`)
-      this.$('.update-frame').style.setProperty('transform', `scale(${multiplier})`)
-      this.$('.trash-frame').style.setProperty('transform', `scale(${multiplier})`)
+      console.log(multiplier)
+      if (multiplier === 1) {
+      this.$('.options-frame').classList.remove('large')
+      this.$('.options-frame').classList.remove('small')
+      } else if (multiplier < 1) {
+        this.$('.options-frame').classList.add('small')
+        this.$('.options-frame').classList.remove('large')
+      } else if (multiplier > 1) {
+        this.$('.options-frame').classList.remove('small')
+        this.$('.options-frame').classList.add('large')
+      }
     }
     sizeListener()
     window.addEventListener('resize', (e) => {
       sizeListener()
     })
-
   }
 
   render() {
@@ -292,8 +321,18 @@ class Board extends Component {
       <div
         className='board-backing'
         onDrop={this.dropHandler}
-        style={{ backgroundColor: this.state.boardObj.backgroundColor }}
-        >
+        style={{ backgroundColor: this.state.boardObj.backgroundColor }}>
+        <div
+          className='fixed-parent'
+          style={{
+            position: 'absolute',
+            backgroundColor: 'rgba(20,0,0,.2)',
+            width: '50px',
+            height: '50px',
+            zIndex: '999999999',
+          }}>
+         
+        </div>
         <Header
           className='header'
           currentUser={this.props.currentUser}
@@ -379,19 +418,19 @@ class Board extends Component {
           </label>
         </div>
         <div className='update-frame'>
-          <button
-            className='update-btn'
-            type='button'
-            onClick={this.updateNoteHandler}>
-            Update
-          </button>
-          <button
-            className='update-btn'
-            type='button'
-            onClick={() => this.cancelUpdateMode(true)}>
-            Cancel Update
-          </button>
-        </div>
+            <button
+              className='update-btn'
+              type='button'
+              onClick={this.updateNoteHandler}>
+              Update
+            </button>
+            <button
+              className='update-btn'
+              type='button'
+              onClick={() => this.cancelUpdateMode(true)}>
+              Cancel Update
+            </button>
+          </div>
         <div
           className='pad-frame'
           style={{ backgroundColor: this.state.newNote.noteBColor }}>
@@ -403,30 +442,28 @@ class Board extends Component {
               src={trashTop}
               className='trash-top'
               alt='Lid of recycle can'
-              />
+            />
             <img
               src={trashBottom}
               className='trash-bottom'
               alt='Body of recycle can'
-              />
+            />
           </div>
         </div>
+        <button
+          type='button'
+          style={{
+            position: 'absolute',
+            height: '30px',
+            top: '0',
+            zIndex: '9999999999',
+          }}
+          onClick={() => this.findSize()}>
+          Board State
+        </button>
       </div>
     )
   }
 }
 
 export default Board
-
-{/* <button
-  type='button'
-  style={{
-    position: 'absolute',
-    height: '30px',
-    top: '0',
-    zIndex: '9999999999',
-  }}
-  onClick={() => console.log(this.state)}>
-  Board State
-  </button>
- */}

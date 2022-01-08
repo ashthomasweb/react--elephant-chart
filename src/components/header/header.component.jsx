@@ -27,29 +27,7 @@ class Header extends Component {
   // componentDidMount() {
   //   const sizeListener = () => {
   //     let multiplier = 1 / window.devicePixelRatio
-  //     document.querySelector('.header').style.setProperty(
-  //       'transform',
-  //       `scale(${multiplier})`
-  //     )
-  //     let width = 100 * window.devicePixelRatio
-  //     let offsetY = 17 * window.devicePixelRatio
-  //     let offsetX = 40 * (window.devicePixelRatio * 2)
-
-  //     // let setY = 60
-
-  //     document.querySelector('.header').style.setProperty(
-  //       'width',
-  //       `${width}%`
-  //     )
-  //     document.querySelector('.header').style.setProperty(
-  //       'top',
-  //       `-${offsetY}px`
-  //     )
-  //     document.querySelector('.header').style.setProperty(
-  //       'left',
-  //       `-${offsetX}px`
-  //     )
-  //   }
+  //    
   //   sizeListener()
   //   window.addEventListener('resize', (e) => {
   //     sizeListener()
