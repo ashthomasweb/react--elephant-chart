@@ -475,7 +475,7 @@ class Board extends Component {
             />
           </div>
         </div>
-        <button
+        {/* <button
           type='button'
           style={{
             position: 'absolute',
@@ -485,7 +485,7 @@ class Board extends Component {
           }}
           onClick={() => console.log(this.state.notes)}>
           Board Notes
-        </button>
+        </button> */}
       </div>
     )
   }
