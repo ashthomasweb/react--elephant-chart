@@ -16,18 +16,24 @@ class NoteItem extends Component {
   }
 
   clickHandler = (e) => {
-    if ( this.state.isMatBoard ) this.props.findMatGroup(e.target.id)
-    this.mouseOffset(e)
-    if (document.querySelector('#check-toggle').checked === true) {
-      this.props.checkHandler(!this.state.isChecked, e.target.id)
-      let isChecked = !this.state.isChecked
-      this.setState({ isChecked })
+    if (e.target.className === 'note-menu') {
+      this.trayPopout(e.target)
+    } else {
+      if (this.state.isMatBoard) this.props.findMatGroup(e.target.id)
+      this.mouseOffset(e)
+      if (document.querySelector('#check-toggle').checked === true) {
+        this.props.checkHandler(!this.state.isChecked, e.target.id)
+        let isChecked = !this.state.isChecked
+        this.setState({ isChecked })
+      }
     }
   }
 
   mouseOffset = (e) => {
-    const mouseOffsetY = e.clientY - parseFloat(getComputedStyle(e.target).top)
-    const mouseOffsetX = e.clientX - parseFloat(getComputedStyle(e.target).left)
+    const mouseOffsetY =
+      e.clientY - parseFloat(getComputedStyle(e.target.parentNode).top)
+    const mouseOffsetX =
+      e.clientX - parseFloat(getComputedStyle(e.target.parentNode).left)
     this.setState({ mouseOffsetY, mouseOffsetX })
   }
 
@@ -44,6 +50,7 @@ class NoteItem extends Component {
     let isChecked = p.isChecked ?? false
     let isMatBoard = s.isMatBoard ?? false
     let pUpdate = p.positionUpdater
+    let trayText = p.trayText
 
     if (e.clientX !== 0) {
       this.setState(
@@ -57,11 +64,16 @@ class NoteItem extends Component {
           noteBColor: color,
           isChecked: isChecked,
           isMatBoard: isMatBoard,
-          noteGroup: noteGroup
+          noteGroup: noteGroup,
+          trayText: trayText
         },
-        () => isMatBoard ? pUpdate(this.state, e, false, [this.state.id, noteGroup, e]) : pUpdate(this.state, e)
+        () =>
+          isMatBoard
+            ? pUpdate(this.state, e, false, [this.state.id, noteGroup, e])
+            : pUpdate(this.state, e)
       )
-    } else { // handles remaining bad clientX value
+    } else {
+      // handles remaining bad clientX value
       console.log(
         'ERROR: dragend/dragover clientX value error. Displaying previously known good position. Error occurs during fast clicking of notes due to client not having time to update. No notes were lost.'
       )
@@ -69,13 +81,15 @@ class NoteItem extends Component {
   }
 
   resizeHandler = (e) => {
-    let width = getComputedStyle(e.target).getPropertyValue('width')
-    let height = getComputedStyle(e.target).getPropertyValue('height')
-    this.props.resizeHandler(this.state.id, width, height)
-    this.setState({
-      width: width,
-      height: height,
-    })
+    if (e.target.className !== 'note-menu') {
+      let width = getComputedStyle(e.target).getPropertyValue('width')
+      let height = getComputedStyle(e.target).getPropertyValue('height')
+      this.props.resizeHandler(this.state.id, width, height)
+      this.setState({
+        width: width,
+        height: height,
+      })
+    }
   }
 
   editHandler = () => {
@@ -83,11 +97,37 @@ class NoteItem extends Component {
   }
 
   displayHandler = () => {
-    if ((this.state.id <= 4) & (this.state.id !== 0) && this.props.initialDisplay === false) {
+    if (
+      (this.state.id <= 4) & (this.state.id !== 0) &&
+      this.props.initialDisplay === false
+    ) {
       return 'none'
     } else {
       return 'block'
     }
+  }
+
+  trayPopout = (input) => {
+    let tray = document.querySelector(`#${input.dataset.tray}`)
+    if (tray.dataset.display === 'false') {
+      tray.classList.add('slide-out')
+      tray.style.width = '150px'
+      tray.style.height = '250px'
+      tray.dataset.display = 'true'
+    } else {
+      tray.classList.remove('slide-out')
+      tray.classList.add('slide-in')
+      tray.style.width = '80%'
+      tray.style.height = '80%'
+      tray.dataset.display = 'false'
+    }
+  }
+
+  saveTray = (id) => {
+    let tray = document.querySelector(`#tray-${id}`)
+    let trayText = tray.innerText
+    console.log(trayText)
+    this.setState({ trayText })
   }
 
   render() {
@@ -102,36 +142,53 @@ class NoteItem extends Component {
       border,
       noteBColor,
       isMatBoard,
+      trayText
     } = this.props
 
     return (
       <div
         style={{
+          zIndex: `${zIndex}`,
+          position: 'absolute',
           width: `${width}`,
           height: `${height}`,
-          left: `${(left)}`,
+          left: `${left}`,
           top: `${top}`,
-          backgroundColor: `${noteBColor ?? '#f2ecb3'}`,
-          zIndex: `${zIndex}`,
-          border: `${border}`,
-          display: this.displayHandler(),
-        }}
-        id={id}
-        className={`note-comp`}
-        onMouseDown={this.clickHandler}
-        onMouseUp={this.resizeHandler}
-        onDrag={this.dragHandler}
-        onDoubleClick={this.editHandler}
-        draggable>
-        <div className={`content isMat-${isMatBoard}`}>
-          <img
-            src={check}
-            style={{ display: `${this.props.isChecked ? 'block' : 'none'}` }}
-            className='note-check'
-            alt='checkmark'
-          />
-          <p className='note-text'>{noteText}</p>
+        }}>
+        <div
+          style={{
+            width: `${width}`,
+            height: `${height}`,
+            backgroundColor: `${noteBColor ?? '#f2ecb3'}`,
+            border: `${border}`,
+            zIndex: `2`,
+            display: this.displayHandler(),
+          }}
+          id={id}
+          className={`note-comp`}
+          onMouseDown={this.clickHandler}
+          onMouseUp={this.resizeHandler}
+          onDrag={this.dragHandler}
+          onDoubleClick={this.editHandler}
+          draggable>
+          <div className={`content isMat-${isMatBoard}`}>
+            <img
+              src={check}
+              style={{ display: `${this.props.isChecked ? 'block' : 'none'}` }}
+              className='note-check'
+              alt='checkmark'
+            />
+            <div className='note-menu' data-tray={`tray-${id}`} />
+            <p className='note-text'>{noteText}</p>
+          </div>
         </div>
+        <div
+          style={{ backgroundColor: `${noteBColor}` }}
+          id={`tray-${id}`}
+          className='note-tray slide-in'
+          data-display='false'>
+            <div className='tray-text' suppressContentEditableWarning={true} contentEditable='true' onInput={() => this.saveTray(id)}>{trayText}</div>
+          </div>
       </div>
     )
   }

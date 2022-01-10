@@ -4,15 +4,15 @@
   display: block;
   align-items: center;
   justify-content: center;
-  margin: 0 7.5px 15px;
   overflow: hidden;
-  position: absolute;
-  top: 130px;
+  position: relative;
+  // top: 130px;
   background-position: center;
   background-size: cover;
   box-shadow: 3px 3px 3px #4a4a4a, -3px -3px 55px -35px #4a4a4a;
   resize: both;
   white-space: pre-line;
+
 
   &.large {
     height: 380px;
@@ -22,9 +22,9 @@
     margin-right: 7.5px;
   }
   
-  &:last-child {
-    margin-left: 7.5px;
-  }
+  // &:last-child {
+  //   margin-left: 7.5px;
+  // }
 
   &.selected {
     box-shadow: 3px 3px 3px #c9c9c9, -3px -3px 95px -15px #c9c9c9;
@@ -59,11 +59,63 @@
 
     .note-check {
       position: absolute;
-      top: 5px;
-      right: 5px;
+      top: 6px;
+      left: 6px;
       display: none;
-      height: 15px;
+      height: 16px;
+    }
+
+    .note-menu {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      height: 12px;
+      width: 12px;
+      pointer-events: all;
+      opacity: .1;
+      border: 1px solid black;
+      border-radius: 100%;
+      line-height: .6;
+      padding: 2px;
+      font-size: 20px;
+      display: none;
+    }
+
+  }
+
+  &:hover {
+    .note-menu {
+      display: block;
     }
   }
 
+}
+
+.note-tray {
+  z-index: 1;
+  width: 80%;
+  height: 80%;
+  border: 2px dashed black;
+  border-radius: 4px;
+  position: absolute;
+  pointer-events: all;
+  top: 0;
+  padding: 5px;
+  
+  &.slide-in {
+    right: 5px;
+  }
+
+  &.slide-out {
+    left: 100%!important;
+  }
+
+  .tray-text {
+    font-size: 16px;
+    opacity: .8;
+    height: 100%;
+    width: 100%;
+    white-space: pre-line;
+    background-color: rgba(255,255,255,.2);
+  }
 }

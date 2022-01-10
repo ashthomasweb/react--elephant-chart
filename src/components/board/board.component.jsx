@@ -47,6 +47,7 @@ class Board extends Component {
         mouseOffsetX: 0,
         mouseOffsetY: 0,
         noteText: '',
+        trayText: '',
         border: 'none',
         noteBColor: '#f2ecb3',
         isMatBoard: false,
