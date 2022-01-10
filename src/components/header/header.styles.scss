@@ -5,6 +5,7 @@
   position: fixed;
   top: 0;
   pointer-events: none;
+  z-index: 100;
 
   .logo-container {
     height: 100%;

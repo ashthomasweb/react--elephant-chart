@@ -47,6 +47,10 @@ class Board extends Component {
         mouseOffsetX: 0,
         mouseOffsetY: 0,
         noteText: '',
+        trayText: '',
+        isTrayDisplay: false,
+        trayWidth: '150px',
+        trayHeight: '200px',
         border: 'none',
         noteBColor: '#f2ecb3',
         isMatBoard: false,
@@ -255,6 +259,33 @@ class Board extends Component {
     })
   }
 
+  passTrayText = (id, trayText) => {
+    let notes = [...this.state.notes]
+    let noteToUpdate = {...notes[indexFinder(notes, id)]}
+    noteToUpdate.trayText = trayText
+    notes[indexFinder(notes, id)] = noteToUpdate
+    this.setState({ notes })
+  }
+
+  trayHandler = (isTrayDisplay, id) => {
+    let notes = [...this.state.notes] 
+    let newIndex = indexFinder(notes, id)
+    let newNote = notes[newIndex]
+    newNote.isTrayDisplay = isTrayDisplay
+    notes[newIndex] = newNote
+    this.setState({ notes })
+  }
+
+  traySize = (id, w, h) => {
+    let notes = [...this.state.notes] 
+    let newIndex = indexFinder(notes, id)
+    let newNote = notes[newIndex]
+    newNote.trayWidth = w
+    newNote.trayHeight = h
+    notes[newIndex] = newNote
+    this.setState({ notes })
+  }
+
   setBackgroundColor = () => {
     let boardObj = { ...this.state.boardObj }
     boardObj.backgroundColor = this.$('#bg-color-pick').value
@@ -339,6 +370,9 @@ class Board extends Component {
             initialDisplay={this.state.initialNoteDisplay}
             checkHandler={this.checkHandler}
             findMatGroup={this.findMatGroup}
+            passTrayText={this.passTrayText}
+            trayHandler={this.trayHandler}
+            traySize={this.traySize}
             {...noteProps}
           />
         ))}
@@ -441,7 +475,7 @@ class Board extends Component {
             />
           </div>
         </div>
-        {/* <button
+        <button
           type='button'
           style={{
             position: 'absolute',
@@ -449,9 +483,9 @@ class Board extends Component {
             top: '0',
             zIndex: '9999999999',
           }}
-          onClick={() => window.scrollTo(200,10)}>
-          Board State
-        </button> */}
+          onClick={() => console.log(this.state.notes)}>
+          Board Notes
+        </button>
       </div>
     )
   }

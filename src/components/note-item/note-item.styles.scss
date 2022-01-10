@@ -4,10 +4,8 @@
   display: block;
   align-items: center;
   justify-content: center;
-  margin: 0 7.5px 15px;
   overflow: hidden;
-  position: absolute;
-  top: 130px;
+  position: relative;
   background-position: center;
   background-size: cover;
   box-shadow: 3px 3px 3px #4a4a4a, -3px -3px 55px -35px #4a4a4a;
@@ -20,10 +18,6 @@
   
   &:first-child {
     margin-right: 7.5px;
-  }
-  
-  &:last-child {
-    margin-left: 7.5px;
   }
 
   &.selected {
@@ -59,11 +53,66 @@
 
     .note-check {
       position: absolute;
-      top: 5px;
-      right: 5px;
+      top: 6px;
+      left: 6px;
       display: none;
-      height: 15px;
+      height: 16px;
     }
+
+    .note-menu {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      height: 12px;
+      width: 12px;
+      pointer-events: all;
+      opacity: .1;
+      border: 1px solid black;
+      border-radius: 100%;
+      line-height: .6;
+      padding: 2px;
+      font-size: 20px;
+      display: none;
+    }
+
+  }
+
+  &:hover {
+    .note-menu {
+      display: block;
+    }
+  }
+
+}
+
+.note-tray {
+  z-index: 1;
+  border-radius: 4px;
+  position: absolute;
+  pointer-events: all;
+  top: 0;
+  padding: 5px;
+  resize: both;
+  display: none;
+  
+  &.slide-in {
+    right: 5px;
+  }
+
+  &.slide-out {
+    left: 100%!important;
+  }
+
+  .tray-text {
+    margin: 1px 1px 1px 1px;
+    font-size: 16px;
+    width: 100%;
+    height: 100%;
+    opacity: .8;
+    white-space: pre-line;
+    background-color: rgba(255,255,255,.2);
+    resize: both;
+    display: none;
   }
 
 }
