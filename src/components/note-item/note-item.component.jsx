@@ -11,6 +11,7 @@ class NoteItem extends Component {
     this.state = {
       isMatBoard: this.props.isMatBoard,
       isChecked: this.props.isChecked,
+      isTrayDisplay: this.props.isTrayDisplay ?? false,
       id: this.props.id,
     }
   }
@@ -107,27 +108,34 @@ class NoteItem extends Component {
     }
   }
 
-  trayPopout = (input) => {
-    let tray = document.querySelector(`#${input.dataset.tray}`)
+  trayPopout = (target) => {
+    let tray = document.querySelector(`#${target.dataset.tray}`)
+    let trayArea = document.querySelector(`#${target.dataset.tray} textarea`)
+    let id = target.parentNode.parentNode.id
     if (tray.dataset.display === 'false') {
-      tray.classList.add('slide-out')
-      tray.style.width = '150px'
-      tray.style.height = '250px'
+      let isTrayDisplay = true
+      this.setState({ isTrayDisplay})
+      this.props.trayHandler(isTrayDisplay, id)
+
+      trayArea.style.width = '150px'
+      trayArea.style.height = '250px'
       tray.dataset.display = 'true'
     } else {
-      tray.classList.remove('slide-out')
-      tray.classList.add('slide-in')
-      tray.style.width = '80%'
-      tray.style.height = '80%'
+      let isTrayDisplay = false
+      this.setState({ isTrayDisplay})
+      this.props.trayHandler(isTrayDisplay, id)
+      trayArea.style.width = '15%'
+      trayArea.style.height = '25%'
       tray.dataset.display = 'false'
     }
   }
 
   saveTray = (id) => {
-    let tray = document.querySelector(`#tray-${id}`)
-    let trayText = tray.innerText
+    let tray = document.querySelector(`#tray-${id} textarea`)
+    let trayText = tray.value
     console.log(trayText)
     this.setState({ trayText })
+    this.props.passTrayText(id, trayText)
   }
 
   render() {
@@ -142,7 +150,7 @@ class NoteItem extends Component {
       border,
       noteBColor,
       isMatBoard,
-      trayText
+      trayText,
     } = this.props
 
     return (
@@ -185,9 +193,9 @@ class NoteItem extends Component {
         <div
           style={{ backgroundColor: `${noteBColor}` }}
           id={`tray-${id}`}
-          className='note-tray slide-in'
+          className={`note-tray ${this.state.isTrayDisplay ? 'slide-out' : 'slide-in'}`}
           data-display='false'>
-            <div className='tray-text' suppressContentEditableWarning={true} contentEditable='true' onInput={() => this.saveTray(id)}>{trayText}</div>
+            <textarea className={`tray-text ${this.state.isTrayDisplay ? 'slide-out' : 'slide-in'}`} suppressContentEditableWarning={true} contentEditable='true' onChange={() => this.saveTray(id)}>{trayText}</textarea>
           </div>
       </div>
     )

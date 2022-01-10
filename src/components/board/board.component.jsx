@@ -256,6 +256,26 @@ class Board extends Component {
     })
   }
 
+  passTrayText = (id, trayText) => {
+    let notes = [...this.state.notes]
+    let noteToUpdate = {...notes[indexFinder(notes, id)]}
+    noteToUpdate.trayText = trayText
+    notes[indexFinder(notes, id)] = noteToUpdate
+    this.setState({ notes })
+  }
+
+  trayHandler = (isTrayDisplay, id) => {
+    let notes = [...this.state.notes] 
+    let newIndex = indexFinder(notes, id)
+    let newNote = notes[newIndex]
+    
+    newNote.isTrayDisplay = isTrayDisplay
+    notes[newIndex] = newNote
+    console.log(notes[newIndex])
+    console.log(notes)
+    this.setState({ notes })
+  }
+
   setBackgroundColor = () => {
     let boardObj = { ...this.state.boardObj }
     boardObj.backgroundColor = this.$('#bg-color-pick').value
@@ -340,6 +360,8 @@ class Board extends Component {
             initialDisplay={this.state.initialNoteDisplay}
             checkHandler={this.checkHandler}
             findMatGroup={this.findMatGroup}
+            passTrayText={this.passTrayText}
+            trayHandler={this.trayHandler}
             {...noteProps}
           />
         ))}
@@ -442,7 +464,7 @@ class Board extends Component {
             />
           </div>
         </div>
-        {/* <button
+        <button
           type='button'
           style={{
             position: 'absolute',
@@ -450,9 +472,9 @@ class Board extends Component {
             top: '0',
             zIndex: '9999999999',
           }}
-          onClick={() => window.scrollTo(200,10)}>
-          Board State
-        </button> */}
+          onClick={() => console.log(this.state.notes)}>
+          Board Notes
+        </button>
       </div>
     )
   }
