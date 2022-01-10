@@ -27,13 +27,11 @@ class Header extends Component {
   render() {
     return (
       <div className='header'>
-        <img src={logo} className='logo' alt='flow-post logo' />
-
         <div className='user-options'>
           {this.props.currentUser ? (
             <div>
               <div className='welcome'>
-                Welcome,
+                <h2 style={{margin: '-10px 0 -10px 0' }}>TadaMat</h2>
                 <br />
                 {this.props.currentUser.displayName}
               </div>
