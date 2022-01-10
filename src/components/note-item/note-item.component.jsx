@@ -51,7 +51,9 @@ class NoteItem extends Component {
     let isChecked = p.isChecked ?? false
     let isMatBoard = s.isMatBoard ?? false
     let pUpdate = p.positionUpdater
-    let trayText = p.trayText
+    let trayText = p.trayText ?? ''
+    let trayWidth = p.trayWidth ?? '150px'
+    let trayHeight = p.trayHeight ?? '200px'
 
     if (e.clientX !== 0) {
       this.setState(
@@ -66,7 +68,9 @@ class NoteItem extends Component {
           isChecked: isChecked,
           isMatBoard: isMatBoard,
           noteGroup: noteGroup,
-          trayText: trayText
+          trayText: trayText,
+          trayWidth: trayWidth,
+          trayHeight: trayHeight,
         },
         () =>
           isMatBoard
@@ -114,20 +118,28 @@ class NoteItem extends Component {
     let id = target.parentNode.parentNode.id
     if (tray.dataset.display === 'false') {
       let isTrayDisplay = true
-      this.setState({ isTrayDisplay})
+      this.setState({ isTrayDisplay })
       this.props.trayHandler(isTrayDisplay, id)
-
-      trayArea.style.width = '150px'
-      trayArea.style.height = '250px'
+      trayArea.style.display = 'block'
+      tray.style.display = 'block'
+      trayArea.style.width = this.props.trayWidth
+      trayArea.style.height = this.props.trayHeight
       tray.dataset.display = 'true'
     } else {
       let isTrayDisplay = false
-      this.setState({ isTrayDisplay})
+      this.setState({ isTrayDisplay })
       this.props.trayHandler(isTrayDisplay, id)
-      trayArea.style.width = '15%'
-      trayArea.style.height = '25%'
+      trayArea.style.display = 'none'
+      tray.style.display = 'none'
       tray.dataset.display = 'false'
     }
+  }
+
+  traySize = (id) => {
+    let tray = document.querySelector(`#tray-${id} textarea`)
+    let trayWidth = getComputedStyle(tray).getPropertyValue('width')
+    let trayHeight = getComputedStyle(tray).getPropertyValue('height')
+    this.props.traySize(id, trayWidth, trayHeight)
   }
 
   saveTray = (id) => {
@@ -151,6 +163,9 @@ class NoteItem extends Component {
       noteBColor,
       isMatBoard,
       trayText,
+      trayWidth,
+      trayHeight,
+      isTrayDisplay,
     } = this.props
 
     return (
@@ -191,12 +206,25 @@ class NoteItem extends Component {
           </div>
         </div>
         <div
-          style={{ backgroundColor: `${noteBColor}` }}
+          style={{ backgroundColor: `${noteBColor}`, display: `${ isTrayDisplay ? 'block' : 'none' }` }}
           id={`tray-${id}`}
-          className={`note-tray ${this.state.isTrayDisplay ? 'slide-out' : 'slide-in'}`}
-          data-display='false'>
-            <textarea className={`tray-text ${this.state.isTrayDisplay ? 'slide-out' : 'slide-in'}`} suppressContentEditableWarning={true} contentEditable='true' onChange={() => this.saveTray(id)}>{trayText}</textarea>
-          </div>
+          className={`note-tray ${
+            this.state.isTrayDisplay ? 'slide-out' : 'slide-in'
+          }`}
+          data-display={isTrayDisplay ?? false}>
+          <textarea
+            className={`tray-text ${
+              this.state.isTrayDisplay ? 'slide-out' : 'slide-in'
+            }`}
+            style={{ width: `${trayWidth ?? '150px' }`, height: `${trayHeight ?? '200px'}`, display: `${ isTrayDisplay ? 'block' : 'none' }` }}
+            suppressContentEditableWarning={true}
+            contentEditable='true'
+            onMouseUp={() => this.traySize(id)}
+            onChange={() => this.saveTray(id)}
+            value={trayText}
+            >
+          </textarea>
+        </div>
       </div>
     )
   }

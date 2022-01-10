@@ -48,6 +48,9 @@ class Board extends Component {
         mouseOffsetY: 0,
         noteText: '',
         trayText: '',
+        isTrayDisplay: false,
+        trayWidth: '150px',
+        trayHeight: '200px',
         border: 'none',
         noteBColor: '#f2ecb3',
         isMatBoard: false,
@@ -268,11 +271,18 @@ class Board extends Component {
     let notes = [...this.state.notes] 
     let newIndex = indexFinder(notes, id)
     let newNote = notes[newIndex]
-    
     newNote.isTrayDisplay = isTrayDisplay
     notes[newIndex] = newNote
-    console.log(notes[newIndex])
-    console.log(notes)
+    this.setState({ notes })
+  }
+
+  traySize = (id, w, h) => {
+    let notes = [...this.state.notes] 
+    let newIndex = indexFinder(notes, id)
+    let newNote = notes[newIndex]
+    newNote.trayWidth = w
+    newNote.trayHeight = h
+    notes[newIndex] = newNote
     this.setState({ notes })
   }
 
@@ -362,6 +372,7 @@ class Board extends Component {
             findMatGroup={this.findMatGroup}
             passTrayText={this.passTrayText}
             trayHandler={this.trayHandler}
+            traySize={this.traySize}
             {...noteProps}
           />
         ))}
