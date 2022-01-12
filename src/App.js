@@ -41,10 +41,20 @@ class App extends Component {
       getUserBoards(userAuth)
     })
 
+    function setZoom() {
+      let zoom = window.devicePixelRatio * 1.2
+      let ui = ['.options-frame', '.header', '.pad-frame', '.update-frame', '.trash-frame']
+      ui.forEach((item) => {
+        document.querySelector(item).style.zoom = `calc(100% / ${zoom})`
+      })
+    }
     // partially handles bad clientX value on fast note clicking
     window.addEventListener('dragover', (e) => e.preventDefault(), false)
     window.addEventListener('dragend', (e) => e.preventDefault(), false)
-   
+    window.addEventListener('load', setZoom())
+    window.addEventListener('resize', () => {
+      setZoom()
+    })
   }
 
   componentWillUnmount() {
@@ -54,7 +64,6 @@ class App extends Component {
   render() {
     return (
       <div>
-         
         <HomePage currentUser={this.state.currentUser} />
       </div>
     )

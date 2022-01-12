@@ -7,6 +7,7 @@
   position: absolute;
   z-index: -2147483647;
   overflow: scroll;
+  // zoom: 80%;
 }
 
 .database-options {
@@ -91,6 +92,7 @@
   border: 1px solid lightgrey;
   border-radius: 2px;
   z-index: 100000000;
+  // zoom: calc(100% / 1.3)
   
   // &.large {
   //   transform: scale(.9);
