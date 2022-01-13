@@ -12,7 +12,7 @@
 
 .database-options {
   position: absolute;
-  left: 5px;
+  left: 85px;
   top: 5px;
   width: 150px;
   height: 113px;
@@ -78,13 +78,40 @@
   }
 }
 
+
+.zoom-options {
+  position: absolute;
+  top: 2px;
+  left: 8px;
+  
+  button {
+    display: inline-block!important;
+    margin: 4px 6px 0!important;
+    width: 23px;
+    height: 21px;
+    padding-bottom: 3px;
+    font-size: 14px;
+  }
+
+  h3 {
+    margin: 0;
+    text-align: center;
+  }
+
+  h4 {
+    margin: 0;
+    font-size: 13px;
+    text-align: center;
+  }
+}
+
 .options-frame {
-  width: 341px;
+  width: 421px;
   height: 124px;
   position: fixed;
   margin: 0 5px;
   top: 10px;
-  left: 275px;
+  left: 135px;
   padding: 0 0 0 160px;
   background-color: var(--primary);
   display: inline-block;
@@ -92,16 +119,8 @@
   border: 1px solid lightgrey;
   border-radius: 2px;
   z-index: 100000000;
-  // zoom: calc(100% / 1.3)
+
   
-  // &.large {
-  //   transform: scale(.9);
-  // }
-
-  // &.small {
-  //   transform: scale(1.11);
-  // }
-
   button {
     display: block;
     margin: 4px 12px 0;
@@ -115,6 +134,7 @@
     display: inline-block;
     margin: 8px 0 0px 5px;
     bottom: 0;
+    left: 80px;
     position: relative;
     height: 21px;
   }
@@ -131,7 +151,7 @@
   .place-btn {
     height: 21px;
     position: relative;
-    right: 7px;
+    right: -72px;
     width: 111px;
     margin-top: 6px;
 
@@ -243,7 +263,7 @@
 }
 
 .pad-frame {
-  left: 632px;
+  left: 573px;
   top: 10px;
   height: 124px;
   position: fixed;

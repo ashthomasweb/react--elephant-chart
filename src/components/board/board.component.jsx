@@ -31,6 +31,7 @@ class Board extends Component {
 
     this.state = {
       currentUpdateId: 0,
+      uiZoom: 1.2,
       updateCycleActive: false,
       prevNote: {
         color: '#f2ecb3',
@@ -261,14 +262,14 @@ class Board extends Component {
 
   passTrayText = (id, trayText) => {
     let notes = [...this.state.notes]
-    let noteToUpdate = {...notes[indexFinder(notes, id)]}
+    let noteToUpdate = { ...notes[indexFinder(notes, id)] }
     noteToUpdate.trayText = trayText
     notes[indexFinder(notes, id)] = noteToUpdate
     this.setState({ notes })
   }
 
   trayHandler = (isTrayDisplay, id) => {
-    let notes = [...this.state.notes] 
+    let notes = [...this.state.notes]
     let newIndex = indexFinder(notes, id)
     let newNote = notes[newIndex]
     newNote.isTrayDisplay = isTrayDisplay
@@ -277,7 +278,7 @@ class Board extends Component {
   }
 
   traySize = (id, w, h) => {
-    let notes = [...this.state.notes] 
+    let notes = [...this.state.notes]
     let newIndex = indexFinder(notes, id)
     let newNote = notes[newIndex]
     newNote.trayWidth = w
@@ -338,7 +339,10 @@ class Board extends Component {
         let logPosition = (e) => {
           let xFromOrigin = e.clientX - initialClientX
           let yFromOrigin = e.clientY - initialClientY
-          board.scrollTo(initialScrollX - xFromOrigin, initialScrollY - yFromOrigin)
+          board.scrollTo(
+            initialScrollX - xFromOrigin,
+            initialScrollY - yFromOrigin
+          )
         }
         window.addEventListener('mousemove', logPosition)
         window.addEventListener('mouseup', (e) => {
@@ -346,7 +350,47 @@ class Board extends Component {
         })
       }
     })
+    window.addEventListener('resize', () => {
+      let ui = [
+        '.options-frame',
+        '.header',
+        '.pad-frame',
+        '.update-frame',
+        '.trash-frame',
+      ]
+      ui.forEach((item) => {
+        document.querySelector(item).style.zoom = `calc(100% / ${this.state.uiZoom * window.devicePixelRatio})`
+      })
+    })
   }
+
+  zoomIntDir = (directionUp) => {
+    let uiZoom = this.state.uiZoom
+    directionUp ? (uiZoom = uiZoom - 0.14) : (uiZoom = uiZoom + 0.14)
+    let zoom
+    zoom = window.devicePixelRatio * uiZoom
+    let ui = [
+      '.options-frame',
+      '.header',
+      '.pad-frame',
+      '.update-frame',
+      '.trash-frame',
+    ]
+    ui.forEach((item) => {
+      document.querySelector(item).style.zoom = `calc(100% / ${zoom})`
+    })
+    this.setState({ uiZoom })
+  }
+
+  // zoomBoardDir = (directionUp) => {
+  //   let boardZoom = this.state.boardZoom
+  //   directionUp ? (boardZoom = boardZoom - .14) : (boardZoom = boardZoom + .14)
+  //   let zoom
+  //   zoom = window.devicePixelRatio * boardZoom;
+  //   document.querySelector('.board-backing').style.transform = `translateZ(-${zoom * 10}rem)`
+  //   this.setState({ boardZoom })
+
+  // }
 
   render() {
     return (
@@ -377,6 +421,23 @@ class Board extends Component {
           />
         ))}
         <div className='options-frame'>
+          <div className='zoom-options'>
+            <h3>Zoom</h3>
+            <h4>Interface</h4>
+            <button type='button' onClick={() => this.zoomIntDir(false)}>
+              -
+            </button>
+            <button type='button' onClick={() => this.zoomIntDir(true)}>
+              +
+            </button>
+            {/* <h4 style={{ marginTop: '3px' }}>Board</h4>
+            <button type='button' onClick={() => this.zoomBoardDir(false)}>
+              -
+            </button>
+            <button type='button' onClick={() => this.zoomBoardDir(true)}>
+              +
+            </button> */}
+          </div>
           <div className='database-options'>
             <h3>Save Boards</h3>
             <input

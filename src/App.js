@@ -48,13 +48,13 @@ class App extends Component {
         document.querySelector(item).style.zoom = `calc(100% / ${zoom})`
       })
     }
-    // partially handles bad clientX value on fast note clicking
+    // partially handles bad clientX value on fast n999999999999999999999ote clicking
     window.addEventListener('dragover', (e) => e.preventDefault(), false)
     window.addEventListener('dragend', (e) => e.preventDefault(), false)
     window.addEventListener('load', setZoom())
-    window.addEventListener('resize', () => {
-      setZoom()
-    })
+    // window.addEventListener('resize', () => {
+    //   setZoom()
+    // })
   }
 
   componentWillUnmount() {
