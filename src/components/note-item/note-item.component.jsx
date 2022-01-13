@@ -54,6 +54,7 @@ class NoteItem extends Component {
     let trayText = p.trayText ?? ''
     let trayWidth = p.trayWidth ?? '150px'
     let trayHeight = p.trayHeight ?? '200px'
+    let isNew = p.isNew ?? false
 
     if (e.clientX !== 0) {
       this.setState(
@@ -71,11 +72,17 @@ class NoteItem extends Component {
           trayText: trayText,
           trayWidth: trayWidth,
           trayHeight: trayHeight,
+          isNew: isNew
         },
-        () =>
-          isMatBoard
+        () => {
+          if (this.state.isNew) {
+            pUpdate(this.state, e)
+          } else {
+            isMatBoard
             ? pUpdate(this.state, e, false, [this.state.id, noteGroup, e])
             : pUpdate(this.state, e)
+          }
+        }
       )
     } else {
       // handles remaining bad clientX value
@@ -145,7 +152,6 @@ class NoteItem extends Component {
   saveTray = (id) => {
     let tray = document.querySelector(`#tray-${id} textarea`)
     let trayText = tray.value
-    console.log(trayText)
     this.setState({ trayText })
     this.props.passTrayText(id, trayText)
   }

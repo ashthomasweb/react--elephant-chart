@@ -42,6 +42,8 @@ export const createNewUserProfile = async (userAuth, additionalData) => {
 }
 
 export const saveUserBoard = async (userAuth, boardObj) => {
+  if (boardObj.name === '') return
+
   const boardRef = firestore.doc(
     `users/${userAuth.uid}/boards/${boardObj.name}`
   )

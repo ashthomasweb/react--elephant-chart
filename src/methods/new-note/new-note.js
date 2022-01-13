@@ -10,8 +10,8 @@ export const newNoteGenerator = (stateObj, isMat=false) => {
     newNote.id = newIdFinder(stateObj)
     newNote.width = getComputedStyle(padFrame).getPropertyValue('width')
     newNote.height = getComputedStyle(padFrame).getPropertyValue('height')
-    newNote.left = `${Math.floor(Math.random() * 70)+180}px`
-    newNote.top = `${Math.floor(Math.random() * 70)+270}px`
+    newNote.left = `${Math.floor(Math.random() * 60)+100}px`
+    newNote.top = `${Math.floor(Math.random() * 60)+160}px`
     newNote.noteText = inputText.innerText
     inputText.innerText = ''
     if (isMat) {

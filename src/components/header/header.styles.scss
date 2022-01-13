@@ -5,7 +5,8 @@
   position: fixed;
   top: 0;
   pointer-events: none;
-  z-index: 100;
+  z-index: 2000000000;
+  user-select: none;
 
   .logo-container {
     height: 100%;
@@ -49,7 +50,8 @@
   .sign-modal {
     display: none;
     position: absolute;
-    width: 60vw;
+    width: 1003px;
+    height: 630px;
     top: 150px;
     left: 50%;
     transform: translateX(-50%);

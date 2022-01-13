@@ -31,7 +31,8 @@ class Board extends Component {
 
     this.state = {
       currentUpdateId: 0,
-      uiZoom: 1.2,
+      uiZoom: 1.1,
+      boardZoom: 0,
       updateCycleActive: false,
       prevNote: {
         color: '#f2ecb3',
@@ -55,6 +56,7 @@ class Board extends Component {
         border: 'none',
         noteBColor: '#f2ecb3',
         isMatBoard: false,
+        isNew: true,
         noteGroup: [],
         matOffsetX: 0,
         matOffsetY: 0,
@@ -91,6 +93,7 @@ class Board extends Component {
     let isMatch = notes.some((elem) => elem.id === this.state.currentUpdateId)
     ;(isMatch === false) & (this.state.currentUpdateId !== 0) &&
       this.cancelUpdateMode(true)
+    if (notes[indexFinder(notes, e.target.id)]) (notes[indexFinder(notes, e.target.id)].isNew = false)
     this.setState({ notes })
   }
 
@@ -359,7 +362,9 @@ class Board extends Component {
         '.trash-frame',
       ]
       ui.forEach((item) => {
-        document.querySelector(item).style.zoom = `calc(100% / ${this.state.uiZoom * window.devicePixelRatio})`
+        document.querySelector(item).style.zoom = `calc(100% / ${
+          this.state.uiZoom * window.devicePixelRatio
+        })`
       })
     })
   }
@@ -382,44 +387,35 @@ class Board extends Component {
     this.setState({ uiZoom })
   }
 
-  // zoomBoardDir = (directionUp) => {
-  //   let boardZoom = this.state.boardZoom
-  //   directionUp ? (boardZoom = boardZoom - .14) : (boardZoom = boardZoom + .14)
-  //   let zoom
-  //   zoom = window.devicePixelRatio * boardZoom;
-  //   document.querySelector('.board-backing').style.transform = `translateZ(-${zoom * 10}rem)`
-  //   this.setState({ boardZoom })
-
-  // }
-
   render() {
     return (
-      <div
-        id='backing'
-        className='board-backing'
-        onDrop={this.dropHandler}
-        style={{ backgroundColor: this.state.boardObj.backgroundColor }}>
-        <Header
-          className='header'
-          currentUser={this.props.currentUser}
-          reset={this.reRender}
-        />
-        {this.state.notes.map(({ id, ...noteProps }) => (
-          <NoteItem
-            key={id}
-            id={id}
-            positionUpdater={this.positionUpdater}
-            resizeHandler={this.resize}
-            edit={this.startUpdateHandler}
-            initialDisplay={this.state.initialNoteDisplay}
-            checkHandler={this.checkHandler}
-            findMatGroup={this.findMatGroup}
-            passTrayText={this.passTrayText}
-            trayHandler={this.trayHandler}
-            traySize={this.traySize}
-            {...noteProps}
+        <div
+          id='backing'
+          className='board-backing'
+          onDrop={this.dropHandler}
+          style={{ backgroundColor: this.state.boardObj.backgroundColor }}>
+          <Header
+            className='header'
+            currentUser={this.props.currentUser}
+            reset={this.reRender}
           />
-        ))}
+          {this.state.notes.map(({ id, ...noteProps }) => (
+            <NoteItem
+              key={id}
+              id={id}
+              positionUpdater={this.positionUpdater}
+              resizeHandler={this.resize}
+              edit={this.startUpdateHandler}
+              initialDisplay={this.state.initialNoteDisplay}
+              checkHandler={this.checkHandler}
+              findMatGroup={this.findMatGroup}
+              passTrayText={this.passTrayText}
+              trayHandler={this.trayHandler}
+              traySize={this.traySize}
+              {...noteProps}
+            />
+          ))}
+
         <div className='options-frame'>
           <div className='zoom-options'>
             <h3>Zoom</h3>
@@ -430,14 +426,10 @@ class Board extends Component {
             <button type='button' onClick={() => this.zoomIntDir(true)}>
               +
             </button>
-            {/* <h4 style={{ marginTop: '3px' }}>Board</h4>
-            <button type='button' onClick={() => this.zoomBoardDir(false)}>
-              -
-            </button>
-            <button type='button' onClick={() => this.zoomBoardDir(true)}>
-              +
-            </button> */}
+            <h4 style={{ marginTop: '3px' }}>Board</h4>
+            <p>Hold CTRL<br/> + Wheel</p>
           </div>
+
           <div className='database-options'>
             <h3>Save Boards</h3>
             <input
@@ -462,6 +454,7 @@ class Board extends Component {
             </button>
             <div className='board-drop'></div>
           </div>
+
           <button
             className='place-btn'
             type='button'
@@ -503,6 +496,7 @@ class Board extends Component {
             <span className='slider round'></span>
           </label>
         </div>
+
         <div className='update-frame'>
           <button
             className='update-btn'
@@ -517,11 +511,13 @@ class Board extends Component {
             Cancel Update
           </button>
         </div>
+
         <div
           className='pad-frame'
           style={{ backgroundColor: this.state.newNote.noteBColor }}>
           <div id='input-text' contentEditable='true'></div>
         </div>
+
         <div className='trash-frame'>
           <div className='trash-cont'>
             <img
@@ -536,20 +532,24 @@ class Board extends Component {
             />
           </div>
         </div>
-        {/* <button
-          type='button'
-          style={{
-            position: 'absolute',
-            height: '30px',
-            top: '0',
-            zIndex: '9999999999',
-          }}
-          onClick={() => console.log(this.state.notes)}>
-          Board Notes
-        </button> */}
+        
       </div>
     )
   }
 }
 
 export default Board
+
+
+        
+        //   <button
+        //   type='button'
+        //   style={{
+        //     position: 'absolute',
+        //     height: '30px',
+        //     top: '0',
+        //     zIndex: '9999999999',
+        //   }}
+        //   onClick={() => console.log(this.state.notes)}>
+        //   Board Notes
+        // </button>

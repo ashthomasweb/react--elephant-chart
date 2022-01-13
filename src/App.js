@@ -42,19 +42,16 @@ class App extends Component {
     })
 
     function setZoom() {
-      let zoom = window.devicePixelRatio * 1.2
+      let zoom = window.devicePixelRatio * 1.1
       let ui = ['.options-frame', '.header', '.pad-frame', '.update-frame', '.trash-frame']
       ui.forEach((item) => {
         document.querySelector(item).style.zoom = `calc(100% / ${zoom})`
       })
     }
-    // partially handles bad clientX value on fast n999999999999999999999ote clicking
+    // partially handles bad clientX value on fast note clicking
     window.addEventListener('dragover', (e) => e.preventDefault(), false)
     window.addEventListener('dragend', (e) => e.preventDefault(), false)
-    window.addEventListener('load', setZoom())
-    // window.addEventListener('resize', () => {
-    //   setZoom()
-    // })
+    window.addEventListener('load', () => setZoom() )
   }
 
   componentWillUnmount() {
