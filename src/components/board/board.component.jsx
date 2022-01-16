@@ -389,7 +389,6 @@ class Board extends Component {
 
   coordFinder = (e) => {
     let x = this.$('.board-backing').getBoundingClientRect()
-
     console.log(x)
   }
 
