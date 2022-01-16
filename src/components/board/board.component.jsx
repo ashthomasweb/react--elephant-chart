@@ -387,6 +387,13 @@ class Board extends Component {
     this.setState({ uiZoom })
   }
 
+  coordFinder = (e) => {
+    let x = this.$('.board-backing').getBoundingClientRect()
+
+    console.log(x)
+  }
+
+
   render() {
     return (
         <div
@@ -531,8 +538,25 @@ class Board extends Component {
               alt='Body of recycle can'
             />
           </div>
-        </div>
         
+          <button
+          type='button'
+          style={{
+            position: 'absolute',
+            height: '30px',
+            top: '0',
+            left: '0',
+            zIndex: '9999999999',
+          }}
+          onClick={() => {
+            // console.log(this.state.notes)
+            this.coordFinder()
+          }}
+          >
+          Board Notes
+        </button>
+        
+            </div>
       </div>
     )
   }
@@ -540,16 +564,3 @@ class Board extends Component {
 
 export default Board
 
-
-        
-        //   <button
-        //   type='button'
-        //   style={{
-        //     position: 'absolute',
-        //     height: '30px',
-        //     top: '0',
-        //     zIndex: '9999999999',
-        //   }}
-        //   onClick={() => console.log(this.state.notes)}>
-        //   Board Notes
-        // </button>

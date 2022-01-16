@@ -52,6 +52,7 @@ class App extends Component {
     window.addEventListener('dragover', (e) => e.preventDefault(), false)
     window.addEventListener('dragend', (e) => e.preventDefault(), false)
     window.addEventListener('load', () => setZoom() )
+    window.addEventListener('click', (e) => console.log(e.target.scrollTop, e.target.scrollLeft))
   }
 
   componentWillUnmount() {
