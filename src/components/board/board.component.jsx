@@ -93,7 +93,8 @@ class Board extends Component {
     let isMatch = notes.some((elem) => elem.id === this.state.currentUpdateId)
     ;(isMatch === false) & (this.state.currentUpdateId !== 0) &&
       this.cancelUpdateMode(true)
-    if (notes[indexFinder(notes, e.target.id)]) (notes[indexFinder(notes, e.target.id)].isNew = false)
+    if (notes[indexFinder(notes, e.target.id)])
+      notes[indexFinder(notes, e.target.id)].isNew = false
     this.setState({ notes })
   }
 
@@ -387,40 +388,34 @@ class Board extends Component {
     this.setState({ uiZoom })
   }
 
-  coordFinder = (e) => {
-    let x = this.$('.board-backing').getBoundingClientRect()
-    console.log(x)
-  }
-
-
   render() {
     return (
-        <div
-          id='backing'
-          className='board-backing'
-          onDrop={this.dropHandler}
-          style={{ backgroundColor: this.state.boardObj.backgroundColor }}>
-          <Header
-            className='header'
-            currentUser={this.props.currentUser}
-            reset={this.reRender}
+      <div
+        id='backing'
+        className='board-backing'
+        onDrop={this.dropHandler}
+        style={{ backgroundColor: this.state.boardObj.backgroundColor }}>
+        <Header
+          className='header'
+          currentUser={this.props.currentUser}
+          reset={this.reRender}
+        />
+        {this.state.notes.map(({ id, ...noteProps }) => (
+          <NoteItem
+            key={id}
+            id={id}
+            positionUpdater={this.positionUpdater}
+            resizeHandler={this.resize}
+            edit={this.startUpdateHandler}
+            initialDisplay={this.state.initialNoteDisplay}
+            checkHandler={this.checkHandler}
+            findMatGroup={this.findMatGroup}
+            passTrayText={this.passTrayText}
+            trayHandler={this.trayHandler}
+            traySize={this.traySize}
+            {...noteProps}
           />
-          {this.state.notes.map(({ id, ...noteProps }) => (
-            <NoteItem
-              key={id}
-              id={id}
-              positionUpdater={this.positionUpdater}
-              resizeHandler={this.resize}
-              edit={this.startUpdateHandler}
-              initialDisplay={this.state.initialNoteDisplay}
-              checkHandler={this.checkHandler}
-              findMatGroup={this.findMatGroup}
-              passTrayText={this.passTrayText}
-              trayHandler={this.trayHandler}
-              traySize={this.traySize}
-              {...noteProps}
-            />
-          ))}
+        ))}
 
         <div className='options-frame'>
           <div className='zoom-options'>
@@ -433,7 +428,10 @@ class Board extends Component {
               +
             </button>
             <h4 style={{ marginTop: '3px' }}>Board</h4>
-            <p>Hold CTRL<br/> + Wheel</p>
+            <p>
+              Hold CTRL
+              <br /> + Wheel
+            </p>
           </div>
 
           <div className='database-options'>
@@ -537,25 +535,7 @@ class Board extends Component {
               alt='Body of recycle can'
             />
           </div>
-        
-          <button
-          type='button'
-          style={{
-            position: 'absolute',
-            height: '30px',
-            top: '0',
-            left: '0',
-            zIndex: '9999999999',
-          }}
-          onClick={() => {
-            // console.log(this.state.notes)
-            this.coordFinder()
-          }}
-          >
-          Board Notes
-        </button>
-        
-            </div>
+        </div>
       </div>
     )
   }
@@ -563,3 +543,19 @@ class Board extends Component {
 
 export default Board
 
+//   <button
+//   type='button'
+//   style={{
+//     position: 'absolute',
+//     height: '30px',
+//     top: '0',
+//     left: '0',
+//     zIndex: '9999999999',
+//   }}
+//   onClick={() => {
+//     // console.log(this.state.notes)
+//     this.coordFinder()
+//   }}
+//   >
+//   Board Notes
+// </button>

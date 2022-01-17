@@ -6,22 +6,24 @@ export const newNoteGenerator = (stateObj, isMat=false) => {
     let padFrame = document.querySelector('.pad-frame')
     let inputText = document.querySelector('#input-text')
 
-    // get style and content from note pad
     newNote.id = newIdFinder(stateObj)
     newNote.width = getComputedStyle(padFrame).getPropertyValue('width')
     newNote.height = getComputedStyle(padFrame).getPropertyValue('height')
+    let uiZoom = document.querySelector('.pad-frame').style.zoom
+    let padEdge = document.querySelector('.pad-frame').getBoundingClientRect().left
+    let padWidth = getComputedStyle(document.querySelector('#input-text')).getPropertyValue('width')
+    let boardHangX = document.querySelector('.board-backing').scrollLeft
+    uiZoom = uiZoom.replace(/calc\(/g, '')
+    uiZoom = uiZoom.replace(/\)/g, '')
+    uiZoom = uiZoom.replace(/%/g, '')
+    uiZoom = parseFloat(uiZoom) / 100
+    let numX = ((padEdge) + parseFloat(padWidth)) * uiZoom
+    let headerHeight = getComputedStyle(document.querySelector('.header')).getPropertyValue('height')
+    let boardHangY = document.querySelector('.board-backing').scrollTop
+    let numY = (parseFloat(headerHeight) * uiZoom) + boardHangY
+    newNote.left = `${numX + boardHangX}px`
+    newNote.top = `${numY}px`
 
-
-
-
-    newNote.left = `${Math.floor(Math.random() * 60)+100}px`
-    newNote.top = `${Math.floor(Math.random() * 60)+160}px`
-
-
-
-
-
-    
     newNote.noteText = inputText.innerText
     inputText.innerText = ''
     if (isMat) {
@@ -49,4 +51,3 @@ export const rgbToHex = (rgb) => {
       b = "0" + b;
     return "#" + r + g + b;
 }
-
