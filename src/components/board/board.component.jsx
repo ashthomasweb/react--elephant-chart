@@ -81,6 +81,13 @@ class Board extends Component {
       let newNote = { ...noteState }
       notes[indexFinder(notes, newNote.id)] = newNote
       newNote.zIndex = zIndexDrag(this.state.notes, newNote.isMatBoard)
+      if (newNote.noteGroup.length > 0) {
+        newNote.noteGroup.forEach( (note) => {
+          if (notes[indexFinder(notes, note)].isMatBoard) {
+            notes[indexFinder(notes, note)].zIndex = zIndexDrag(this.state.notes, true)
+          }
+        })
+      }
       matPack.length > 0 && (notes = await this.matUpdater(matPack, notes))
       this.setState({ notes })
     }
