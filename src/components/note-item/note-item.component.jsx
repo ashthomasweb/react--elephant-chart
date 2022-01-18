@@ -72,15 +72,15 @@ class NoteItem extends Component {
           trayText: trayText,
           trayWidth: trayWidth,
           trayHeight: trayHeight,
-          isNew: isNew
+          isNew: isNew,
         },
         () => {
           if (this.state.isNew) {
             pUpdate(this.state, e)
           } else {
             isMatBoard
-            ? pUpdate(this.state, e, false, [this.state.id, noteGroup, e])
-            : pUpdate(this.state, e)
+              ? pUpdate(this.state, e, false, [this.state.id, noteGroup, e])
+              : pUpdate(this.state, e)
           }
         }
       )
@@ -172,6 +172,7 @@ class NoteItem extends Component {
       trayWidth,
       trayHeight,
       isTrayDisplay,
+      
     } = this.props
 
     return (
@@ -212,7 +213,10 @@ class NoteItem extends Component {
           </div>
         </div>
         <div
-          style={{ backgroundColor: `${noteBColor}`, display: `${ isTrayDisplay ? 'block' : 'none' }` }}
+          style={{
+            backgroundColor: `${noteBColor}`,
+            display: `${isTrayDisplay ? 'block' : 'none'}`,
+          }}
           id={`tray-${id}`}
           className={`note-tray ${
             this.state.isTrayDisplay ? 'slide-out' : 'slide-in'
@@ -222,14 +226,23 @@ class NoteItem extends Component {
             className={`tray-text ${
               this.state.isTrayDisplay ? 'slide-out' : 'slide-in'
             }`}
-            style={{ width: `${trayWidth ?? '150px' }`, height: `${trayHeight ?? '200px'}`, display: `${ isTrayDisplay ? 'block' : 'none' }` }}
+            style={{
+              width: `${trayWidth ?? '150px'}`,
+              height: `${trayHeight ?? '200px'}`,
+              display: `${isTrayDisplay ? 'block' : 'none'}`,
+            }}
             suppressContentEditableWarning={true}
             contentEditable='true'
             onMouseUp={() => this.traySize(id)}
             onChange={() => this.saveTray(id)}
-            value={trayText}
-            >
-          </textarea>
+            value={trayText}></textarea>
+            {this.props.iframe !== undefined &&
+
+                <iframe id={`iframe-${id}`} style={{ resize: 'both' }}
+                src={this.props.iframe}
+                title='Barrueco'></iframe>
+              }
+         
         </div>
       </div>
     )

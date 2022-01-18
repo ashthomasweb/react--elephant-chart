@@ -61,6 +61,7 @@ class Board extends Component {
         matOffsetX: 0,
         matOffsetY: 0,
         isChecked: false,
+        iframe: 'https://www.google.com',
       },
       boardObj: {
         name: '',
