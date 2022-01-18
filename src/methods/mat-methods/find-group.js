@@ -17,12 +17,16 @@ export const getGroupIds = (id, notes) => {
       let noteLeft = parseFloat(note.left)
       let noteRight = parseFloat(note.left) + parseFloat(note.width)
       
+      const marginCheck = async () => {
+        if (noteLeft + 75 > groupLeft & noteRight - 75 < groupRight) {
+            await noteGroup.push(note.id)
+            return
+        }
+      }
+      
       if (note.isMatBoard) {
-        if (noteTop - 75 > groupTop & noteBottom - 75 < groupBottom) {
-          if (noteLeft + 75 > groupLeft & noteRight - 75 < groupRight) {
-              noteGroup.push(note.id)
-              return
-          }
+        if (noteTop > groupTop & noteBottom - 75 < groupBottom) {
+          marginCheck()
         }
       } else {
         if (noteTop > groupTop & noteTop < groupBottom) {
