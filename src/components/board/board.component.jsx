@@ -309,8 +309,6 @@ class Board extends Component {
     this.setState({ notes })
   }
 
-
-
   iframeSize = (id, w, h) => {
     let notes = [...this.state.notes]
     let newIndex = indexFinder(notes, id)
@@ -320,8 +318,6 @@ class Board extends Component {
     notes[newIndex] = newNote
     this.setState({ notes })
   }
-
-
 
   setBackgroundColor = () => {
     let boardObj = { ...this.state.boardObj }
