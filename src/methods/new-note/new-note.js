@@ -1,6 +1,6 @@
 import { newIdFinder, zIndexFinder, zIndexFinderMat } from "../finders/num-finders"
 
-export const newNoteGenerator = (stateObj, isMat=false) => {
+export const newNoteGenerator = (stateObj, isMat=false, isEmbed) => {
     let newNote = { ...stateObj.newNote }
     let notes = [...stateObj.notes]
     let padFrame = document.querySelector('.pad-frame')
@@ -9,6 +9,8 @@ export const newNoteGenerator = (stateObj, isMat=false) => {
     newNote.id = newIdFinder(stateObj)
     newNote.width = getComputedStyle(padFrame).getPropertyValue('width')
     newNote.height = getComputedStyle(padFrame).getPropertyValue('height')
+
+    // note placement
     let uiZoom = document.querySelector('.pad-frame').style.zoom
     let padEdge = document.querySelector('.pad-frame').getBoundingClientRect().left
     let padWidth = getComputedStyle(document.querySelector('#input-text')).getPropertyValue('width')
@@ -23,6 +25,13 @@ export const newNoteGenerator = (stateObj, isMat=false) => {
     let numY = (parseFloat(headerHeight) * uiZoom) + boardHangY
     newNote.left = `${numX + boardHangX}px`
     newNote.top = `${numY}px`
+
+    // embed
+    if (isEmbed) {
+      console.log('hidave')
+      newNote.iframe = inputText.innerText
+      newNote.isTrayDisplay = true
+    }
 
     newNote.noteText = inputText.innerText
     inputText.innerText = ''

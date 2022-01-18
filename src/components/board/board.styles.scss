@@ -168,7 +168,7 @@
     z-index: 10;
     position: relative;
     left: 9px;
-    top: 0px;
+    top: -2px;
     font-size: 14px;
     user-select: none;
     cursor: pointer;
@@ -177,9 +177,9 @@
   .switch {
     position: absolute;
     display: inline-block;
-    width: 163px;
-    height: 24px;
-    bottom: 6px;
+    width: 100px;
+    height: 21px;
+    bottom: 8px;
     right: 10px;
     z-index: 9;
   }
@@ -206,8 +206,8 @@
   .slider:before {
     position: absolute;
     content: "";
-    height: 16px;
-    width: 16px;
+    height: 13px;
+    width: 13px;
     right: 24px;
     bottom: 4px;
     background-color: white;
@@ -239,6 +239,12 @@
   
   .slider.round:before {
     border-radius: 50%;
+  }
+
+  .embed-btn {
+    position: absolute;
+    bottom: 8px;
+    right: 104px;
   }
 
 }

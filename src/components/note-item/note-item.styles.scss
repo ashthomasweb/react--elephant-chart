@@ -13,13 +13,6 @@
   white-space: pre-line;
   // user-select: all;
 
-  &.large {
-    height: 380px;
-  }
-  
-  &:first-child {
-    margin-right: 7.5px;
-  }
 
   &.selected {
     box-shadow: 3px 3px 3px #c9c9c9, -3px -3px 95px -15px #c9c9c9;
@@ -92,6 +85,7 @@
   position: absolute;
   pointer-events: all;
   top: 0;
+  
   padding: 5px;
   resize: both;
   display: none;

@@ -55,6 +55,7 @@ class NoteItem extends Component {
     let trayWidth = p.trayWidth ?? '150px'
     let trayHeight = p.trayHeight ?? '200px'
     let isNew = p.isNew ?? false
+    let iframe = p.iframe ?? false
 
     if (e.clientX !== 0) {
       this.setState(
@@ -73,6 +74,7 @@ class NoteItem extends Component {
           trayWidth: trayWidth,
           trayHeight: trayHeight,
           isNew: isNew,
+          iframe: iframe
         },
         () => {
           if (this.state.isNew) {
@@ -149,6 +151,13 @@ class NoteItem extends Component {
     this.props.traySize(id, trayWidth, trayHeight)
   }
 
+  iframeSize = (id) => {
+    let iframe = document.querySelector(`#iframe-${id}`)
+    let frameWidth = getComputedStyle(iframe).getPropertyValue('width')
+    let frameHeight = getComputedStyle(iframe).getPropertyValue('height')
+    this.props.iframeSize(id, frameWidth, frameHeight)
+  }
+
   saveTray = (id) => {
     let tray = document.querySelector(`#tray-${id} textarea`)
     let trayText = tray.value
@@ -172,7 +181,9 @@ class NoteItem extends Component {
       trayWidth,
       trayHeight,
       isTrayDisplay,
-      
+      iframe,
+      iframeWidth,
+      iframeHeight,
     } = this.props
 
     return (
@@ -180,7 +191,6 @@ class NoteItem extends Component {
         style={{
           zIndex: `${zIndex}`,
           position: 'absolute',
-          width: `${width}`,
           height: `${height}`,
           left: `${left}`,
           top: `${top}`,
@@ -236,13 +246,12 @@ class NoteItem extends Component {
             onMouseUp={() => this.traySize(id)}
             onChange={() => this.saveTray(id)}
             value={trayText}></textarea>
-            {this.props.iframe !== undefined &&
-
-                <iframe id={`iframe-${id}`} style={{ resize: 'both' }}
-                src={this.props.iframe}
-                title='Barrueco'></iframe>
-              }
-         
+            {!iframe ||
+              <iframe id={`iframe-${id}`} style={{ resize: 'both', width: `${iframeWidth}`, height: `${iframeHeight}` }}
+              src={iframe}
+              title='Barrueco'
+              onMouseUp={() => this.iframeSize(id)}></iframe>
+            }
         </div>
       </div>
     )

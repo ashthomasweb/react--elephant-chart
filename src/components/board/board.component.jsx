@@ -61,7 +61,7 @@ class Board extends Component {
         matOffsetX: 0,
         matOffsetY: 0,
         isChecked: false,
-        iframe: 'https://www.google.com',
+        iframe: false
       },
       boardObj: {
         name: '',
@@ -117,7 +117,6 @@ class Board extends Component {
       zIndex: notes[newIndex].zIndex,
     }
     notes[newIndex] = newNote
-    this.setState({ notes })
   }
 
   findMatGroup = async (id) => {
@@ -151,12 +150,23 @@ class Board extends Component {
     this.setState({ notes })
   }
 
+  embedBrowser = async () => {
+    if (
+      window.confirm(
+        `Are you sure? Opening untrusted sites can prevent a security risk. Highly recommend only embedding high-level, reputable sites like Google, YouTube, Facebook, Spotify, Widipedia, or similar. This will create an iframe element. Use feature at your own risk.`
+      )
+    ) {
+      await this.newNoteHandler(false, true)
+    }
+
+  }
+
   newMatHandler = () => {
     this.newNoteHandler(true)
   }
 
-  newNoteHandler = async (isMat) => {
-    let notes = await newNoteGenerator(this.state, isMat)
+  newNoteHandler = async (isMat, isEmbed) => {
+    let notes = await newNoteGenerator(this.state, isMat, isEmbed)
     this.state.updateCycleActive &&
       (notes[notes.length - 1].noteBColor = rgbToHex(
         this.$('.pad-frame').style.backgroundColor
@@ -299,6 +309,20 @@ class Board extends Component {
     this.setState({ notes })
   }
 
+
+
+  iframeSize = (id, w, h) => {
+    let notes = [...this.state.notes]
+    let newIndex = indexFinder(notes, id)
+    let newNote = notes[newIndex]
+    newNote.iframeWidth = w
+    newNote.iframeHeight = h
+    notes[newIndex] = newNote
+    this.setState({ notes })
+  }
+
+
+
   setBackgroundColor = () => {
     let boardObj = { ...this.state.boardObj }
     boardObj.backgroundColor = this.$('#bg-color-pick').value
@@ -421,6 +445,7 @@ class Board extends Component {
             passTrayText={this.passTrayText}
             trayHandler={this.trayHandler}
             traySize={this.traySize}
+            iframeSize={this.iframeSize}
             {...noteProps}
           />
         ))}
@@ -502,11 +527,16 @@ class Board extends Component {
             id='note-color-pick'></input>
           <label className='switch'>
             <label htmlFor='check-toggle' className='check-label'>
-              Check Off Note
+              Check
             </label>
             <input id='check-toggle' type='checkbox' />
             <span className='slider round'></span>
           </label>
+          <button
+          type='button'
+          className='embed-btn'
+          onClick={() => this.embedBrowser()}
+          >Embed</button>
         </div>
 
         <div className='update-frame'>
