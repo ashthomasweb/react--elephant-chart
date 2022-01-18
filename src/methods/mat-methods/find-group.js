@@ -18,8 +18,8 @@ export const getGroupIds = (id, notes) => {
       let noteRight = parseFloat(note.left) + parseFloat(note.width)
       
       if (note.isMatBoard) {
-        if ((noteTop + 75) > groupTop & (noteBottom - 75) < groupBottom) {
-          if ((noteLeft + 75) > groupLeft & noteRight < groupRight) {
+        if (noteTop - 75 > groupTop & noteBottom - 75 < groupBottom) {
+          if (noteLeft + 75 > groupLeft & noteRight - 75 < groupRight) {
               noteGroup.push(note.id)
               return
           }
