@@ -359,6 +359,7 @@ class Board extends Component {
     this.$('#bg-color-pick').defaultValue = bg.length > 7 ? '#1670d7' : bg
   }
 
+  
   componentDidMount() {
     this.displayUpdate()
     // drag board listener and handler
@@ -570,22 +571,6 @@ class Board extends Component {
               alt='Body of recycle can'
             />
           </div>
-  <button
-  type='button'
-  style={{
-    position: 'absolute',
-    height: '30px',
-    top: '0',
-    left: '0',
-    zIndex: '9999999999',
-  }}
-  onClick={() => {
-    console.log(this.state.notes)
-    // this.coordFinder()
-  }}
-  >
-  Board Notes
-</button>
         </div>
       </div>
     )
@@ -594,3 +579,20 @@ class Board extends Component {
 
 export default Board
 
+
+//   <button
+//   type='button'
+//   style={{
+//     position: 'absolute',
+//     height: '30px',
+//     top: '0',
+//     left: '0',
+//     zIndex: '9999999999',
+//   }}
+//   onClick={() => {
+//     console.log(this.state.notes)
+//     // this.coordFinder()
+//   }}
+//   >
+//   Board Notes
+// </button>
