@@ -191,6 +191,7 @@ class NoteItem extends Component {
         style={{
           zIndex: `${zIndex}`,
           position: 'absolute',
+          width: `${width}`,
           height: `${height}`,
           left: `${left}`,
           top: `${top}`,

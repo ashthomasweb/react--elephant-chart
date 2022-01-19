@@ -28,7 +28,6 @@ export const newNoteGenerator = (stateObj, isMat=false, isEmbed) => {
 
     // embed
     if (isEmbed) {
-      console.log('hidave')
       newNote.iframe = inputText.innerText
       newNote.isTrayDisplay = true
     }

@@ -117,6 +117,7 @@ class Board extends Component {
       zIndex: notes[newIndex].zIndex,
     }
     notes[newIndex] = newNote
+    this.setState({ notes })
   }
 
   findMatGroup = async (id) => {
