@@ -16,6 +16,7 @@ class App extends Component {
   }
 
   unsubsribeFromAuth = null
+  component
 
   componentDidMount() {
     this.unsubsribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
@@ -52,8 +53,7 @@ class App extends Component {
     // partially handles bad clientX value on fast note clicking
     window.addEventListener('dragover', (e) => e.preventDefault(), false)
     window.addEventListener('dragend', (e) => e.preventDefault(), false)
-    window.addEventListener('load', () => setZoom() )
-    
+    window.addEventListener('DOMContentLoaded', () => setZoom() )
   }
 
   componentWillUnmount() {
