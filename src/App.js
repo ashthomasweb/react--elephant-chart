@@ -49,6 +49,7 @@ class App extends Component {
         document.querySelector(item).style.zoom = `calc(100% / ${zoom})`
       })
       document.querySelector('#backing').scrollTo(3460, 1211)
+      
     }
     // partially handles bad clientX value on fast note clicking
     window.addEventListener('dragover', (e) => e.preventDefault(), false)
