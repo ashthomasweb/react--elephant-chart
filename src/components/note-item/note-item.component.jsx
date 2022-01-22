@@ -248,7 +248,7 @@ class NoteItem extends Component {
             onChange={() => this.saveTray(id)}
             value={trayText}></textarea>
             {!iframe || 
-              <iframe is='x-frame-bypass' id={`iframe-${id}`} style={{ resize: 'both', width: `${iframeWidth}`, height: `${iframeHeight}` }}
+              <iframe id={`iframe-${id}`} style={{ resize: 'both', width: `${iframeWidth}`, height: `${iframeHeight}` }}
               src={iframe}
               title='Barrueco'
               onMouseUp={() => this.iframeSize(id)}
