@@ -9,19 +9,19 @@ export const newIdFinder = (stateObj) => {
   return Math.max.apply(null, idList) + 1
 }
 
-export const zIndexDrag = (notes, isMat) => {
+export const zIndexDrag = (notes, isMat, isGroup) => {
   if (isMat) {
-    return zIndexFinderMat(notes)
+    return zIndexFinderMat(notes, isGroup)
   } else {
     return zIndexFinder(notes)
   }
 }
 
-export const zIndexFinderMat = (notesObj) => {
+export const zIndexFinderMat = (notesObj, isGroup) => {
   let zList = [-2147483645]
   notesObj.forEach((note) => {
     if (note.isMatBoard === true) {
-      zList.push(note.zIndex)
+      isGroup ? zList.push(note.zIndex + 2) : zList.push(note.zIndex + 1)
     }
   })
 

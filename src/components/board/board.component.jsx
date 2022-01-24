@@ -85,7 +85,7 @@ class Board extends Component {
       if (newNote.noteGroup.length > 0) {
         newNote.noteGroup.forEach( (note) => {
           if (notes[indexFinder(notes, note)].isMatBoard) {
-            notes[indexFinder(notes, note)].zIndex = zIndexDrag(this.state.notes, true)
+            notes[indexFinder(notes, note)].zIndex = zIndexDrag(this.state.notes, true, true)
           }
         })
       }
