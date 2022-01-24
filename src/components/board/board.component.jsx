@@ -154,7 +154,7 @@ class Board extends Component {
   embedBrowser = async () => {
     if (
       window.confirm(
-        `Are you sure? Opening untrusted sites can prevent a security risk. Highly recommend only embedding high-level, reputable sites like Google, YouTube, Facebook, Spotify, Widipedia, or similar. This will create an iframe element. Use feature at your own risk.`
+        `Are you sure? Opening untrusted sites can prevent a security risk. Feature is experimental and will not work yet on all sites. Highly recommend only embedding high-level, reputable sites like Wikipedia or similar. This will create an iframe element. Use feature at your own risk.`
       )
     ) {
       await this.newNoteHandler(false, true)
