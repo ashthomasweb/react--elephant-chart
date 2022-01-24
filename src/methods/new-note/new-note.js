@@ -28,7 +28,7 @@ export const newNoteGenerator = (stateObj, isMat=false, isEmbed) => {
 
     // embed
     if (isEmbed) {
-      newNote.iframe = `https://protected-temple-05511.herokuapp.com/${inputText.innerText}`
+      newNote.iframe = `https://tiny-leaf-aaa8.at--cors-worker.workers.dev/?CORSflare_upstream=${inputText.innerText}`
       newNote.isTrayDisplay = true
     }
 
