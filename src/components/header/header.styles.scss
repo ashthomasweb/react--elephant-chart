@@ -9,14 +9,28 @@
   user-select: none;
 
   .logo-container {
+    position: relative;
+    width: 100%;
     height: 100%;
-    width: 100px;
+
+    &:hover {
+      .logo {
+        opacity: .3;
+      }
+
+      .option {
+        opacity: 1;
+      }
+
+    }
   }
 
   .logo {
-    height: 134px;
-    padding: 10px 6px 0 10px;
+    height: 80px;
+    padding: 10px 0px;
     pointer-events: all;
+    position: relative;
+    transition: opacity .6s;
   }
 
   .user-options {
@@ -33,18 +47,24 @@
 
     .option {
       cursor: pointer;
-      margin-top: 10px;
+      position: relative;
+      // left: 50%;
+      
+      bottom: 30px;
+      // transform: translateY(-50%), translateX(-50%);
+      opacity: 0;
+      transition: opacity .6s;
     }
 
     .welcome {
       text-align: center;
-      margin-top: 20px;
+      margin-top: 5px;
     }
     
   }
 
   .sign-in-modal-btn {
-    margin-top: 17px;
+    margin-top: 0px;
   }
 
   .sign-modal {

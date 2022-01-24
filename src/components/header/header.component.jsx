@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import SignInUpModal from '../signinupmodal/signinupmodal.component'
 
-import logo from '../../assets/idea-logo.png'
+import logo from '../../assets/elephant-logo.png'
 
 import { auth, clearBoards } from '../../firebase/firebase.utils'
 
@@ -31,10 +31,11 @@ class Header extends Component {
           {this.props.currentUser ? (
             <div>
               <div className='welcome'>
-                <h2 style={{margin: '-10px 0 -10px 0' }}>TadaMat</h2>
-                <br />
                 {this.props.currentUser.displayName}
+                {/* <h2 style={{margin: '-10px 0 -10px 0' }}>TadaMat</h2> */}
               </div>
+              <div className='logo-container' >
+                <img src={logo} className='logo' alt='elephant-logo'/>
               <button
                 className='option'
                 onLoad={this.closeSignIn()}
@@ -45,10 +46,11 @@ class Header extends Component {
                 }}>
                 SIGN OUT
               </button>
+              </div>
             </div>
           ) : (
             <div>
-              <div className='welcome'>Welcome!</div>
+              <img src={logo} className='logo' alt='elephant-logo'/>
               <button
                 type='button'
                 className='sign-in-modal-btn'
