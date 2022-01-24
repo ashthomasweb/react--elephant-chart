@@ -247,12 +247,12 @@ class NoteItem extends Component {
             onMouseUp={() => this.traySize(id)}
             onChange={() => this.saveTray(id)}
             value={trayText}></textarea>
-            {!iframe || 
-              <iframe id={`iframe-${id}`} style={{ resize: 'both', width: `${iframeWidth}`, height: `${iframeHeight}` }}
-              src={iframe}
-              title='Barrueco'
-              onMouseUp={() => this.iframeSize(id)}
-              loading='lazy'></iframe>
+            {!iframe || <div>{iframe}</div>
+              // <iframe id={`iframe-${id}`} style={{ resize: 'both', width: `${iframeWidth}`, height: `${iframeHeight}` }}
+              // src={iframe}
+              // title='Barrueco'
+              // onMouseUp={() => this.iframeSize(id)}
+              // loading='lazy'></iframe>
             }
         </div>
       </div>
