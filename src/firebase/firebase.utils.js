@@ -1,14 +1,16 @@
+
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore'
 import 'firebase/compat/auth'
+require('dotenv').config()
 
 const config = {
-  apiKey: 'AIzaSyB6OaOSeCCN2KYaf8-9Oel6jiRUkpGB9QU',
-  authDomain: 'flow-post-6ab92.firebaseapp.com',
-  projectId: 'flow-post-6ab92',
-  storageBucket: 'flow-post-6ab92.appspot.com',
-  messagingSenderId: '280575994279',
-  appId: '1:280575994279:web:8584a1bcdf507573a6ee82',
+  apiKey: process.env.API_KEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  projectId: process.env.PROJECT_ID,
+  storageBucket: process.env.STORAGE_BUCKET,
+  messagingSenderId: process.env.MESSAGING_SENDER_ID,
+  appId: process.env.APP_ID,
 }
 
 // returns reference object for user login
