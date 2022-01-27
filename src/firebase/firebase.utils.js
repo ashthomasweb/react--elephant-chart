@@ -2,15 +2,6 @@ import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore'
 import 'firebase/compat/auth'
 
-// const config = {
-//   apiKey: 'AIzaSyB6OaOSeCCN2KYaf8-9Oel6jiRUkpGB9QU',
-//   authDomain: 'flow-post-6ab92.firebaseapp.com',
-//   projectId: 'flow-post-6ab92',
-//   storageBucket: 'flow-post-6ab92.appspot.com',
-//   messagingSenderId: '280575994279',
-//   appId: '1:280575994279:web:8584a1bcdf507573a6ee82',
-// }
-
 let config = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -19,9 +10,6 @@ let config = {
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_APP_ID,
 }
-
-console.log(config)
-console.log(process.env)
 
 // returns reference object for user login
 export const getUserRef = async (userAuth) => {
