@@ -18,8 +18,8 @@ export const initialArray = [
         isMatBoard: false,
         isChecked: false,
         iframe: false,
+        height: "81.5719px",
         id: 0,
-        height: "81.5719px"
     },
     {
         top: "1575px",
