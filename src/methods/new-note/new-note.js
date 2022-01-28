@@ -26,11 +26,11 @@ export const newNoteGenerator = (stateObj, isMat=false, isEmbed) => {
     newNote.left = `${numX + boardHangX}px`
     newNote.top = `${numY}px`
 
-    // embed
-    if (isEmbed) {
-      newNote.iframe = `https://tiny-leaf-aaa8.at--cors-worker.workers.dev/?CORSflare_upstream=${inputText.innerText}`
-      newNote.isTrayDisplay = true
-    }
+    // // embed
+    // if (isEmbed) {
+    //   newNote.iframe = inputText.innerText
+    //   newNote.isTrayDisplay = true
+    // }
 
     newNote.noteText = inputText.innerText
     inputText.innerText = ''
