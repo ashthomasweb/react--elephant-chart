@@ -570,22 +570,6 @@ class Board extends Component {
               className='trash-bottom'
               alt='Body of recycle can'
             />
-  <button
-  type='button'
-  style={{
-    position: 'absolute',
-    height: '30px',
-    top: '0',
-    left: '0',
-    zIndex: '9999999999',
-  }}
-  onClick={() => {
-    console.log(this.state.notes)
-    // this.coordFinder()
-  }}
-  >
-  Board Notes
-</button>
           </div>
         </div>
       </div>
@@ -595,3 +579,20 @@ class Board extends Component {
 
 export default Board
 
+
+//   <button
+//   type='button'
+//   style={{
+//     position: 'absolute',
+//     height: '30px',
+//     top: '0',
+//     left: '0',
+//     zIndex: '9999999999',
+//   }}
+//   onClick={() => {
+//     console.log(this.state.notes)
+//     // this.coordFinder()
+//   }}
+//   >
+//   Board Notes
+// </button>
