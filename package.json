@@ -1,5 +1,6 @@
 {
-  "name": "flow-post",
+  "name": "elephant-chart",
+  "author": "Ashley Thomas",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
