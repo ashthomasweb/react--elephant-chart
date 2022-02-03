@@ -6,6 +6,15 @@
   z-index: -2147483647;
   overflow: scroll;
   user-select: none;
+  background-image: url(../../assets/bright-squares.png);
+  background-attachment:local;
+  // background-color: rgb(48, 48, 82);
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    opacity: 0.7;
+    background-size: repeat;
+    content: "";
 }
 
 .database-options {
