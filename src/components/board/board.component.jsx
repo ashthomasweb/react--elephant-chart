@@ -104,6 +104,7 @@ class Board extends Component {
     if (notes[indexFinder(notes, e.target.id)])
       notes[indexFinder(notes, e.target.id)].isNew = false
     this.setState({ notes })
+    //save
   }
 
   resize = (id, width, height) => {
@@ -118,6 +119,7 @@ class Board extends Component {
     }
     notes[newIndex] = newNote
     this.setState({ notes })
+    //save
   }
 
   findMatGroup = async (id) => {
@@ -151,19 +153,19 @@ class Board extends Component {
     this.setState({ notes })
   }
 
-  embedBrowser = async () => {
-    if (
-      window.confirm(
-        `Are you sure? Opening untrusted sites can prevent a security risk. 
-        Feature is experimental and will not work yet on all sites. Highly 
-        recommend only embedding high-level, reputable sites like Wikipedia 
-        or similar. This will create an iframe element. Use feature at your own risk.`
-      )
-    ) {
-      await this.newNoteHandler(false, true)
-    }
+  // embedBrowser = async () => {
+  //   if (
+  //     window.confirm(
+  //       `Are you sure? Opening untrusted sites can prevent a security risk. 
+  //       Feature is experimental and will not work yet on all sites. Highly 
+  //       recommend only embedding high-level, reputable sites like Wikipedia 
+  //       or similar. This will create an iframe element. Use feature at your own risk.`
+  //     )
+  //   ) {
+  //     await this.newNoteHandler(false, true)
+  //   }
 
-  }
+  // }
 
   newMatHandler = () => {
     this.newNoteHandler(true)
@@ -175,11 +177,27 @@ class Board extends Component {
       (notes[notes.length - 1].noteBColor = rgbToHex(
         this.$('.pad-frame').style.backgroundColor
       ))
-    this.setState({ notes })
+    this.setState({ notes }, this.testSave())
     this.state.updateCycleActive && this.cancelUpdateMode(true)
+    //save
   }
 
   // data handling methods for user board storage. Database calls BELOW.
+
+  
+  testSave = () => {
+    let debounce = setTimeout( () => {
+      console.log('debounce')
+      }, 3000)
+    return () => {
+      clearTimeout(debounce)
+
+      console.log('Save ME!')
+      debounce()
+    }
+  }
+  
+
   saveCurrentBoard = () => {
     let boardObj = {
       name: this.$('.save-board-input').value,
@@ -220,7 +238,7 @@ class Board extends Component {
     }
   }
 
-  // Update state and display properties of notes. NOT database calls.
+  // Update state and display properties of notes. These are NOT database calls.
   startUpdateHandler = (currentUpdateId) => {
     this.cancelUpdateMode()
     let prevNote = {
@@ -313,15 +331,15 @@ class Board extends Component {
     this.setState({ notes })
   }
 
-  iframeSize = (id, w, h) => {
-    let notes = [...this.state.notes]
-    let newIndex = indexFinder(notes, id)
-    let newNote = notes[newIndex]
-    newNote.iframeWidth = w
-    newNote.iframeHeight = h
-    notes[newIndex] = newNote
-    this.setState({ notes })
-  }
+  // iframeSize = (id, w, h) => {
+  //   let notes = [...this.state.notes]
+  //   let newIndex = indexFinder(notes, id)
+  //   let newNote = notes[newIndex]
+  //   newNote.iframeWidth = w
+  //   newNote.iframeHeight = h
+  //   notes[newIndex] = newNote
+  //   this.setState({ notes })
+  // }
 
   setBackgroundColor = () => {
     let boardObj = { ...this.state.boardObj }
