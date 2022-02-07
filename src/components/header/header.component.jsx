@@ -32,7 +32,6 @@ class Header extends Component {
             <div>
               <div className='welcome'>
                 {this.props.currentUser.displayName}
-                {/* <h2 style={{margin: '-10px 0 -10px 0' }}>TadaMat</h2> */}
               </div>
               <div className='logo-container' >
                 <img src={logo} className='logo' alt='elephant-logo'/>

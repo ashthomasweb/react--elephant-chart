@@ -15,11 +15,11 @@ class App extends Component {
 
   }
 
-  unsubsribeFromAuth = null
+  unsubscribeFromAuth = null
   component
 
   componentDidMount() {
-    this.unsubsribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         createNewUserProfile(userAuth)
 
@@ -58,7 +58,7 @@ class App extends Component {
   }
 
   componentWillUnmount() {
-    this.unsubsribeFromAuth()
+    this.unsubscribeFromAuth()
   }
 
   render() {
