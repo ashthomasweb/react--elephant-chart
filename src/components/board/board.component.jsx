@@ -177,7 +177,7 @@ class Board extends Component {
       (notes[notes.length - 1].noteBColor = rgbToHex(
         this.$('.pad-frame').style.backgroundColor
       ))
-    this.setState({ notes }, this.testSave())
+    this.setState({ notes })
     this.state.updateCycleActive && this.cancelUpdateMode(true)
     //save
   }
@@ -185,17 +185,17 @@ class Board extends Component {
   // data handling methods for user board storage. Database calls BELOW.
 
   
-  testSave = () => {
-    let debounce = setTimeout( () => {
-      console.log('debounce')
-      }, 3000)
-    return () => {
-      clearTimeout(debounce)
+  // testSave = () => {
+  //   let debounce = setTimeout( () => {
+  //     console.log('debounce')
+  //     }, 3000)
+  //   return () => {
+  //     clearTimeout(debounce)
 
-      console.log('Save ME!')
-      debounce()
-    }
-  }
+  //     console.log('Save ME!')
+  //     debounce()
+  //   }
+  // }
   
 
   saveCurrentBoard = () => {
