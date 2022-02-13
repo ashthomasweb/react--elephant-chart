@@ -7,19 +7,11 @@ import trashTop from '../../assets/trash-top.png'
 import trashBottom from '../../assets/trash-bottom.png'
 import { initialArray } from '../../assets/initial-array.js'
 
-import {
-  saveUserBoard,
-  userBoards,
-  deleteUserBoard,
-} from '../../firebase/firebase.utils'
+import { saveUserBoard, userBoards, deleteUserBoard } from '../../firebase/firebase.utils'
 import { trashBox, trashHandler } from '../../methods/trash/trashHandlers.js'
 import { indexFinder, zIndexDrag } from '../../methods/finders/num-finders.js'
 import { newNoteGenerator, rgbToHex } from '../../methods/new-note/new-note'
-import {
-  startUpdate,
-  updateNote,
-  cancelUpdate,
-} from '../../methods/update/update-display'
+import { startUpdate, updateNote, cancelUpdate } from '../../methods/update/update-display'
 import { getGroupIds } from '../../methods/mat-methods/find-group'
 import { dropHelper } from '../../methods/menus/drop-helper'
 
@@ -196,7 +188,7 @@ class Board extends Component {
   //     debounce()
   //   }
   // }
-  
+
 
   saveCurrentBoard = () => {
     let boardObj = {
@@ -380,7 +372,6 @@ class Board extends Component {
     this.$('#bg-color-pick').defaultValue = bg.length > 7 ? '#1670d7' : bg
   }
 
-  
   componentDidMount() {
     this.displayUpdate()
     // drag board listener and handler
@@ -592,6 +583,23 @@ class Board extends Component {
               alt='Body of recycle can'
             />
           </div>
+          
+            {/* <button
+            type='button'
+            style={{
+              position: 'absolute',
+              height: '30px',
+              top: '0',
+              left: '0',
+              zIndex: '9999999999',
+            }}
+            onClick={() => {
+              console.log(this.state.notes)
+              // this.coordFinder()
+            }}
+            >
+            Board Notes
+          </button> */}
 
         </div>
       </div>
@@ -601,19 +609,4 @@ class Board extends Component {
 
 export default Board
 
-//   <button
-//   type='button'
-//   style={{
-//     position: 'absolute',
-//     height: '30px',
-//     top: '0',
-//     left: '0',
-//     zIndex: '9999999999',
-//   }}
-//   onClick={() => {
-//     console.log(this.state.notes)
-//     // this.coordFinder()
-//   }}
-//   >
-//   Board Notes
-// </button>
+// END of document
